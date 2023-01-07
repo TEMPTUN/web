@@ -11,7 +11,7 @@ const handler = async(req, res)=> {
     })
     const result = await User.insertMany([Userdata]);
     // console.log(result);
-    res.status(200).json({ name,email,password })
+    res.status(200).json({ id:result[0]._id});
   }
 
   export default handler;

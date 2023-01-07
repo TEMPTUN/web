@@ -3,12 +3,14 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import base_url from '../utils/connection'
 
-function login() {
+function SignUp() {
 
     const {register,handleSubmit,formState: { errors }} = useForm();
     const onSubmit = async(data) => {
       try {
         const res = await axios.get(`${base_url}/api/details/user?name=${data.name}&email=${data.email}&password=${data.password}`);
+        setCookie('Name', name, { path: '/' });
+      setCookie('Password', pwd, { path: '/' });
       } catch (error) {
         console.log(error);
       }
@@ -50,4 +52,4 @@ function login() {
   )
 }
 
-export default login
+export default SignUp
