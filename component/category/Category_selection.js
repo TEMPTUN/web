@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import categoryData from './category_data'
 import styles from "./category.module.scss"
-
+import base_url from '../../utils/connection';
+import axios from 'axios';
 
 
 function Category_selection() {
@@ -14,16 +15,26 @@ function Category_selection() {
     await setText(t);
   }
   const handleClick = async(e,data)=>{
-    
     await setSelected([...selected,data]);
+  }
+  
+  const handleSubmit = async()=>{
+    const Id=localStorage.getItem("userId");
+    const url =`${base_url}/api/details/user`;
+    try{
+      const res=await axios.put(url,{
+                      selectedCats:selected,
+                      id:Id });
+      console.log(res);
+    }catch(err){
+      console.log(err);
+    }
   }
 
   useEffect(()=>{
     let arr=[];
-    console.log(text);
     categoryData.map((data)=>{
       let str = data.toLowerCase();
-      // console.log(str.search(text));
       if(str.search(text)!==-1){
         arr.push(str);
       }
@@ -49,6 +60,7 @@ function Category_selection() {
           <div className={styles.option}  key={`${idx}+${user}`} onClick={(e)=>handleClick(e,user)}>{user}</div>
         ))}
         </div>
+        <button onClick={(e)=>handleSubmit(e)}>submit</button>
     </>
     
   )

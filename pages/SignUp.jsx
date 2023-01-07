@@ -2,15 +2,17 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import base_url from '../utils/connection'
+import { useRouter } from 'next/router'
 
 function SignUp() {
-
+    const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
     const onSubmit = async(data) => {
       try {
         const res = await axios.get(`${base_url}/api/details/user?name=${data.name}&email=${data.email}&password=${data.password}`);
-        setCookie('Name', name, { path: '/' });
-      setCookie('Password', pwd, { path: '/' });
+        localStorage.setItem("userId", res.data.id);  
+        router.push("/categories");
+
       } catch (error) {
         console.log(error);
       }

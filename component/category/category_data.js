@@ -1,4 +1,4 @@
-const categoryData= [
+const categoryData=[
     "Academic",
     "Civil Engineering",
     "ComputerScience Engineering",
@@ -30,6 +30,7 @@ const categoryData= [
     "Music",
     "Drama",
     "Dance",
-    "Art & Craft",
+    "Art & Craft"
 ]
-export default categoryData
+
+export default categoryData;
