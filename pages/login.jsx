@@ -1,13 +1,14 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
+import base_url from '../utils/connection'
 
 function login() {
 
     const {register,handleSubmit,formState: { errors }} = useForm();
     const onSubmit = async(data) => {
       try {
-        // const res = await axios.get(`http://localhost:3000/api/details/user?name=${data.name}&email=${data.email}&password=${data.password}`);
+        const res = await axios.get(`${base_url}/api/details/user?name=${data.name}&email=${data.email}&password=${data.password}`);
       } catch (error) {
         console.log(error);
       }

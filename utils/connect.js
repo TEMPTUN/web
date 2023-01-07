@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
+import { MONGO_URI } from '../utils/connection'
 
 const connectmongo = async () => {
     try {
-        await mongoose.connect(`mongodb+srv://chalk:collab007@collabin.2fng8qt.mongodb.net/CollabIn_DB?retryWrites=true&w=majority`,{
+        await mongoose.connect(MONGO_URI,{
         useNewUrlParser: true,
         useUnifiedTopology: true,
         });
