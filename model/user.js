@@ -12,6 +12,7 @@ const user = new Schema({
     password:{
         type:String
     },
+    categoryId:[{ type:String }],
     date:{
         type:Date,
         default:Date.now

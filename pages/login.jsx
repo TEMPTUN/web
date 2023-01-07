@@ -9,6 +9,7 @@ function login() {
     const onSubmit = async(data) => {
       try {
         const res = await axios.get(`${base_url}/api/details/user?name=${data.name}&email=${data.email}&password=${data.password}`);
+        localStorage.setItem("userId", res.data.id);
       } catch (error) {
         console.log(error);
       }
