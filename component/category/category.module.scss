@@ -1,0 +1,21 @@
+.box{
+    height:fit-content;
+    width:500px; 
+    border:1px solid red;
+}
+
+.ipt{
+    height: 50px;
+    width:300px;
+    margin-bottom: 50px;
+}
+
+.option{
+    box-sizing: border-box;
+    height: 30px;
+    padding: 10px;
+    width: fit-content;
+    border-radius: 10px;
+    background-color: #ebe9e9;
+    margin: 10px;
+}
