@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import base_url from '../utils/connection'
 import { useRouter } from 'next/router'
 
-function SignUp() {
+const signup = ()=> {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
     const onSubmit = async(data) => {
@@ -12,7 +12,6 @@ function SignUp() {
         const res = await axios.get(`${base_url}/api/details/user?name=${data.name}&email=${data.email}&password=${data.password}`);
         localStorage.setItem("userId", res.data.id);  
         router.push("/categories");
-
       } catch (error) {
         console.log(error);
       }
@@ -45,7 +44,7 @@ function SignUp() {
             <p className="errorMsg">password is required.</p>
           )}
           {errors.password && errors.password.type === "minLength" && (
-            <p className="errorMsg">password is not valid.</p>
+            <p className="errorMsg">Enter some lengthy password.</p>
           )}
         </label>
         <input type="submit" value="Submit" />
@@ -54,4 +53,4 @@ function SignUp() {
   )
 }
 
-export default SignUp
+export default signup
