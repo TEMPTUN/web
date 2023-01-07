@@ -3,19 +3,39 @@ import categoryData from './category_data'
 import styles from "./category.module.scss"
 import base_url from '../../utils/connection';
 import axios from 'axios';
+import { useRouter } from 'next/router'
 
 
 function Category_selection() {
   const [text,setText] = useState("");
   const [selected,setSelected] = useState([]);
   const [options,setOptions] = useState([]);
+  const router = useRouter();
 
-  const handleText = async(e)=>{
+  const handleText = (e)=>{
     let t = e.target.value.toLowerCase()
-    await setText(t);
+    setText(t);
   }
-  const handleClick = async(e,data)=>{
-    await setSelected([...selected,data]);
+  const handleClick = (e,data)=>{
+    let flag= false;
+    selected.map((d)=>{
+      if(d===data){
+         flag = true;
+        return;
+      }
+    })
+    flag===false && setSelected([...selected,data]);
+  }
+
+  const handleDelete = (e,data)=>{
+    let arr=[];
+    selected.map((d)=>{
+      if(d!==data){
+        arr.push(d);
+      }
+    })
+    setSelected(arr);
+
   }
   
   const handleSubmit = async()=>{
@@ -25,7 +45,7 @@ function Category_selection() {
       const res=await axios.put(url,{
                       selectedCats:selected,
                       id:Id });
-      console.log(res);
+      router.push("/feed");
     }catch(err){
       console.log(err);
     }
@@ -50,14 +70,18 @@ function Category_selection() {
         <div className={styles.box} style={{marginBottom:"10px"}}>  
 
           {selected.map((user ,idx) => (
-            <div className={styles.option}  key={`${idx}+${user}`} onClick={(e)=>handleClick(e,user)}>{user}</div>
+             <div className={styles.option}>
+             <span   key={`${idx}+${user}`} onClick={(e)=>handleClick(e,user)}>{user}</span>
+             <span  key={`${idx}+${user}+x`}  style={{marginLeft:"10px"}} onClick={(e)=>handleDelete(e,user)}>X</span>
+           </div>
           ))}
         </div>
 
         <div className={styles.box}>  
 
         {options.map((user ,idx) => (
-          <div className={styles.option}  key={`${idx}+${user}`} onClick={(e)=>handleClick(e,user)}>{user}</div>
+         <div className={styles.option}  key={`${idx}+${user}`} onClick={(e)=>handleClick(e,user)}>{user}</div>
+         
         ))}
         </div>
         <button onClick={(e)=>handleSubmit(e)}>submit</button>
