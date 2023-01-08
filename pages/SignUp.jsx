@@ -3,22 +3,34 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
 import base_url from '../utils/connection'
 import { useRouter } from 'next/router'
+import {useSelector,useDispatch } from 'react-redux';
+import {updateId} from '../redux_feature/UserInfo/userSlice' 
+import { useEffect } from 'react';
 
 const signup = ()=> {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
+
+    const Userid = useSelector((state)=>state.user.userId);
+    const dispatch = useDispatch();
     const onSubmit = async(data) => {
       try {
         const res = await axios.get(`${base_url}/api/details/user?name=${data.name}&email=${data.email}&password=${data.password}`);
         localStorage.setItem("userId", res.data.id);  
-        router.push("/categories");
+        dispatch(updateId(res.data.id));
       } catch (error) {
         console.log(error);
       }
     }
 
+    useEffect(()=>{
+      if(Userid!==null){
+        router.push("/categories");
+      }
+    },[Userid])
   return (
     <div>
+        
        <form onSubmit={handleSubmit(onSubmit)}>
         <label>
           Name:

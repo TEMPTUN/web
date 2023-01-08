@@ -1,14 +1,17 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '../styles/Home.module.css'
+import axios from 'axios';
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form';
+import base_url from '../utils/connection'
+import { useRouter } from 'next/router'
+import {useSelector,useDispatch } from 'react-redux';
+import {updateId} from '../redux_feature/UserInfo/userSlice' 
+import { useEffect } from 'react';
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+const Home = ()=> {
   return (
-    <>
-      <h1>Collabin</h1>
-    </>
+    <div>
+    </div>
   )
 }
+
+export default Home
