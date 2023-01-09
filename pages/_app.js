@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { useEffect,useState } from 'react';
 import { useRouter } from 'next/router';
 import {useSelector,useDispatch } from 'react-redux';
-import First from '../component/FirstRun/First';
+import First from '../utils/First';
 export default function App({ Component, pageProps }) {
 
   return (

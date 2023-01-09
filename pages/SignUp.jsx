@@ -10,13 +10,14 @@ import { useEffect } from 'react';
 const signup = ()=> {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
-
     const Userid = useSelector((state)=>state.user.userId);
     const dispatch = useDispatch();
+
     const onSubmit = async(data) => {
       console.log(data)
       try {
-        const res = await axios.get(`${base_url}/api/details/user?name=${data.name}&email=${data.email}&password=${data.password}`);
+        // const res = await axios.get(`${base_url}/api/details/user?name=${data.name}&email=${data.email}&password=${data.password}`);
+        const res= await axios.post(`${base_url}/api/details/user`,data);
         localStorage.setItem("userId", res.data.id);  
         dispatch(updateId(res.data.id));
       } catch (error) {
@@ -29,6 +30,7 @@ const signup = ()=> {
         router.push("/categories");
       }
     },[Userid])
+    
   return (
     <div>
         
