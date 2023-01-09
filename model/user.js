@@ -13,6 +13,10 @@ const user = new Schema({
         type:String
     },
     categoryId:[{ type:String }],
+    profile:{
+        data:Buffer,
+        contentType:String   
+    },
     date:{
         type:Date,
         default:Date.now
