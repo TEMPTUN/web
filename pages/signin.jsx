@@ -1,30 +1,40 @@
 import axios from "axios";
-import React from "react";
+import React,{ useState,useEffect } from "react";
 import { useRouter } from "next/router";
 import { useForm } from 'react-hook-form';
 import base_url from '../utils/connection'
-// import { useDispatch } from 'react-redux';
-// import {updateId} from '../redux_feature/UserInfo/userSlice'
+import { useDispatch } from 'react-redux';
+import {updateId} from '../redux_feature/UserInfo/userSlice'
+import { useSelector } from "react-redux";
 
 
-const signin = async() => {
+const signin = () => {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
-    
-    // const dispatch = useDispatch();
+    const Userid = useSelector((state)=>state.user.userId);
+    const dispatch = useDispatch();
 
     const onSubmit = async(data) => {
         try {
-        //   const result = await axios.get(`${base_url}/api/auth/isuser?email=${data.email}&password=${data.password}`)
-        //   localStorage.setItem("userId", result.data.id);
-        //   dispatch(updateId(res.data.id));
-          router.push("/feed");
+          const result = await axios.get(`${base_url}/api/auth/isuser?email=${data.email}&password=${data.password}`)
+          if(result.data.success===true){
+            localStorage.setItem("userId", result.data.id);
+            dispatch(updateId(result.data.id));
+            router.push("/feed");
+          }else{
+            alert(result.data.message);
+          }
         } catch (error) {
-          console.log("-------------signinError--------------------------")
+          console.log("----------------------signinError--------------------------")
           console.log(error);
         }
       }
 
+      useEffect(()=>{
+        if(Userid!==null){
+          router.push("/feed");
+        }
+      },[Userid])
     return (
         <>
             <h1>Sign In</h1>
