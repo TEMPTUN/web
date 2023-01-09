@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import categoryData from './category_data'
+import {allCategory} from './category_data'
 import styles from "./category.module.scss"
 import base_url from '../../utils/connection';
 import axios from 'axios';
@@ -53,7 +53,7 @@ function Category_selection() {
 
   useEffect(()=>{
     let arr=[];
-    categoryData.map((data)=>{
+    allCategory.map((data)=>{
       let str = data.toLowerCase();
       if(str.search(text)!==-1){
         arr.push(str);

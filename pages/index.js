@@ -9,9 +9,7 @@ import { useEffect } from 'react';
 
 const Home = ()=> {
   return (
-    <div>
-    </div>
+    <h2>CollabIn</h2>
   )
 }
-
 export default Home
