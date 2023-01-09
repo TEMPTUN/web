@@ -7,9 +7,9 @@ const handler = async(req, res)=> {
         await connectmongo(); 
         const Userdata = await User.findOne({email:email,password:password});
         if(Userdata){
-            res.status(200).json({ id:Userdata._id});
+            res.status(200).json({ id:Userdata._id,success:true });
         }else{
-            res.status(404).json({ "message":"User not found"} );
+            res.status(404).json({ "message":"please enter valid username or password.",success:false } );
         }
     }
 }
