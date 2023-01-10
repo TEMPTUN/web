@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router'
   
 const feed = () => {
-    const Userid = useSelector((state)=>state.user.userId);
+    const Userid = useSelector((state)=>state.user._id);
   
   return (
     <div>

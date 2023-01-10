@@ -27,7 +27,6 @@ const handler = async(req, res)=> {
             }
         })
         res.status(200).json({message:"success"});
-
     }else if(req.method==='GET'){
 
         const id = req.query.id;

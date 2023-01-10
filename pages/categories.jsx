@@ -6,7 +6,7 @@ import Category_selection from "../component/category/Category_selection";
 function categories() {
 
   const router = useRouter();
-  const Userid = useSelector((state)=>state.user.userId);
+  const Userid = useSelector((state)=>state.user._id);
   
   return (
     <>

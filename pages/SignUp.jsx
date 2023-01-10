@@ -4,22 +4,20 @@ import { useForm } from 'react-hook-form';
 import base_url from '../utils/connection'
 import { useRouter } from 'next/router'
 import {useSelector,useDispatch } from 'react-redux';
-import {updateId} from '../redux_feature/UserInfo/userSlice' 
+import {CreateId} from '../redux_feature/UserInfo/userSlice' 
 import { useEffect } from 'react';
 
 const signup = ()=> {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
-    const Userid = useSelector((state)=>state.user.userId);
+    const Userid = useSelector((state)=>state.user._id);
     const dispatch = useDispatch();
 
     const onSubmit = async(data) => {
-      console.log(data);
-
       try {
         const res= await axios.post(`${base_url}/api/details/user`,data);
         localStorage.setItem("userId", res.data.id);  
-        dispatch(updateId(res.data.id));
+        dispatch(CreateId(data));
       } catch (error) {
         console.log("------------SignupError-----------------------------");
         console.log(error);

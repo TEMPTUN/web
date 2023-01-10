@@ -17,6 +17,9 @@ const user = new Schema({
         data:Buffer,
         contentType:String   
     },
+    bio:{
+        type:String,
+    },
     date:{
         type:Date,
         default:Date.now
