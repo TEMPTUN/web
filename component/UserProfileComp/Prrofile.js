@@ -5,11 +5,14 @@ import {useSelector} from 'react-redux';
 const Prrofile = () => {
 
     const user = useSelector((state)=>state.user);
+    // console.log(user)
   return (
     <div>
         <div className={style.upperCont}>
             <div className={style.my_info}> 
-                <div className={style.img}></div>
+                <div className={style.img}>
+                    {/* <img src={user.image}></img> */}
+                </div>
                 <div className={style.name}>{user.name}</div>
                 <div className={style.email}>{user.email}</div>
                 <div className={style.bio}>{user.bio}</div>

@@ -5,8 +5,7 @@ import { useRouter } from 'next/router'
 import Index from '../component/FeedComp/Index'  
 
 const feed = () => {
-    const Userid = useSelector((state)=>state.user._id);
-  
+    // const Userid = useSelector((state)=>state.user._id);
   return (
     <Index/>
   )
