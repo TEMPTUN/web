@@ -10,9 +10,8 @@ const handler = async(req, res)=> {
             name: name,
             email: email,
             password: password,
-            profile:profilePic,
+            image:profilePic,
         })
-        console.log(Userdata);
         const result = await User.insertMany([Userdata]);
         res.status(200).json({ id:result[0]._id});
 
@@ -30,6 +29,7 @@ const handler = async(req, res)=> {
     }else if(req.method==='GET'){
 
         const id = req.query.id;
+        await connectmongo();
         const result = await User.findById(id);
         res.status(200).json({result});
         

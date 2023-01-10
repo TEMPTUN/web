@@ -13,9 +13,8 @@ const user = new Schema({
         type:String
     },
     categoryId:[{ type:String }],
-    profile:{
-        data:Buffer,
-        contentType:String   
+    image:{
+        type:String,
     },
     bio:{
         type:String,
