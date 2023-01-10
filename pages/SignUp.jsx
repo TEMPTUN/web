@@ -16,7 +16,8 @@ const signup = ()=> {
     const onSubmit = async(data) => {
       try {
         const res= await axios.post(`${base_url}/api/details/user`,data);
-        localStorage.setItem("userId", res.data.id);  
+        localStorage.setItem("userId", res.data.id); 
+        data._id=res.data.id; //adding over form data
         dispatch(CreateId(data));
       } catch (error) {
         console.log("------------SignupError-----------------------------");

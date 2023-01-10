@@ -1,11 +1,10 @@
 import React from 'react'
 import style from './profile.module.scss'
+import {useSelector} from 'react-redux';
+
 const Prrofile = () => {
-    let user ={
-        name:"chirag Jain",
-        email:"cj@gmail.com",
-        bio:"hii heelloo beeep",
-    }
+
+    const user = useSelector((state)=>state.user);
   return (
     <div>
         <div className={style.upperCont}>
