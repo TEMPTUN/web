@@ -32,7 +32,7 @@ const signup = ()=> {
     
   return (
     <div>
-        
+    
        <form onSubmit={handleSubmit(onSubmit)}>
         <div>
             <label htmlFor='fileUpload' style={{backgroundColor:"pink"}}> Select Profile</label>
