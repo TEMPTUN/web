@@ -38,7 +38,7 @@ function Index(props) {
       <div className={style.Container}>
 			<div className={style.ShareBox}>
 				<div>
-					{user.profilePic ? <img src={props.user.profilePic} alt="" /> : <img src="/images/user.svg" alt="" />}
+					{user.image ? <img src={user.image} alt="" /> : <img src="/images/user.svg" alt="" />}
 					<button onClick={clickHandler} >
 						Start a post
 					</button>
