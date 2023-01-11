@@ -13,6 +13,13 @@ const user = new Schema({
         type:String
     },
     categoryId:[{ type:String }],
+    image:{
+        type:String,
+    },
+    bio:{
+        type:String,
+    },
+    friendId:[{type:String}],
     date:{
         type:Date,
         default:Date.now

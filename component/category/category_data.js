@@ -1,5 +1,4 @@
-const categoryData=[
-    "Academic",
+export const allCategory= [
     "Civil Engineering",
     "ComputerScience Engineering",
     "Electrical Engineering",
@@ -15,14 +14,12 @@ const categoryData=[
     "Web Development",
     "App Development",
     "Competitive Programming",
-    "Sports",
     "Cricket",
     "Basketball",
     "Badminton",
     "Volleyball",
     "Table Tennis",
     "Chess",
-    "Events",
     "Technical",
     "Cultural",
     "Educational",
@@ -30,7 +27,56 @@ const categoryData=[
     "Music",
     "Drama",
     "Dance",
-    "Art & Craft"
+    "Art & Craft",
 ]
-
-export default categoryData;
+export const category_Data ={
+    "Academics":[
+        "Civil Engineering",
+        "ComputerScience Engineering",
+        "Electrical Engineering",
+        "Electronics Engineering",
+        "Mechanical Engineering",
+    ],
+    "Sports":[
+        "Cricket",
+        "Basketball",
+        "Badminton",
+        "Volleyball",
+        "Table Tennis",
+        "Chess",
+    ],
+    "Events":[
+        "Technical",
+        "Cultural",
+        "Educational",
+        "Sports",
+        "Music",
+        "Drama",
+        "Dance",
+        "Art & Craft"
+    ],
+    "Exams":[
+        "Gate CSE",
+        "Gate EE",
+        "Gate ECE",
+        "Gate CE",
+        "Gate ME",
+    ],
+    "Technical":[     
+        "AutoCad",
+        "Cloud Computing",
+        "Web Development",
+        "App Development",
+        "Competitive Programming",
+    ],
+    "Non-Technical":[
+        "Aptitude",
+    ],
+    "Cultural":[
+        "Music",
+        "Dance",
+        "Art&Craft",
+        "Drama",
+        "Drawing",
+    ]
+}
