@@ -1,11 +1,12 @@
 import { useState } from "react";
 import ReactPlayer from "react-player";
 // import { connect } from "react-redux";
-// import Firebase from "firebase";
+import base_url from '../../utils/connection'
 import styled from "styled-components";
 import {useSelector} from 'react-redux';
 import {convertToBase64} from '../../utils/imageTourl';
-import {category_Data,allCategory} from '../category/category_data'
+import {category_Data,allCategory} from '../category/category_data';
+import axios from "axios";
 
 
 
@@ -28,6 +29,7 @@ function PostalModal(props) {
 		setImageFile("");
 		setVideoFile("");
 		setAssetArea("");
+		setselectedCats(new Set());
 		setShowCategory(false);
 		props.clickHandler(event); 
 	};
@@ -104,17 +106,17 @@ function PostalModal(props) {
 		if (event.target !== event.currentTarget) {
 			return;
 		}
-		 
 		const payload = {
 			image: imageFile,
 			video: videoFile,
 			url:urlFile,
 			description: editorText,
 			user: user._id,
-			categoryIds:selectedCats,
-			// timestamp: Firebase.firestore.Timestamp.now(),
+			categoryIds:Array.from(selectedCats),
 		};
 		console.log(payload);
+		const res = await axios.post(`${base_url}/api/details/userpost`,payload)
+		console.log(res.data.id);
 		reset(event);
 	}
 

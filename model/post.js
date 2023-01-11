@@ -22,7 +22,7 @@ const post = new Schema({
     },
     likeId:[{type:String}],
     commentId:[{type:String}],
-    categoryId:[{type:String}],
+    categoryId:[],
     date:{
         type:Date,
         default:Date.now
