@@ -19,7 +19,7 @@ const handler = async(req, res)=> {
 
         const id = req.body.id;
         const selectedCats = req.body.selectedCats;
-        //fetch the previous catergory id if we wan to update the category after login
+        //fetch the previous catergory id if we want to update the category after login
         User.findByIdAndUpdate(id,{categoryId:[...selectedCats]},(err,doc)=>{
             if(err){
                 res.status(400).json({message:"error occured"});

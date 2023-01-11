@@ -4,6 +4,8 @@ import ReactPlayer from "react-player";
 // import Firebase from "firebase";
 import styled from "styled-components";
 import {useSelector} from 'react-redux';
+import {convertToBase64} from '../../utils/imageTourl';
+import {category_Data,allCategory} from '../category/category_data'
 
 
 
@@ -12,24 +14,38 @@ function PostalModal(props) {
 	const [editorText, setEditorText] = useState("");
 	const [imageFile, setImageFile] = useState("");
 	const [videoFile, setVideoFile] = useState("");
+	const [urlFile, setUrlFile] = useState("");
 	const [assetArea, setAssetArea] = useState("");
+	const [showCategory,setShowCategory] = useState(false);
+	const [options,setOptions] = useState([]);
+	const [domainCat,setDomainCat] = useState(category_Data["Academics"]);
+	const [selectedCats,setselectedCats] = useState(new Set());
+	const[toggle,setToggle] = useState(0);
+	
 
 	const reset = (event) => {
 		setEditorText("");
 		setImageFile("");
 		setVideoFile("");
 		setAssetArea("");
-		props.clickHandler(event);
+		setShowCategory(false);
+		props.clickHandler(event); 
 	};
 
-	function handleImage(event) {
+	async function handleImage(event) {
 		let image = event.target.files[0];
 
 		if (image === "" || image === undefined) {
 			alert(`Not an image. This file is: ${typeof imageFile}`);
 			return;
 		}
-		setImageFile(image);
+		if(image.type.substring(0,5)==="image"){
+			const base64= await convertToBase64(image);
+			setImageFile(base64);
+		}else{
+			 const base64= await convertToBase64(image);
+			setVideoFile(base64);
+		}
 	}
 
 	function switchAssetArea(area) {
@@ -38,27 +54,74 @@ function PostalModal(props) {
 		setAssetArea(area);
 	}
 
-	function postArticle(event) {
+	const HandleMainCategory = ()=>{
+		let arr=[];
+		for(let x in category_Data){
+			arr.push(x);
+		}
+		return(
+			<>	
+				{arr.map((data,idx)=>(
+					<button key={idx} style={{backgroundColor:toggle===idx?"green":"white"}} onClick={()=>{setDomainCat(category_Data[data]),setToggle(idx)}}>{data}</button>
+				))}
+			</>
+		)
+	}
+	const HandleSubCategories = ()=>{
+		 return(
+			<>	
+				{domainCat.map((data,idx)=>(
+					<button key={idx} style={{backgroundColor:selectedCats.has(data.toLowerCase())?"blue":"white"}}onClick={()=>handleCatClick(data)}>{data}</button>
+				))}
+			</>
+		)
+	}
+	const handleCatClick = (data)=>{
+		setselectedCats(previousState => new Set([...previousState, data.toLowerCase()]));
+	}
+
+	const handleSearch = (e)=>{
+		const  text = e.target.value.toLowerCase();
+		if(text.length===0){
+			setOptions([]); 
+			return;
+		}
+		let arr=[];
+		allCategory.map((data)=>{
+		let str = data.toLowerCase();
+		if(str.search(text)!==-1){
+			arr.push(str);
+		}})
+		setOptions(arr); 
+		console.log(options)
+	}
+
+	function handleNext(){
+		setShowCategory(true);
+	}
+	async function postArticle(event) {
 		event.preventDefault();
 		if (event.target !== event.currentTarget) {
 			return;
 		}
-
+		 
 		const payload = {
 			image: imageFile,
 			video: videoFile,
+			url:urlFile,
 			description: editorText,
-			user: props.user,
-			timestamp: Firebase.firestore.Timestamp.now(),
+			user: user._id,
+			categoryIds:selectedCats,
+			// timestamp: Firebase.firestore.Timestamp.now(),
 		};
-
-		// props.postArticle(payload);
+		console.log(payload);
 		reset(event);
 	}
 
 	return (
 		<>
-			{props.showModal === "open" && (
+			{props.showModal === "open" && showCategory===false && (
+				 
 				<Container>
 					<Content>
 						<Header>
@@ -78,11 +141,12 @@ function PostalModal(props) {
 
 								{assetArea === "image" ? (
 									<UploadImage>
-										<input type="file" accept="image/gif, image/jpeg, image/png" name="image" id="imageFile" onChange={handleImage} style={{ display: "none" }} />
+										<input type="file" accept="image/gif, image/jpeg, image/png,video/*" name="image" id="imageFile" onChange={handleImage} style={{ display: "none" }} />
 										<p>
-											<label htmlFor="imageFile">Select an image to share</label>
+											<label htmlFor="imageFile">Select an image/video to share</label>
 										</p>
-										{imageFile && <img src={URL.createObjectURL(imageFile)} alt="" />}
+										{imageFile && <img src={ imageFile} alt="" />}
+										{videoFile && <ReactPlayer width={"100%"} url={videoFile} />}
 									</UploadImage>
 								) : (
 									assetArea === "video" && (
@@ -91,11 +155,11 @@ function PostalModal(props) {
 												type="text"
 												name="video"
 												id="videoFile"
-												value={videoFile}
-												placeholder="Enter the video link"
-												onChange={(event) => setVideoFile(event.target.value)}
+												value={urlFile}
+												placeholder="Enter the url link to share"
+												onChange={(event) => setUrlFile(event.target.value)}
 											/>
-											{videoFile && <ReactPlayer width={"100%"} url={videoFile} />}
+											{urlFile && <ReactPlayer width={"100%"} url={urlFile} />}
 										</>
 									)
 								)}
@@ -111,18 +175,50 @@ function PostalModal(props) {
 									<img src="/images/share-video.svg" alt="" />
 								</AssetButton>
 							</AttachAsset>
-							<ShareComment>
-								<AssetButton>
-									<img src="/images/share-comment.svg" alt="" />
-									<span>Anyone</span>
-								</AssetButton>
-							</ShareComment>
-							<PostButton  disabled={!editorText ? true : false} onClick={(event) => postArticle(event)}>
-								Post
+							<PostButton  disabled={!editorText ? true : false} onClick={(event) => handleNext()}>
+								next
 							</PostButton>
 						</ShareCreation>
 					</Content>
-				</Container>
+				</Container>	
+			)}
+			{props.showModal === "open" && showCategory===true && (
+				<Container>
+				<Content>
+					<Header>
+						<h2>Plz choose category related to post </h2>
+						<button onClick={(event) => reset(event)}>
+							<img src="/images/close-icon.svg" alt="" />
+						</button>
+					</Header>
+
+					<CategorySection>
+						<input type='text'placeholder="Search your category" onChange={(e)=>handleSearch(e)}/>
+						
+						{options.length>=1 && 
+						<Option>{
+							options.map((data,idx)=>(
+								<>
+									<button key={idx} style={{backgroundColor:selectedCats.has(data)?"blue":"white"}}onClick={()=>handleCatClick(data)}>{data}</button>
+								</>
+							))	
+						}
+						</Option>}
+						<Categories>
+							  <HandleMainCategory/>
+						</Categories>
+						<SubCategory>
+							 <HandleSubCategories/>
+						</SubCategory>
+					</CategorySection>
+
+					<ShareCreation>
+						<PostButton  disabled={!editorText ? true : false} onClick={(event) => postArticle(event)}>
+							next
+						</PostButton>
+					</ShareCreation>
+				</Content>
+			</Container>	
 			)}
 		</>
 	);
@@ -132,6 +228,83 @@ export default PostalModal;
 
 
 //----------------------------------CSS-----------------------------
+const CategorySection = styled.div`
+	position:relative;
+	height:80vh;
+	width:100%;
+	border:1px solid grey;
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+	input{
+		padding-left:20px;
+		margin-top:10px;
+		height:10%;
+		width:70%;
+		border-radius:30px;
+		border:0.3px solid grey;
+	}
+`;
+const Option = styled.div`
+		top:14%;
+		z-index:3;
+		background-color:white;
+		position:absolute;
+		height:fit-content;
+		width:90%;
+		border:1px solid red;
+		display:flex;
+		flex-wrap:wrap;
+		button{
+			height:12%;
+			width:fit-content;
+			min-width:15%;
+			padding:2px;
+			background:#e6e5e5;
+			margin:10px;
+		}
+
+`;
+const Categories = styled.div`
+	margin-top:10px;
+	height:15%;
+	width:90%;
+	border:1px solid grey;
+	display:flex;
+	align-items:center;
+	overflow:scroll;
+	::-webkit-scrollbar {
+		width: 0px;
+		height:0px;
+		background: transparent;
+	}
+	button{
+		height:70%;
+		padding:10px;
+		border-radius:10px;
+		margin:0px 5px;
+		background:transparent;
+		cursor:pointer;
+		border:1px solid grey
+	}
+`;
+const SubCategory = styled.div`
+	height:80%;
+	width:100%;
+	border:1px solid red;
+	display:flex;
+	justify-content:space-evenly;
+	flex-wrap:wrap;
+	
+	button{
+		height:12%;
+		width:fit-content;
+		min-width:15%;
+		padding:2px;
+		background:#e6e5e5;
+		margin:10px;
+	}
+`;
 const Container = styled.div`
 	position: fixed;
 	top: 0;

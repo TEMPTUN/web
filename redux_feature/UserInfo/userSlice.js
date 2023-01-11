@@ -20,6 +20,9 @@ export const UserSlice = createSlice({
           ...state,
           categoryId:action.payload,
         }
+      },
+      reset:(state,action)=>{
+        return initialState;
       }
   },
 })

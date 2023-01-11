@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import {useSelector,useDispatch } from 'react-redux';
 import {CreateId} from '../redux_feature/UserInfo/userSlice' 
 import { useEffect } from 'react';
+import {convertToBase64} from '../utils/imageTourl'
 
 const signup = ()=> {
     const router = useRouter();
@@ -17,8 +18,6 @@ const signup = ()=> {
     const onSubmit = async(data) => {
       const base64 = await convertToBase64(data.profilePic[0]);
       data.profilePic = base64;
-      console.log(base64);
-      console.log(data);
       try {
         const res= await axios.post(`${base_url}/api/details/user`,data);
         localStorage.setItem("userId", res.data.id); 
@@ -87,19 +86,5 @@ const signup = ()=> {
   )
 }
 
-export default signup
+export default signup;
 
-function convertToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-
-    fileReader.onload = () => {
-      resolve(fileReader.result);
-    };
-
-    fileReader.onerror = (error) => {
-      reject(error);
-    };
-  });
-}

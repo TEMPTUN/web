@@ -71,5 +71,12 @@ export const category_Data ={
     ],
     "Non-Technical":[
         "Aptitude",
+    ],
+    "Cultural":[
+        "Music",
+        "Dance",
+        "Art&Craft",
+        "Drama",
+        "Drawing",
     ]
 }
