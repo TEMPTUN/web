@@ -28,6 +28,7 @@ function PostalModal(props) {
 		setImageFile("");
 		setVideoFile("");
 		setAssetArea("");
+		setselectedCats(new Set());
 		setShowCategory(false);
 		props.clickHandler(event); 
 	};
@@ -112,7 +113,6 @@ function PostalModal(props) {
 			description: editorText,
 			user: user._id,
 			categoryIds:selectedCats,
-			// timestamp: Firebase.firestore.Timestamp.now(),
 		};
 		console.log(payload);
 		reset(event);
