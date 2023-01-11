@@ -20,6 +20,7 @@ const user = new Schema({
         type:String,
     },
     friendId:[{type:String}],
+    PostId:[{type:String}],
     date:{
         type:Date,
         default:Date.now
