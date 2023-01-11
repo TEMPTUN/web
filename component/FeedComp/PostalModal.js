@@ -114,9 +114,8 @@ function PostalModal(props) {
 			user: user._id,
 			categoryIds:Array.from(selectedCats),
 		};
-		console.log(payload);
-		const res = await axios.post(`${base_url}/api/details/userpost`,payload)
-		console.log(res.data.id);
+		const res = await axios.post(`${base_url}/api/details/userpost`,payload);
+		const r = await axios.put(`${base_url}/api/details/user`,{id:user._id,postId:res.data});
 		reset(event);
 	}
 
