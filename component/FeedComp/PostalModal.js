@@ -44,7 +44,7 @@ function PostalModal(props) {
 			const base64= await convertToBase64(image);
 			setImageFile(base64);
 		}else{
-			 const base64= await convertToBase64(image);
+			 const base64= await convertToBase64(image); //video
 			setVideoFile(base64);
 		}
 	}
