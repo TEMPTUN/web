@@ -11,7 +11,6 @@ import {convertToBase64} from '../utils/imageTourl'
 const signup = ()=> {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
-    const [image, setimage] = useState({ profilePic:"" });
     const Userid = useSelector((state)=>state.user._id);
     const dispatch = useDispatch();
 

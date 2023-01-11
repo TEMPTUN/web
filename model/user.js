@@ -12,7 +12,7 @@ const user = new Schema({
     password:{
         type:String
     },
-    categoryId:[{ type:String }],
+    categoryId:[],
     image:{
         type:String,
     },
