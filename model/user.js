@@ -19,8 +19,8 @@ const user = new Schema({
     bio:{
         type:String,
     },
-    friendId:[{type:String}],
-    PostId:[{type:String}],
+    friendId:[{type:String,default:[]}],
+    PostId:[{type:String,default:[]}],
     date:{
         type:Date,
         default:Date.now
