@@ -1,5 +1,5 @@
 import User from "../../../model/user";
-import connectmongo from "../../../utils/connect";
+import connectmongo from "../../../utils/connectmongo";
 
 const handler = async(req, res)=> {
     if(req.method === 'GET'){

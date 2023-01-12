@@ -4,11 +4,7 @@ const post = new Schema({
     userId:{
         type:String,
     },
-    image:{
-        type:String,
-        default:null
-    },
-    video:{
+    media:{
         type:String,
         default:null
     },

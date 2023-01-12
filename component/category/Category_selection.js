@@ -45,9 +45,9 @@ function Category_selection() {
     const Id=localStorage.getItem("userId");
     const url =`${base_url}/api/details/user`;
     try{
-      const res=await axios.put(url,{
-                      selectedCats:selected,
-                      id:Id });
+      const res=await axios.put(url,{selectedCats:selected,id:Id });
+      const r = await axios.post(`${base_url}/api/categorys/updateCategories`,{category:selected,userId:Id});
+      console.log(r);
       dispatch(updateCategory(selected))
       router.push("/feed");
     }catch(err){
@@ -74,9 +74,9 @@ function Category_selection() {
         <div className={styles.box} style={{marginBottom:"10px"}}>  
 
           {selected.map((user ,idx) => (
-             <div className={styles.option}>
-             <span   key={`${idx}+${user}`} onClick={(e)=>handleClick(e,user)}>{user}</span>
-             <span  key={`${idx}+${user}+x`}  style={{marginLeft:"10px"}} onClick={(e)=>handleDelete(e,user)}>X</span>
+             <div className={styles.option}  key={`${idx}+${user}`}>
+             <span   onClick={(e)=>handleClick(e,user)}>{user}</span>
+             <span  style={{marginLeft:"10px"}} onClick={(e)=>handleDelete(e,user)}>X</span>
            </div>
           ))}
         </div>
@@ -85,7 +85,6 @@ function Category_selection() {
 
         {options.map((user ,idx) => (
          <div className={styles.option}  key={`${idx}+${user}`} onClick={(e)=>handleClick(e,user)}>{user}</div>
-         
         ))}
         </div>
         <button onClick={(e)=>handleSubmit(e)}>submit</button>

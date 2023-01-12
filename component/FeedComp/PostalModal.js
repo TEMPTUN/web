@@ -1,21 +1,22 @@
 import { useState } from "react";
 import ReactPlayer from "react-player";
-// import { connect } from "react-redux";
 import base_url from '../../utils/connection'
 import styled from "styled-components";
 import {useSelector} from 'react-redux';
-import {convertToBase64} from '../../utils/imageTourl';
 import {category_Data,allCategory} from '../category/category_data';
+import 'firebase/firestore';
+import {storage} from '../../utils/fireconnect';
+import {getDownloadURL, ref,uploadBytesResumable} from 'firebase/storage';
 import axios from "axios";
 
 
 
 function PostalModal(props) {
+
     const user = useSelector((state)=>state.user);
 	const [editorText, setEditorText] = useState("");
-	const [imageFile, setImageFile] = useState("");
-	const [videoFile, setVideoFile] = useState("");
 	const [urlFile, setUrlFile] = useState("");
+	const [mediaFile,setMediaFile] = useState("");
 	const [assetArea, setAssetArea] = useState("");
 	const [showCategory,setShowCategory] = useState(false);
 	const [options,setOptions] = useState([]);
@@ -26,33 +27,46 @@ function PostalModal(props) {
 
 	const reset = (event) => {
 		setEditorText("");
-		setImageFile("");
-		setVideoFile("");
+		setUrlFile("");
+		setMediaFile("");
 		setAssetArea("");
 		setselectedCats(new Set());
 		setShowCategory(false);
 		props.clickHandler(event); 
 	};
 
-	async function handleImage(event) {
-		let image = event.target.files[0];
+	const upf = (file) => {
+        const storageRef = ref(storage,`files/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef,file);
+        uploadTask.on('state_changed', (snapshot) =>{
+			const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			console.log('Upload is ' + progress + '% done');
+			switch (snapshot.state) {
+				case 'paused':
+					console.log('Upload is paused');
+					break;
+				case 'running':
+					console.log('Upload is running');
+					break;
+				default:
+					console.log("default");
+			}
+        },(error)=>{
+            console.log(error);
+        },()=>{
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
+                setMediaFile(downloadURL);
+				console.log("url file set");
+            })
+        })
+	}
 
-		if (image === "" || image === undefined) {
-			alert(`Not an image. This file is: ${typeof imageFile}`);
-			return;
-		}
-		if(image.type.substring(0,5)==="image"){
-			const base64= await convertToBase64(image);
-			setImageFile(base64);
-		}else{
-			 const base64= await convertToBase64(image); //video
-			setVideoFile(base64);
-		}
+	async function handleFile(event) {
+		let file = event.target.files[0];
+		upf(file);
 	}
 
 	function switchAssetArea(area) {
-		setImageFile("");
-		setVideoFile("");
 		setAssetArea(area);
 	}
 
@@ -101,22 +115,23 @@ function PostalModal(props) {
 	function handleNext(){
 		setShowCategory(true);
 	}
+
 	async function postArticle(event) {
 		event.preventDefault();
 		if (event.target !== event.currentTarget) {
 			return;
 		}
 		const payload = {
-			image: imageFile,
-			video: videoFile,
 			url:urlFile,
+			media:mediaFile,
 			description: editorText,
-			user: user._id,
+			userId: user._id,
 			categoryIds:Array.from(selectedCats),
 		};
-		const res = await axios.post(`${base_url}/api/details/userpost`,payload);
-		const r = await axios.put(`${base_url}/api/details/user`,{id:user._id,postId:res.data});
-		
+		const r = await axios.post(`${base_url}/api/details/userpost`,payload);
+		const res = await axios.put(`${base_url}/api/details/user`,{id:user._id,postIds:r.data});
+		await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.categoryIds,postId:r.data});
+		console.log(res);
 		reset(event);
 	}
 
@@ -140,45 +155,50 @@ function PostalModal(props) {
 							</UserInfo>
 							<Editor>
 								<textarea value={editorText} onChange={(event) => setEditorText(event.target.value)} placeholder="What do you want to talk about?" autoFocus={true} />
-
-								{assetArea === "image" ? (
-									<UploadImage>
-										<input type="file" accept="image/gif, image/jpeg, image/png,video/*" name="image" id="imageFile" onChange={handleImage} style={{ display: "none" }} />
-										<p>
-											<label htmlFor="imageFile">Select an image/video to share</label>
-										</p>
-										{imageFile && <img src={ imageFile} alt="" />}
-										{videoFile && <ReactPlayer width={"100%"} url={videoFile} />}
-									</UploadImage>
-								) : (
-									assetArea === "video" && (
-										<>
-											<input
-												type="text"
-												name="video"
-												id="videoFile"
-												value={urlFile}
-												placeholder="Enter the url link to share"
-												onChange={(event) => setUrlFile(event.target.value)}
-											/>
-											{urlFile && <ReactPlayer width={"100%"} url={urlFile} />}
-										</>
-									)
-								)}
+								<UploadImage>
+									{
+										assetArea==="media" && (
+											<>
+												<input type="file" accept="image/gif, image/jpeg, image/png,video/*" name="image" id="imageFile" onChange={handleFile} style={{ display: "none" }} />
+												<p>
+													<label htmlFor="imageFile">Select an image/video to share</label>
+												</p>
+												{console.log(mediaFile)}
+												{ReactPlayer.canPlay(mediaFile)===false && <img src={ mediaFile} alt="" />}
+												{ReactPlayer.canPlay(mediaFile) && <ReactPlayer onClick={()=>{console.log("video")}} playing={true} controls={true} width={"100%"} url={mediaFile} />}
+											</>
+										)
+									}
+									{
+										assetArea === "url" && (
+											<>
+												<input
+													type="text"
+													name="video"
+													id="videoFile"
+													value={urlFile}
+													placeholder="Enter the video link"
+													onChange={(event) => setUrlFile(event.target.value)}
+												/>
+												{urlFile && <ReactPlayer playing={true} controls={true} width={"100%"} url={urlFile} />}
+											</>
+										)
+									}					
+								</UploadImage>
 							</Editor>
 						</SharedContent>
 
 						<ShareCreation>
 							<AttachAsset>
-								<AssetButton onClick={() => switchAssetArea("image")}>
+								<AssetButton onClick={() => switchAssetArea("media")}>
 									<img src="/images/share-image.svg" alt="" />
 								</AssetButton>
-								<AssetButton onClick={() => switchAssetArea("video")}>
+								<AssetButton onClick={() => switchAssetArea("url")}>
 									<img src="/images/share-video.svg" alt="" />
 								</AssetButton>
 							</AttachAsset>
-							<PostButton  disabled={!editorText ? true : false} onClick={(event) => handleNext()}>
-								next
+							<PostButton  disabled={!editorText? true : false} onClick={(event) => handleNext()}>
+								Next
 							</PostButton>
 						</ShareCreation>
 					</Content>
@@ -215,8 +235,8 @@ function PostalModal(props) {
 					</CategorySection>
 
 					<ShareCreation>
-						<PostButton  disabled={!editorText ? true : false} onClick={(event) => postArticle(event)}>
-							next
+						<PostButton  disabled={selectedCats.length>0? true : false}  onClick={(event) => postArticle(event)}>
+							Post
 						</PostButton>
 					</ShareCreation>
 				</Content>

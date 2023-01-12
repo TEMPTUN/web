@@ -3,17 +3,18 @@ import Category from '../../../model/category';
 const handler = async(req,res)=>{
     if(req.method==='POST'){
         let {postId,category,userId} = req.body;
-        category.map((cat,idx)=>{
+        console.log(req.body);
+        category.map((cat)=>{
             const ct = cat.toLowerCase();
-            postId = postId===undefined?[]:postId;
+            const pId = postId===undefined?[]:postId._id;
             userId = userId===undefined?[]:userId;
-
-            const resp=Category.findOneAndUpdate({name:ct},{$push:{"postIds":postId},$push:{"userId":userId}},(err,doc)=>{
+            console.log(pId);
+            Category.findOneAndUpdate({name:ct},{$push:{"userId":userId,"postIds":pId}},(err,doc)=>{
                 if(err){
-                    console.log(err)
+                    console.log("---------categoryAPI------------");
+                    console.log(err);
                 }
             });
-            console.log(resp);
         }) 
         res.status(200).json({message:"success"}); 
     }

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from 'react'
 import { useEffect } from 'react';
 import {useDispatch } from 'react-redux';
-import base_url from '../utils/connection'
+import base_url from './connection'
 import {CreateId} from '../redux_feature/UserInfo/userSlice' 
  
 
