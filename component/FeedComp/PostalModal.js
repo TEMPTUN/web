@@ -12,9 +12,11 @@ import axios from "axios";
 
 
 function PostalModal(props) {
+
     const user = useSelector((state)=>state.user);
 	const [editorText, setEditorText] = useState("");
 	const [urlFile, setUrlFile] = useState("");
+	const [mediaFile,setMediaFile] = useState("");
 	const [assetArea, setAssetArea] = useState("");
 	const [showCategory,setShowCategory] = useState(false);
 	const [options,setOptions] = useState([]);
@@ -26,6 +28,7 @@ function PostalModal(props) {
 	const reset = (event) => {
 		setEditorText("");
 		setUrlFile("");
+		setMediaFile("");
 		setAssetArea("");
 		setselectedCats(new Set());
 		setShowCategory(false);
@@ -52,7 +55,7 @@ function PostalModal(props) {
             console.log(error);
         },()=>{
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=>{
-                setUrlFile(downloadURL);
+                setMediaFile(downloadURL);
 				console.log("url file set");
             })
         })
@@ -64,7 +67,6 @@ function PostalModal(props) {
 	}
 
 	function switchAssetArea(area) {
-		setUrlFile("");
 		setAssetArea(area);
 	}
 
@@ -113,6 +115,7 @@ function PostalModal(props) {
 	function handleNext(){
 		setShowCategory(true);
 	}
+
 	async function postArticle(event) {
 		event.preventDefault();
 		if (event.target !== event.currentTarget) {
@@ -120,13 +123,14 @@ function PostalModal(props) {
 		}
 		const payload = {
 			url:urlFile,
+			media:mediaFile,
 			description: editorText,
-			user: user._id,
+			userId: user._id,
 			categoryIds:Array.from(selectedCats),
 		};
-
-		const res = await axios.post(`${base_url}/api/details/userpost`,payload);
-		console.log(res.data);
+		const r = await axios.post(`${base_url}/api/details/userpost`,payload);
+		const res = await axios.put(`${base_url}/api/details/user`,{id:user._id,postIds:r.data});
+		console.log(res);
 		reset(event);
 	}
 
@@ -151,25 +155,48 @@ function PostalModal(props) {
 							<Editor>
 								<textarea value={editorText} onChange={(event) => setEditorText(event.target.value)} placeholder="What do you want to talk about?" autoFocus={true} />
 								<UploadImage>
-									<input type="file" accept="image/gif, image/jpeg, image/png,video/*" name="image" id="imageFile" onChange={handleFile} style={{ display: "none" }} />
-									<p>
-										<label htmlFor="imageFile">Select an image/video to share</label>
-									</p>
-									{urlFile && <img src={ urlFile} alt="" />}
+									{
+										assetArea==="media" && (
+											<>
+												<input type="file" accept="image/gif, image/jpeg, image/png,video/*" name="image" id="imageFile" onChange={handleFile} style={{ display: "none" }} />
+												<p>
+													<label htmlFor="imageFile">Select an image/video to share</label>
+												</p>
+												{console.log(mediaFile)}
+												{ReactPlayer.canPlay(mediaFile)===false && <img src={ mediaFile} alt="" />}
+												{ReactPlayer.canPlay(mediaFile) && <ReactPlayer onClick={()=>{console.log("video")}} playing={true} controls={true} width={"100%"} url={mediaFile} />}
+											</>
+										)
+									}
+									{
+										assetArea === "url" && (
+											<>
+												<input
+													type="text"
+													name="video"
+													id="videoFile"
+													value={urlFile}
+													placeholder="Enter the video link"
+													onChange={(event) => setUrlFile(event.target.value)}
+												/>
+												{urlFile && <ReactPlayer playing={true} controls={true} width={"100%"} url={urlFile} />}
+											</>
+										)
+									}					
 								</UploadImage>
 							</Editor>
 						</SharedContent>
 
 						<ShareCreation>
 							<AttachAsset>
-								<AssetButton onClick={() => switchAssetArea("image")}>
+								<AssetButton onClick={() => switchAssetArea("media")}>
 									<img src="/images/share-image.svg" alt="" />
 								</AssetButton>
-								<AssetButton onClick={() => switchAssetArea("video")}>
+								<AssetButton onClick={() => switchAssetArea("url")}>
 									<img src="/images/share-video.svg" alt="" />
 								</AssetButton>
 							</AttachAsset>
-							<PostButton  disabled={urlFile && !editorText? true : false} onClick={(event) => handleNext()}>
+							<PostButton  disabled={!editorText? true : false} onClick={(event) => handleNext()}>
 								Next
 							</PostButton>
 						</ShareCreation>
@@ -207,8 +234,8 @@ function PostalModal(props) {
 					</CategorySection>
 
 					<ShareCreation>
-						<PostButton  disabled={!editorText ? true : false} onClick={(event) => postArticle(event)}>
-							next
+						<PostButton  disabled={selectedCats.length>0? true : false}  onClick={(event) => postArticle(event)}>
+							Post
 						</PostButton>
 					</ShareCreation>
 				</Content>

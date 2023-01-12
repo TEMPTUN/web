@@ -22,18 +22,18 @@ const handler = async(req, res)=> {
             const id = req.body.id;
             const selectedCats = req.body.selectedCats===undefined?[]:req.body.selectedCats;
             const postIds =  req.body.postIds===undefined?[]:req.body.postIds._id;
-            User.findByIdAndUpdate(id,{
-                        $push:{"categoryId": {$each:selectedCats}},
-                        $push:{"PostId": postIds}
+            const r = User.findByIdAndUpdate(id,{
+                    $addToSet:{"categoryId":{$each:selectedCats}},
+                    $push:{"PostId": postIds}
                     },(err,doc)=>{
                 if(err){
-                    res.status(400).json({message:"mongo error not updated"});
+                    res.status(400).json({message:"mongo error occured"});
                 }
             })
-            res.status(200).json({message:"successfully updated"});
-        }catch{
-            res.status(400).json({message:"error occured"});
-        }
+                res.status(200).json({message:"success"});
+            }catch{
+                res.status(400).json({message:"error"});
+            }
     }else if(req.method==='GET'){
         try{
             const id = req.query.id;
