@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import {useSelector,useDispatch } from 'react-redux';
 import {CreateId} from '../redux_feature/UserInfo/userSlice' 
 import { useEffect } from 'react';
-import {convertToBase64} from '../utils/imageTourl'
+import {convertToBase64} from '../utils/base64'
 
 const signup = ()=> {
     const router = useRouter();
@@ -37,7 +37,7 @@ const signup = ()=> {
   return (
     <div>
         
-       <form onSubmit={handleSubmit(onSubmit)} enctype="multipart/form-data">
+       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <div>
             <label htmlFor='fileUpload' style={{backgroundColor:"pink"}}> Select Profile</label>
             <input type="file" id="fileUpload" accept="image/*" hidden {...register("profilePic",{required: true})}/>
