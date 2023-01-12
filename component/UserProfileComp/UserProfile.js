@@ -1,16 +1,25 @@
 import React from 'react'
 import style from './profile.module.scss'
-const Prrofile = () => {
-    let user ={
-        name:"chirag Jain",
-        email:"cj@gmail.com",
-        bio:"hii heelloo beeep",
+import {useSelector} from 'react-redux';
+import { useRouter } from 'next/router';
+
+const UserProfile = () => {
+
+    const router = useRouter();
+    const user = useSelector((state)=>state.user);
+    // console.log(user)
+    const handleLogout = ()=>{
+        localStorage.removeItem("userId");
+        router.push("/signin");
     }
+    
   return (
     <div>
         <div className={style.upperCont}>
             <div className={style.my_info}> 
-                <div className={style.img}></div>
+                <div className={style.img}>
+                    <img src={user.image}></img>
+                </div>
                 <div className={style.name}>{user.name}</div>
                 <div className={style.email}>{user.email}</div>
                 <div className={style.bio}>{user.bio}</div>
@@ -31,6 +40,9 @@ const Prrofile = () => {
                             <span>18</span>
                         </div>
                     </div>
+                    <div className={style.section}>
+                         <button onClick={(e)=>handleLogout(e)}>logout</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -41,4 +53,4 @@ const Prrofile = () => {
   )
 }
 
-export default Prrofile
+export default UserProfile

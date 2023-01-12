@@ -15,16 +15,19 @@ export const UserSlice = createSlice({
       CreateId:(state,action)=>{
         return action.payload;
       },
-      updateId:(state,action)=>{
+      updateCategory:(state,action)=>{
         return{
           ...state,
-          
+          categoryId:action.payload,
         }
+      },
+      reset:(state,action)=>{
+        return initialState;
       }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { CreateId} = UserSlice.actions
+export const {CreateId,updateCategory} = UserSlice.actions
 
 export default UserSlice.reducer

@@ -12,13 +12,15 @@ const user = new Schema({
     password:{
         type:String
     },
-    categoryId:[{ type:String }],
-    profilePic:{
-        type:String, 
+    categoryId:[],
+    image:{
+        type:String,
     },
     bio:{
         type:String,
     },
+    friendId:[{type:String,default:[]}],
+    PostId:[{type:String,default:[]}],
     date:{
         type:Date,
         default:Date.now

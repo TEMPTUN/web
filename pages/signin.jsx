@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useForm } from 'react-hook-form';
 import base_url from '../utils/connection'
 import { useDispatch } from 'react-redux';
-import {updateId} from '../redux_feature/UserInfo/userSlice'
+import {CreateId} from '../redux_feature/UserInfo/userSlice'
 import { useSelector } from "react-redux";
 
 
@@ -23,7 +23,7 @@ const signin = () => {
             dispatch(CreateId(res.data.result));
             router.push("/feed");
           }else{
-            alert(result.data.message);
+            console.log(result.data.message);
           }
         } catch (error) {
           console.log("----------------------signinError--------------------------")

@@ -1,11 +1,11 @@
 import React from 'react'
-import Prrofile from '../component/UserProfileComp/Prrofile'
+import UserProfile from '../component/UserProfileComp/UserProfile'
 
 const profile = () => {
     
   return (
     <>
-       <Prrofile/>
+       <UserProfile/>
     </>
    
   )

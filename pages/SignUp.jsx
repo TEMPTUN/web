@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import {useSelector,useDispatch } from 'react-redux';
 import {CreateId} from '../redux_feature/UserInfo/userSlice' 
 import { useEffect } from 'react';
+import {convertToBase64} from '../utils/base64'
 
 const signup = ()=> {
     const router = useRouter();
@@ -14,9 +15,12 @@ const signup = ()=> {
     const dispatch = useDispatch();
 
     const onSubmit = async(data) => {
+      const base64 = await convertToBase64(data.profilePic[0]);
+      data.profilePic = base64;
       try {
         const res= await axios.post(`${base_url}/api/details/user`,data);
-        localStorage.setItem("userId", res.data.id);  
+        localStorage.setItem("userId", res.data.id); 
+        data._id=res.data.id; //adding over form data
         dispatch(CreateId(data));
       } catch (error) {
         console.log("------------SignupError-----------------------------");
@@ -32,8 +36,8 @@ const signup = ()=> {
     
   return (
     <div>
-    
-       <form onSubmit={handleSubmit(onSubmit)}>
+        
+       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         <div>
             <label htmlFor='fileUpload' style={{backgroundColor:"pink"}}> Select Profile</label>
             <input type="file" id="fileUpload" accept="image/*" hidden {...register("profilePic",{required: true})}/>
@@ -81,4 +85,5 @@ const signup = ()=> {
   )
 }
 
-export default signup
+export default signup;
+
