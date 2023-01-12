@@ -116,6 +116,7 @@ function PostalModal(props) {
 		};
 		const res = await axios.post(`${base_url}/api/details/userpost`,payload);
 		const r = await axios.put(`${base_url}/api/details/user`,{id:user._id,postId:res.data});
+		
 		reset(event);
 	}
 

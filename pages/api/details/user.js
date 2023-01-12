@@ -1,5 +1,6 @@
 import User from "../../../model/user";
 import connectmongo from "../../../utils/connect";
+import {Category} from '../../../model/category'
 
 const handler = async(req, res)=> {
     if(req.method === 'POST'){
@@ -15,9 +16,10 @@ const handler = async(req, res)=> {
         const result = await User.insertMany([Userdata]);
         res.status(200).json({ id:result[0]._id});
     }else if(req.method === 'PUT'){
+        
         const id = req.body.id;
         const selectedCats = req.body.selectedCats===undefined?[]:req.body.selectedCats;
-        const postIds =  req.body.postId._id;
+        const postIds =  req.body.postId===undefined?[]:req.body.postId._id;
         User.findByIdAndUpdate(id,{$push:{"categoryId": {$each:selectedCats}},$push:{"PostId": postIds}},(err,doc)=>{
             if(err){
                 res.status(400).json({message:"error occured"});

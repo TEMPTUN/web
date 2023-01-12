@@ -12,9 +12,6 @@ const handler = async(req, res)=> {
             categoryId: categoryIds,
         })
         const result = await Post.insertMany([Postdata]);
-        console.log("----------------------result of postId-------------------");
-        console.log(result[0]._id);
-    
         res.status(200).json({_id: result[0]._id});
     }
   }
