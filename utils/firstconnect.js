@@ -4,9 +4,9 @@ import { useEffect } from 'react';
 import {useDispatch } from 'react-redux';
 import base_url from './connection'
 import {CreateId} from '../redux_feature/UserInfo/userSlice' 
-import { connectedDB } from './medicine';
+ 
 
-const first = () => {
+const First = () => {
 
     const dispatch = useDispatch();
     useEffect(()=>{
@@ -22,4 +22,4 @@ const first = () => {
   return (<></>)
 }
 
-export default first
+export default First

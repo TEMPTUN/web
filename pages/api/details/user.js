@@ -20,22 +20,31 @@ const handler = async(req, res)=> {
             const selectedCats = req.body.selectedCats===undefined?[]:req.body.selectedCats;
             const postIds =  req.body.postIds===undefined?[]:req.body.postIds._id;
             const r = User.findByIdAndUpdate(id,{
-                    $addToSet:{"categoryId":{$each:selectedCats}},
-                    $push:{"PostId": postIds}
-                    },(err,doc)=>{
-                if(err){
-                    res.status(400).json({message:"mongo error occured"});
-                }
+                $push:{"categoryId":{$each:selectedCats},"PostId": postIds}},(err,doc)=>{
+                    if(err){
+                        res.status(400).json({message:"mongo error occured"});
+                    }
             })
                 res.status(200).json({message:"success"});
             }catch{
                 res.status(400).json({message:"error"});
             }
-    }else if(req.method==='GET'){
+    }else if(req.method==='GET' && req.query.other===undefined){
         const id = req.query.id;
         await connectmongo();
         const result = await User.findById(id);
         res.status(200).json({result});
+    }else if(req.method==='GET' && req.query.other==="all"){
+        try{
+            const id = req.query.id;
+            const result = await User.findById(id).select("name image");
+            res.status(200).json({result});
+        }catch(err){
+            console.log("---all user data fetch error--------------------");
+            console.log(req.query.id);
+            console.log(err);
+            res.status(400).json({message:"error"});
+        }
         
     }
   }

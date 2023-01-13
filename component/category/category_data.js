@@ -23,6 +23,7 @@ export const allCategory= [
     "Technical",
     "Cultural",
     "Educational",
+    "Fests",
     "Sports",
     "Music",
     "Drama",
@@ -49,11 +50,7 @@ export const category_Data ={
         "Technical",
         "Cultural",
         "Educational",
-        "Sports",
-        "Music",
-        "Drama",
-        "Dance",
-        "Art & Craft"
+        "Fests",
     ],
     "Exams":[
         "Gate CSE",
