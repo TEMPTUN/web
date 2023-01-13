@@ -8,11 +8,7 @@ import {useSelector} from 'react-redux';
 
 function Index(props) {
 	const [showModal, setShowModal] = useState("close");
-  const user = useSelector((state)=>state.user);
-
-	// useEffect(() => {
-	// 	props.getArticles();
-	// }, []);
+    const user = useSelector((state)=>state.user);
 
 	const clickHandler = (event) => {
 		event.preventDefault();

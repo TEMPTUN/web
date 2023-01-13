@@ -7,7 +7,7 @@ const handler = async(req, res)=> {
             const { email,password} = req.query;
             await connectmongo(); 
             const Userdata = await User.findOne({email:email,password:password});
-            res.status(200).json({ id:Userdata._id,message:"User connected Succesfully"});
+            res.status(200).json({ id:Userdata._id,success:true,message:"User connected Succesfully"});
         }
         catch{
             res.status(400).json({message:"error occured"});

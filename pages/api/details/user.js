@@ -3,7 +3,7 @@ import connectmongo from "../../../utils/mongoconnect";
 
 const handler = async(req, res)=> {
     if(req.method === 'POST'){
-        await connectmongo();
+        // await connectmongo();
         try{
             const { name,email,password,profilePic } = req.body; 
             const Userdata = new User({
