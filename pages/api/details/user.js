@@ -29,11 +29,22 @@ const handler = async(req, res)=> {
             }catch{
                 res.status(400).json({message:"error"});
             }
-    }else if(req.method==='GET'){
+    }else if(req.method==='GET' && req.query.other===undefined){
         const id = req.query.id;
         await connectmongo();
         const result = await User.findById(id);
         res.status(200).json({result});
+    }else if(req.method==='GET' && req.query.other==="all"){
+        try{
+            const id = req.query.id;
+            const result = await User.findById(id).select("name image");
+            res.status(200).json({result});
+        }catch(err){
+            console.log("---all user data fetch error--------------------");
+            console.log(req.query.id);
+            console.log(err);
+            res.status(400).json({message:"error"});
+        }
         
     }
   }

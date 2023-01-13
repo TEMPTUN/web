@@ -6,7 +6,7 @@ import base_url from './connection'
 import {CreateId} from '../redux_feature/UserInfo/userSlice' 
  
 
-const first = () => {
+const First = () => {
 
     const dispatch = useDispatch();
     useEffect(()=>{
@@ -22,4 +22,4 @@ const first = () => {
   return (<></>)
 }
 
-export default first
+export default First
