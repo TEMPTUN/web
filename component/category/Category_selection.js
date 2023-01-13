@@ -46,6 +46,8 @@ function Category_selection() {
     const url =`${base_url}/api/details/user`;
     try{
       const res=await axios.put(url,{selectedCats:selected,id:Id });
+      const r = await axios.post(`${base_url}/api/categorys/updateCategories`,{category:selected,userId:Id});
+      console.log(r);
       dispatch(updateCategory(selected))
       router.push("/feed");
     }catch(err){
