@@ -126,6 +126,8 @@ function PostalModal(props) {
 			media:mediaFile,
 			description: editorText,
 			userId: user._id,
+			name:user.name,
+			image:user.image,
 			categoryIds:Array.from(selectedCats),
 		};
 		const r = await axios.post(`${base_url}/api/details/userpost`,payload);

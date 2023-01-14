@@ -14,7 +14,7 @@ const UserProfile = () => {
     }
     
   return (
-    <div>
+    <div className={style.frame}>
         <div className={style.upperCont}>
             <div className={style.my_info}> 
                 <div className={style.img}>

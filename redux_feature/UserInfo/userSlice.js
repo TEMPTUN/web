@@ -6,6 +6,8 @@ const initialState = {
   email:null,
   bio:null,
   categoryId:null,
+  friendId:null,
+  PostId:null,
 }
 
 export const UserSlice = createSlice({
@@ -13,7 +15,16 @@ export const UserSlice = createSlice({
   initialState,
   reducers: {
       CreateId:(state,action)=>{
-        return action.payload;
+        return {
+          ...state,
+          _id: action.payload._id,
+          name: action.payload.name,
+          email: action.payload.email,
+          categoryId:action.payload.categoryId,
+          image:  action.payload.image,
+          friendId: [...action.payload.friendId,action.payload._id],
+          PostId: action.payload.PostId,
+        }
       },
       updateCategory:(state,action)=>{
         return{
