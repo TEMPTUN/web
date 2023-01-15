@@ -2,7 +2,7 @@ import axios, { all } from 'axios';
 import React, { useEffect,useState } from 'react'
 import { useSelector } from 'react-redux';
 import base_url from '../../utils/connection';
-import style from './Collab.module.scss';
+import style from './Explore.module.scss';
 
 const Index = () => {
     

@@ -9,7 +9,8 @@ const UserProfile = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const user = useSelector((state)=>state.user);
-    const[openBar,setOpenBar] = useState(true);
+    const[openBar,setOpenBar] = useState(false);
+    const[content,setContent] = useState("about");
 
     const handleLogout = ()=>{
         localStorage.removeItem("userId");
@@ -35,40 +36,56 @@ const UserProfile = () => {
            </div>
             <div className={style.social}>
                 <div className={style.section}>
-                    <div>{user.PostId.length}</div>
+                    <p>{user.PostId.length}</p>
                     <span>Posts</span>
                 </div>
                 <div className={style.section}>
-                    <div>{90}</div>
+                    <p>{90}</p>
                     <span>Follower</span>
                 </div>
                 <div className={style.section}>
-                    <div>{user.friendId.length}</div>
+                    <p>{user.friendId.length}</p>
                     <span>Following</span>
                 </div>
                 
             </div>
-        </div>
-        <div className={style.LowerCont}>
-            <div className={style.postCont}>
-
-            </div>
-            <div className={style.postCont}>
-
-            </div>
-            <div className={style.postCont}>
-
-            </div>
-            <div className={style.postCont}>
-
-            </div>
-            <div className={style.postCont}>
-
-            </div>
-            <div className={style.postCont}>
-
+            <div className={style.toggle}>
+                <button style={{background:content==='about'?"rgba(79, 79, 79, 0.1)":"none"}} onClick={()=>setContent("about")}>About</button>
+                <span style={{color:"#FF955B"}}>|</span>
+                <button style={{background:content==='posts'?"rgba(79, 79, 79, 0.1)":"none"}} onClick={()=>setContent("posts")}>Posts</button>
             </div>
         </div>
+        {
+            content==="posts" && (
+                <div className={style.LowerCont}>
+                    <div className={style.postCont}>
+        
+                    </div>
+                    <div className={style.postCont}>
+        
+                    </div>
+                    <div className={style.postCont}>
+        
+                    </div>
+                    <div className={style.postCont}>
+        
+                    </div>
+                    <div className={style.postCont}>
+        
+                    </div>
+                    <div className={style.postCont}>
+        
+                    </div>
+                </div>
+            )
+        }
+        {
+            content==='about'&&(
+            <div>
+                about
+            </div>)
+        }
+       
     </div>
   )
 }

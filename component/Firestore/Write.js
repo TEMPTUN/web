@@ -8,7 +8,6 @@ import {getDownloadURL, ref,uploadBytesResumable} from 'firebase/storage';
 
 
 export const upf = (file) => {
-        alert("ijijjj")
         console.log(file);
         const storageRef = ref(storage,`files/${file.name}`);
         const uploadTask = uploadBytesResumable(storageRef,file);
