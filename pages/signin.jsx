@@ -6,6 +6,9 @@ import base_url from '../utils/connection'
 import { useDispatch } from 'react-redux';
 import {CreateId} from '../redux_feature/UserInfo/userSlice'
 import { useSelector } from "react-redux";
+import jwtDecode from "jwt-decode"
+import styles from "../styles/signin.module.css"
+import { GoogleLogin,googleLogout } from '@react-oauth/google';
 
 
 const signin = () => {
@@ -31,28 +34,47 @@ const signin = () => {
         }
       }
 
+      const CreateorGetUser = async (res) => {
+        const decode=jwtDecode(res.credential);
+        const { name, email, picture } = decode;
+        const user = {
+            name:name,
+            email:email,
+            image:picture
+        }
+        const result=await axios.post(`${base_url}/api/auth/gauth`,user);
+        localStorage.setItem("userId", result.data.id); 
+        user._id=result.data.id;
+        dispatch(CreateId(user));
+    }
+
       useEffect(()=>{
         if(Userid!==null){
           router.push("/feed");
         }
       },[Userid])
-    return (
-        <>
-            <h1>Sign In</h1>
 
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label>
-                    Email:
-                    <input type="email" name="email" {...register("email",{required: true})}/>
-                </label>
-                <label>
-                    Password:
-                    <input type="password" name="password" {...register("password",{required: true,minLength: 6})}/>
-                </label>
-                <button type="submit">Sign In</button>
-            </form>
-        </>
-    )
+    return (
+        <div>
+           <h1>Sign In</h1>
+          <form onSubmit={handleSubmit(onSubmit)}>
+              <label>
+                  Email:
+                  <input type="email" name="email" {...register("email",{required: true})}/>
+              </label>
+              <label>
+                  Password:
+                  <input type="password" name="password" {...register("password",{required: true,minLength: 6})}/>
+              </label>
+              <button type="submit">Sign In</button>
+          </form>
+        </div>
+      )
     };
 
 export default signin;
+
+
+
+
+
