@@ -7,11 +7,14 @@ import {useSelector,useDispatch } from 'react-redux';
 import {CreateId} from '../redux_feature/UserInfo/userSlice' 
 import { useEffect } from 'react';
 import {convertToBase64} from '../utils/base64'
+import jwtDecode from "jwt-decode"
+import { GoogleLogin,googleLogout } from '@react-oauth/google';
 
 const signup = ()=> {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
     const Userid = useSelector((state)=>state.user._id);
+    const User = useSelector((state)=>state.user);
     const dispatch = useDispatch();
 
     const onSubmit = async(data) => {
@@ -27,6 +30,20 @@ const signup = ()=> {
         console.log(error);
       }
     }
+
+    const CreateorGetUser = async (res) => {
+      const decode=jwtDecode(res.credential);
+      const { name, email, picture } = decode;
+      const user = {
+          name:name,
+          email:email,
+          image:picture
+      }
+      const result=await axios.post(`${base_url}/api/auth/gauth`,user);
+      localStorage.setItem("userId", result.data.id); 
+      user._id=result.data.id;
+      dispatch(CreateId(user));
+  }
 
     useEffect(()=>{
       if(Userid!==null){
@@ -81,6 +98,11 @@ const signup = ()=> {
        
         <input type="submit" value="Submit" />
       </form>
+      {/* {!User && <GoogleLogin
+        onSuccess={(res)=>CreateorGetUser(res)}
+        onError={(res)=>console.log("google login error",res)}
+      />}
+      <button onClick={()=>{googleLogout()}}></button> */}
     </div>
   )
 }
