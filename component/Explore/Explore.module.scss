@@ -1,5 +1,10 @@
+.frame{
+    height: 100vh;
+    width: 100%;
+    background-image: radial-gradient(94.38% 94.38% at 43.47% 0%, #323232 0%, black 100%);
+}
 .userCont{
-    height: fit-content;
+    height: 80%;
     width: 100%;
     border: 1px solid rebeccapurple;
     display: flex;
@@ -10,7 +15,7 @@
 .box{
     margin: 10px;
     height: 200px;
-    width: 100%;
+    width: 35%;
     border: 1px solid red;
     display: flex;
     flex-direction: column;

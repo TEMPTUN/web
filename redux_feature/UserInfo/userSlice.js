@@ -5,7 +5,9 @@ const initialState = {
   name:null,
   email:null,
   bio:null,
-  categoryId:null,
+  categoryId:[],
+  friendId:[],
+  PostId:[],
 }
 
 export const UserSlice = createSlice({
@@ -13,7 +15,16 @@ export const UserSlice = createSlice({
   initialState,
   reducers: {
       CreateId:(state,action)=>{
-        return action.payload;
+        return {
+          ...state,
+          _id: action.payload._id,
+          name: action.payload.name,
+          email: action.payload.email,
+          categoryId:action.payload.categoryId,
+          image:  action.payload.image,
+          friendId: [...action.payload.friendId,action.payload._id],
+          PostId: action.payload.PostId,
+        }
       },
       updateCategory:(state,action)=>{
         return{
@@ -28,6 +39,6 @@ export const UserSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const {CreateId,updateCategory} = UserSlice.actions
+export const {CreateId,updateCategory,reset} = UserSlice.actions
 
 export default UserSlice.reducer

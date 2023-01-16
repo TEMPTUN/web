@@ -15,6 +15,7 @@ const signup = ()=> {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
     const Userid = useSelector((state)=>state.user._id);
+    const User = useSelector((state)=>state.user);
     const dispatch = useDispatch();
 
     const onSubmit = async(data) => {
@@ -102,7 +103,7 @@ const signup = ()=> {
         onSuccess={(res)=>CreateorGetUser(res)}
         onError={(res)=>console.log("google login error",res)}
       />}
-      <button onClick={()=>{googleLogout()}}></button>
+      <button onClick={()=>{googleLogout()}}>logout</button> 
     </div>
   )
 }

@@ -4,6 +4,12 @@ const post = new Schema({
     userId:{
         type:String,
     },
+    name:{
+        type:String,
+    },
+    image:{
+        type:String,
+    },
     media:{
         type:String,
         default:null
