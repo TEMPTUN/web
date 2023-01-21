@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 const Footer = () => {
     const route = useRouter();
     const handleRoute = (path)=>{
-        route.push(path);
+        route.push(path, null, { shallow: true });
     }
   return (
     <div  className={style.footer}>
