@@ -99,11 +99,11 @@ const signup = ()=> {
        
         <input type="submit" value="Submit" />
       </form>
-      {<GoogleLogin
+      {/* {<GoogleLogin
         onSuccess={(res)=>CreateorGetUser(res)}
         onError={(res)=>console.log("google login error",res)}
       />}
-      <button onClick={()=>{googleLogout()}}>logout</button> 
+      <button onClick={()=>{googleLogout()}}>logout</button>  */}
     </div>
   )
 }
