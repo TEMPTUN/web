@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import {CreateId} from '../redux_feature/UserInfo/userSlice'
 import { useSelector } from "react-redux";
 import jwtDecode from "jwt-decode"
-import styles from "../styles/signin.module.css"
+import styles from "../styles/signin.module.scss"
 import { GoogleLogin,googleLogout } from '@react-oauth/google';
 
 
@@ -55,19 +55,21 @@ const signin = () => {
       },[Userid])
 
     return (
-        <div>
+        <div className={styles.frame}>
            <h1>Sign In</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
-              <label>
-                  Email:
-                  <input type="email" name="email" {...register("email",{required: true})}/>
-              </label>
-              <label>
-                  Password:
-                  <input type="password" name="password" {...register("password",{required: true,minLength: 6})}/>
-              </label>
-              <button type="submit">Sign In</button>
-          </form>
+           <div className={styles.box}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <label>
+                   
+                    <input type="email" name="email" {...register("email",{required: true})} placeholder=" Email:" className={styles.input}/>
+                </label>
+                <label>
+                    <input type="password" name="password" {...register("password",{required: true,minLength: 6})} placeholder="Password" className={styles.input}/>
+                </label>
+                <button type="submit">Sign In</button>
+            </form>
+           </div>
+          
         </div>
       )
     };

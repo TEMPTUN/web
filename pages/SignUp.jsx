@@ -10,6 +10,7 @@ import {convertToBase64} from '../utils/base64'
 import jwtDecode from "jwt-decode"
 import { GoogleLogin,googleLogout } from '@react-oauth/google';
 
+
 const signup = ()=> {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
@@ -98,11 +99,11 @@ const signup = ()=> {
        
         <input type="submit" value="Submit" />
       </form>
-      {/* {!User && <GoogleLogin
+      {/* {<GoogleLogin
         onSuccess={(res)=>CreateorGetUser(res)}
         onError={(res)=>console.log("google login error",res)}
       />}
-      <button onClick={()=>{googleLogout()}}></button> */}
+      <button onClick={()=>{googleLogout()}}>logout</button>  */}
     </div>
   )
 }
