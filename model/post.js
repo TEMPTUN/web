@@ -23,6 +23,7 @@ const post = new Schema({
         
     },
     likeId:[{type:String}],
+    likenum:Number,
     commentId:[{type:String}],
     categoryId:[],
     date:{
