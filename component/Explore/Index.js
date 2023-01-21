@@ -1,17 +1,15 @@
 import axios, { all } from 'axios';
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState,useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux';
 import base_url from '../../utils/connection';
 import style from './Explore.module.scss';
 
-const Index = () => {
-    
+const Index = () => {  
   const user = useSelector((state)=>state.user);
   const [allUserId,setAllUserId] = useState([]);
   const [allUser,setAllUser] = useState([]);
   const[allContentId,setAllContentId] = useState([]);
   const[allContent,setAllContent] = useState([]);
-
   const[collabed,setCollabed] = useState(new Set());
   const[box,setBox] = useState("post");
 
@@ -46,9 +44,6 @@ const Index = () => {
           setAllContentId([...Array.from(arr)]);
         }
         fetchContent();
-
-
-
       }
   },[user]);
 
@@ -92,7 +87,7 @@ const Index = () => {
 
   return (
     <div className={style.frame}>
-          {console.log(allUser)}
+        {console.log(allUser)}
         <input type="text" placeholder='Search'></input>
         <div className={style.toggle}>
                 <button style={{background:box==='post'?"rgba(79, 79, 79, 0.1)":"none"}} onClick={()=>setBox("post")}>Contents</button>
