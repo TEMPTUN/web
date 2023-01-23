@@ -23,7 +23,7 @@ const handler = async(req,res)=>{
         console.log(req.body);
         category.map((cat)=>{
             const ct = cat.toLowerCase();
-            const pId = postId===undefined?[]:postId._id;
+            const pId = postId===undefined?[]:postId;
             userId = userId===undefined?[]:userId;
             Category.findOneAndUpdate({name:ct},{$push:{"userId":userId,"postIds":pId}},(err,doc)=>{
                 if(err){

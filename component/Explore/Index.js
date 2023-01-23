@@ -2,7 +2,10 @@ import axios, { all } from 'axios';
 import React, { useEffect,useState,useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux';
 import base_url from '../../utils/connection';
+import Post from '../FeedComp/Post';
 import style from './Explore.module.scss';
+import { doc,getDoc, onSnapshot } from "firebase/firestore";
+import { db } from "../../utils/fireconnect";
 
 const Index = () => {  
   const user = useSelector((state)=>state.user);
@@ -29,7 +32,7 @@ const Index = () => {
           setAllUserId([...Array.from(arr)]);
         }
         fetchSuggestion();
-
+        
         async function fetchContent(){
           let userCategories = user.categoryId;
           let arr= new Set();
@@ -56,6 +59,7 @@ const Index = () => {
       }))
       setAllUser([...arr]);
     }
+    
     getUserDetails();
   },[allUserId]);
 
@@ -63,10 +67,16 @@ const Index = () => {
     async function getContent(){
       let arr =[]
       await Promise.all(allContentId.map(async(id,idx)=>{
-        const res = await axios.get(`${base_url}/api/post/postAPI?id=${id}&other=allPostsId`);
-        arr.push(res.data.result);
+        // const res = await axios.get(`${base_url}/api/post/postAPI?id=${id}&other=allPostsId`);
+        const docRef = doc(db, "posts", id);
+        const docSnap = await getDoc(docRef);
+        if(docSnap.exists()){
+          const res = docSnap.data();
+          res.id = id;
+          arr.push(res);
+        }
       }))
-      setAllContent([...arr]);
+      setAllContent(arr);
     }
     getContent();
   },[allContentId]);
@@ -98,11 +108,12 @@ const Index = () => {
           <div className={style.postCont}>
             {
               allContent.map((post,idx)=>( 
-                <div className={style.post} key={'post'+idx}>
-                  <img src={post.image}></img>
-                  <h4>{post.name}</h4>
-                  <h4>{post.description}</h4>
-                </div>
+                // <div className={style.post} key={'post'+idx}>
+                //   <img src={post?.image}></img>
+                //   <h4>{post?.name}</h4>
+                //   <h4>{post?.description}</h4>
+                // </div>
+                <Post post={post}/>
                 
               ))
             }
