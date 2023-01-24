@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
-import styled from "styled-components";
 import style from './Index.module.scss';
 import PostalModal from "./PostalModal";
 import {useSelector} from 'react-redux';
 import Feed from './Feed'
 
-function Index(props) {
+function Index() {
 	const [showModal, setShowModal] = useState("close");
   	const user = useSelector((state)=>state.user);
 	const clickHandler = (event) => {
@@ -27,6 +25,7 @@ function Index(props) {
 		}
 	};
 
+	
 	 
 	return (
     <>
@@ -40,7 +39,6 @@ function Index(props) {
 				</div>
 			</div>
 			<PostalModal showModal={showModal} clickHandler={clickHandler} />
-
 			<Feed/>
 		</div>
     </>
@@ -50,5 +48,3 @@ function Index(props) {
 
  
 export default Index;
-
- 

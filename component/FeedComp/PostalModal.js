@@ -8,6 +8,8 @@ import 'firebase/firestore';
 import {storage} from '../../utils/fireconnect';
 import {getDownloadURL, ref,uploadBytesResumable} from 'firebase/storage';
 import axios from "axios";
+import { doc,setDoc,collection,addDoc,Timestamp } from "firebase/firestore";
+import {db} from '../../utils/fireconnect';
 
 
 
@@ -130,10 +132,21 @@ function PostalModal(props) {
 			image:user.image,
 			categoryIds:Array.from(selectedCats),
 		};
-		const r = await axios.post(`${base_url}/api/details/userpost`,payload);
-		const res = await axios.put(`${base_url}/api/details/user`,{id:user._id,postIds:r.data});
-		await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.categoryIds,postId:r.data});
-		console.log(res);
+
+		const postref=await addDoc(collection(db, "posts"), {
+			url:urlFile,
+			media:mediaFile,
+			description: editorText,
+			userId: user._id,
+			name:user.name,
+			image:user.image,
+			categoryIds:Array.from(selectedCats),
+			likeId:[],
+			commentId:[],
+			date:Timestamp.now(),
+		});
+		const res = await axios.put(`${base_url}/api/details/user`,{id:user._id,postIds:postref.id});
+		const resp = await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.categoryIds,postId:postref.id});
 		reset(event);
 	}
 

@@ -21,7 +21,7 @@ const handler = async(req, res)=> {
         try{
             const id = req.body.id;
             const selectedCats = req.body.selectedCats===undefined?[]:req.body.selectedCats;
-            const postIds =  req.body.postIds===undefined?[]:req.body.postIds._id;
+            const postIds =  req.body.postIds===undefined?[]:req.body.postIds;
             const friendId = req.body.friendId===undefined?[]:req.body.friendId;
             const r = User.findByIdAndUpdate(id,{
                 $push:{"categoryId":{$each:selectedCats},"PostId": postIds,"friendId":friendId}},(err,doc)=>{
@@ -56,8 +56,10 @@ const handler = async(req, res)=> {
     }else if(req.method==='GET' && req.query.other==="allPostsId"){
         try{
             const id = req.query.id;
+            console.log(id);
             if(id.match(/^[0-9a-fA-F]{24}$/)) {
                 const result = await User.findById(id).select("PostId");
+                console.log(result);
                 res.status(200).json({result});
             }else{
                 res.status(200).json([]);

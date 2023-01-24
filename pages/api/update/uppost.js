@@ -5,20 +5,16 @@ const handler = async(req, res)=> {
         try{
             const id  = req.body?.id;
             const likeId =  req.body?.likeId;
-            await Post.findByIdAndUpdate(id,{
-                $push:{"likeId":likeId}});
+            const likenum = req.body?.likenum;            
+            const r= Post.findByIdAndUpdate(id,{
+                $push:{"likeId":likeId}},(err,doc)=>{
+                    if(err){
+                        res.status(400).json(err.message);
+                    }
+            })
+            
             res.status(200).json({message:"success"});
-        }
-        catch{
-            res.status(400).json({message:"error occured"});
-        }
-    }else if(req.method==="GET"){
-        try{
-            const id  = req.body?.id;
-            const likeId =  req.body?.likeId;
-            await Post.findByIdAndUpdate(id,{
-                $pull:{"likeId":likeId}});
-            res.status(200).json({message:"success"});
+            
         }
         catch{
             res.status(400).json({message:"error occured"});

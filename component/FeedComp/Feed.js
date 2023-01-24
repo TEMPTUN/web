@@ -4,6 +4,8 @@ import style from './Index.module.scss'
 import axios from 'axios';
 import base_url from '../../utils/connection';
 import Post from './Post';
+import { doc,getDoc, onSnapshot } from "firebase/firestore";
+import { db } from "../../utils/fireconnect";
 
 const Feed = () => {
   const user = useSelector((state)=>state.user);
@@ -11,14 +13,15 @@ const Feed = () => {
   const [allPost,setAllPost] = useState([]);
 
   useEffect(()=>{
-    
     if(user._id!==null && allPost.length===0){
       async function getFreindsPostId(){
         let arr =[];
+        // console.log(user);
         await Promise.all(user.friendId.map(async(id)=>{
           const res = await axios.get(`${base_url}/api/details/user?id=${id}&other=allPostsId`);
           arr.push(...res.data.result.PostId);
         }))
+
         setPostId([...arr]);
         }
       getFreindsPostId();
@@ -30,14 +33,16 @@ const Feed = () => {
       async function getFreindsPost(){
         let arr =[];
         await Promise.all(postId.map(async(id)=>{
-          const res = await axios.get(`${base_url}/api/details/userpost?id=${id}&other=allPosts`);
-          console.log(res);
-          arr.push(res.data.result);
+          const docRef = doc(db, "posts", id);
+          const docSnap = await getDoc(docRef);
+          if(docSnap.exists()){
+            const res = docSnap.data();
+            res.id = id;
+            arr.push(res);
+          }
         }))
-        console.log(arr);
-        setAllPost([...arr]);
+        setAllPost(arr);
       }
-      console.log("in Post")
       getFreindsPost();
     }
   },[postId]);
@@ -54,4 +59,4 @@ const Feed = () => {
   )
 }
 
-export default Feed
+export default Feed;
