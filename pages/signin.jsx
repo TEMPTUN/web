@@ -69,6 +69,10 @@ const signin = () => {
                 <button type="submit">Sign In</button>
             </form>
            </div>
+           {<GoogleLogin
+              onSuccess={(res)=>CreateorGetUser(res)}
+              onError={(res)=>console.log("google login error",res)}
+            />}
           
         </div>
       )
