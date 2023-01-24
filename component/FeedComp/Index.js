@@ -8,10 +8,7 @@ import Feed from './Feed'
 
 function Index(props) {
 	const [showModal, setShowModal] = useState("close");
- 
-  const user = useSelector((state)=>state.user);
-
-
+  	const user = useSelector((state)=>state.user);
 	const clickHandler = (event) => {
 		event.preventDefault();
 		if (event.target !== event.currentTarget) {

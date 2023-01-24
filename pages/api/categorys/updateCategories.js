@@ -19,13 +19,13 @@ const handler = async(req,res)=>{
             res.status(404).json({ "message":"please enter valid postId.",success:false } );
         }
     }else if(req.method==='POST'){
-        let {postId,category,userId} = req.body;
-        console.log(req.body);
+        let {postId,category,userId,GroupIds} = req.body;
         category.map((cat)=>{
             const ct = cat.toLowerCase();
             const pId = postId===undefined?[]:postId._id;
             userId = userId===undefined?[]:userId;
-            Category.findOneAndUpdate({name:ct},{$push:{"userId":userId,"postIds":pId}},(err,doc)=>{
+            const gId = GroupIds===undefined?[]:GroupIds
+            const res = Category.findOneAndUpdate({name:ct},{$push:{"userId":userId,"postIds":pId,"GroupsIds":gId}},(err,doc)=>{
                 if(err){
                     console.log("---------categoryAPI------------");
                     console.log(err);

@@ -1,12 +1,20 @@
 import React from 'react'
 import style from './Index.module.scss'
 import ReactPlayer from 'react-player'
+import axios  from 'axios';
+import base_url from '../../utils/connection';
+import { useDispatch, useSelector } from 'react-redux'
+
+
 
 const Post = ({post}) => {
+    const user = useSelector((state)=>state.user);
+    const dispatch = useDispatch();
+     
   return (
     <div className={style.feed}>
         <div className={style.info}>
-            <img src={post.image}></img>
+            {post.image!==undefined && <img src={post.image}></img>}
             <h3>{post.name}</h3>
         </div>
         {
@@ -18,7 +26,9 @@ const Post = ({post}) => {
             </div>
         )}
         <div className={style.social}>
-            <img src={'/images/like.svg'}></img>
+            <img src={'/images/like.svg'} onClick={()=>handleLike(post._id)}></img> 
+            {user.likeId.includes(post._id)?<span>You and</span>:<></>}
+            {post.likeId.length}
             <img src="/images/comment-icon.svg" alt="" />
         </div>
         <div className={style.description}>{post.description}</div>

@@ -11,7 +11,8 @@ const Feed = () => {
   const [allPost,setAllPost] = useState([]);
 
   useEffect(()=>{
-    if(user._id!==null){
+    
+    if(user._id!==null && allPost.length===0){
       async function getFreindsPostId(){
         let arr =[];
         await Promise.all(user.friendId.map(async(id)=>{
@@ -45,7 +46,7 @@ const Feed = () => {
     <div className={style.feedFrame}>
       {
         allPost.map((post,idx)=>(
-          <Post post={post}/>
+          <Post key={"post"+idx} post={post}/>
         ))
       }
      
