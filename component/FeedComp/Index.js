@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
-import styled from "styled-components";
 import style from './Index.module.scss';
 import PostalModal from "./PostalModal";
 import {useSelector} from 'react-redux';

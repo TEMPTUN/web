@@ -60,7 +60,6 @@ const Post = ({post}) => {
         updateDoc(postref, {
             commentId: data.commentId===undefined?[commentref.id]:[...data.commentId, commentref.id]
         });
-
     }
 
   return (
@@ -97,18 +96,11 @@ const Post = ({post}) => {
                         postData?.commentId?.map((comment)=>(
                             <div>{comment}</div>
                         ))
-                    }   
-                    
+                    }      
                 </div>
                 <div className={style.description}>{postData?.description}</div>
-                </div>
-
-        
+                </div> 
     </>
-    
-
-
-   
   )
 }
 

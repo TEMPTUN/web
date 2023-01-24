@@ -1,14 +1,14 @@
 import React from 'react'
-import Index from '../component/FeedComp/Index';
+import Group from '../component/CollabPage/Group';
 import Footer from '../component/FooterComp/Footer';
-
-const feed = () => {
+const collab = () => {
   return (
     <>
-      <Index />
+      <Group/>
       <Footer/>
     </>
+    
   )
 }
 
-export default feed
+export default collab
