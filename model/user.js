@@ -22,6 +22,7 @@ const user = new Schema({
     },
     friendId:[{type:String,default:[]}],
     PostId:[{type:String,default:[]}],
+    LikeId:[{type:String,default:[]}],
     date:{
         type:Date,
         default:Date.now

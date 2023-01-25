@@ -5,6 +5,7 @@ const initialState = {
   name:null,
   email:null,
   bio:null,
+  likeId:[],
   categoryId:[],
   friendId:[],
   PostId:[],
@@ -20,10 +21,11 @@ export const UserSlice = createSlice({
           _id: action.payload._id,
           name: action.payload.name,
           email: action.payload.email,
-          categoryId:action.payload?.categoryId,
-          image:  action.payload?.image,
-          friendId: [...action.payload?.friendId,action.payload._id],
-          PostId: action.payload?.PostId,
+          categoryId:action.payload.categoryId,
+          likeId:action.payload.LikeId,
+          image:  action.payload.image,
+          friendId: action.payload.friendId===undefined?[action.payload._id]:[...state.friendId,...action.payload.friendId],
+          PostId: action.payload.PostId,
         }
       },
       updateCategory:(state,action)=>{

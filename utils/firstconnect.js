@@ -1,13 +1,13 @@
-import axios from 'axios';
 import React from 'react'
 import { useEffect } from 'react';
-import {useDispatch } from 'react-redux';
+import {useDispatch,useSelector } from 'react-redux';
 import base_url from './connection'
 import {CreateId} from '../redux_feature/UserInfo/userSlice' 
- 
+import axios from 'axios';
 
 const First = () => {
 
+  const user = useSelector((state)=>state.user);
     const dispatch = useDispatch();
     useEffect(()=>{
         const id = localStorage.getItem("userId");

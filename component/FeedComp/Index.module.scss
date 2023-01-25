@@ -4,6 +4,8 @@
     display:flex;
     flex-direction: column;
     align-items:center;
+    background-color:black;
+    color: white;
 }
 .ShareBox{
     height:15vh;
@@ -32,37 +34,40 @@
 .feedFrame{
   width: 100%;
   height: fit-content;
-  background-color: #cac3c3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .feed{
-  width: 100%;
+  width: 95%;
   height: fit-content;
-  background-color: whitesmoke;
   margin:5px 0px;
   display: flex;
   flex-direction: column;
 }
 .info{
-  height: 60px;
+  height: 80px;
   width: 100%;
   display: flex;
   align-items: center;
   img{
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
     border-radius: 50%;
     margin-left: 10px;
     cursor: pointer;
   }
-  h5{
+  h3{
+    color:white;
     margin-left: 10px;
     cursor: pointer;
   }
-  border-bottom: 1px solid #ccc0c0;
 }
 .description{
+  border-bottom: 1px solid grey;
   padding: 10px;
+  margin-bottom: 10px;
 }
 .media{
   width: 100%;
@@ -71,14 +76,16 @@
   img{
     height: 100%;
     width: 100%;
+    border-radius:10px;
   }
 }
 .social{
-  border-top: 1px solid #ccc0c0;
+  margin-top: 10px;
   height: 30px;
   width: 100%;
   display: flex;
   align-items: center;
+  background-color: grey;
   img{
     margin: 0px 10px;
     cursor: pointer;

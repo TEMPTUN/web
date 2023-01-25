@@ -9,6 +9,7 @@ const Footer = () => {
   return (
     <div  className={style.footer}>
         <img onClick={()=>handleRoute('/feed')} src={'/images/home.svg'}></img>
+        {/* <img onClick={()=>handleRoute('/swr')} src={'/images/home.svg'}></img> */}
         <img onClick={()=>handleRoute('/explore')} src={'/images/explore.svg'}></img>
         <img onClick={()=>handleRoute('/collab')} src={'/images/group.svg'}></img>
         <img onClick={()=>handleRoute('/profile')} src={'/images/profile.svg'}></img>

@@ -105,14 +105,8 @@ const Post = ({post}) => {
                     }
                 </div>
                 <div className={style.description}>{postData?.description}</div>
-                </div>
-
-        
+                </div> 
     </>
-    
-
-
-   
   )
 }
 
