@@ -15,6 +15,7 @@ const Post = ({post}) => {
     const user = useSelector((state)=>state.user);
     const [postData,setsPostData] = useState(post);
     const[comment,setcomment] = useState('');
+    const[commentData,setcommentData] = useState([]);
     const [modal,setmodal]=useState(false);
     const router =  useRouter();
 
@@ -25,7 +26,7 @@ const Post = ({post}) => {
                 const res = doc.data();
                 res.id = post.id;
                 setsPostData(res);
-                console.log("Document data:", res);
+                // console.log("Document data:", res);
             }});
         }
         fetchPost();
@@ -53,13 +54,15 @@ const Post = ({post}) => {
             commentor_name:user.name,
             commentor_image:user.image,
         });
-        console.log("Document written with ID: ", commentref.id);
+        
         const postref = doc(db, "posts", post.id);
         const docSnap = await getDoc(postref);
         const data = docSnap.data();
         updateDoc(postref, {
             commentId: data.commentId===undefined?[commentref.id]:[...data.commentId, commentref.id]
         });
+        setcommentData([...commentData,postData.commentId]);
+            
     }
 
   return (
@@ -90,13 +93,16 @@ const Post = ({post}) => {
                             <input type={'text'} value={comment} onChange={(e)=>setcomment(e.target.value)}/>
                             <button onClick={()=>handleComment()}>Comment</button>
                         </div>
+                        {
+                            commentData.map((comment)=>(
+                                <>
+                                    <div>{comment}</div>
+                                    {/* <br/> */}
+                                </>
+                            ))
+                        } 
                     </div>
                     }
-                    {
-                        postData?.commentId?.map((comment)=>(
-                            <div>{comment}</div>
-                        ))
-                    }      
                 </div>
                 <div className={style.description}>{postData?.description}</div>
                 </div> 
