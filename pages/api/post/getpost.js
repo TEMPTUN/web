@@ -1,0 +1,24 @@
+import User from "../../../model/User";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../../utils/fireconnect";
+export default async function handler(req, res) {
+    if (req.method === "GET") {
+        try {
+            const id = req.query.id;
+            const userdata=await User.findById(id);
+            let arr= [];
+            await Promise.all(
+                userdata.PostId.map(async(post)=>{
+                    const postref = doc(db, "posts", post);
+                    const docSnap = await getDoc(postref);
+                    const data = docSnap.data();
+                    arr.push(data);
+                })
+            )
+            res.status(200).json({ result: arr });
+            
+        } catch (err) {
+            res.status(400).json({ message: err.message });
+        }
+    }
+}

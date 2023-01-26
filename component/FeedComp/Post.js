@@ -26,7 +26,6 @@ const Post = ({post}) => {
                 const res = doc.data();
                 res.id = post.id;
                 setsPostData(res);
-                // console.log("Document data:", res);
             }});
         }
         fetchPost();
@@ -61,7 +60,11 @@ const Post = ({post}) => {
         updateDoc(postref, {
             commentId: data.commentId===undefined?[commentref.id]:[...data.commentId, commentref.id]
         });
-        setcommentData([...commentData,postData.commentId]);
+        // postData.commentId.map(async(comment)=>{
+        //     const commentref = doc(db, "comments", comment);
+        //     const docSnap = await getDoc(commentref);
+        //     const data = docSnap.data();
+        // })
             
     }
 
