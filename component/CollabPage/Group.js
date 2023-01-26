@@ -3,79 +3,81 @@ import { useEffect } from 'react'
 import { useState } from 'react'
  import CreateGroup from './CreateGroup'
  import style from './style.module.scss'
+ import { useSelector } from 'react-redux'
+ import axios from 'axios';
+ import base_url from '../../utils/connection'
 
  const Group = () => {
     const [open,setOpen] = useState(false);
     const [groupId,setGroupId] = useState([]);
-    // const user = useSelector((state)=>state.user);
+    const [group,setGroup] = useState(null);
+    const user = useSelector((state)=>state.user);
+    useEffect(()=>{
+            async function getGroupIds(){
+                let arr =[];
+                await Promise.all(user.categoryId.map(async(cat)=>{
+                    const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=groupIds`);
+                    arr.push(...res.data.resp[0].GroupsIds);
+                  }))
+                  setGroupId([...arr]);
+            }
+            getGroupIds();
+    },[user])
 
-    // useEffect(()=>{
-    //     if(user._id!==null){
-    //         async function getGroupIds(){
-    //             let arr =[];
-    //             await Promise.all(user.friendId.map(async(id)=>{
-    //                 const res = await axios.get(`${base_url}/api/details/user?id=${id}&other=allPostsId`);
-    //                 arr.push(...res.data.result.PostId);
-    //               }))
-    //               setGroupId([...arr]);
-    //         }
-    //     }
-    // },[user])
-    const data=[
-        {
-            name:"chirag",
-            compensation:"Paid",
-            image:"ewdf",
-            time:'1d ago',
-            title:"Need a co-founder",
-            desc:"irwhgrwigj aifjidif ajfodjfo pfjdaofd ohjfdo fofkapfokifp df",
-            category:["CS","PS","GS"],
-        },
-        {
-            name:"chirag",
-            compensation:"Paid",
-            image:"ewdf",
-            time:'1d ago',
-            title:"Need a co-founder",
-            desc:"irwhgrwigj aifjidif ajfodjfo pfjdaofd ohjfdo fofkapfokifp df",
-            category:["CS","PS","GS"],
+    useEffect(()=>{
+        async function getGroups(){
+            if(groupId!==[]){
+                let arr=[];
+                await Promise.all(groupId.map(async(id)=>{
+                    const res= await axios.get(`${base_url}/api/group/fetch?id=${id}`);
+                    console.log(res.data.result);
+                    if(res.data.result!==null){
+                        arr.push(res.data.result);
+                    }
+                }))
+                setGroup(arr);
+            }
         }
-    ]
+        getGroups();
+    },[groupId]);
+
+    if(group===null){
+        return <div>Loading.........</div>;
+    }
    return (
     <div className={style.groupFrame}> 
         <div className={style.createPost} onClick={()=>setOpen(true)}>Post</div>
         {open===true && (<CreateGroup setOpen={setOpen}/>)}
-
-        <div>
-            {
-                data.map((d,ind)=>(
-                    <div className={style.groupBox}>
+         {group!==null && (
+             <div style={{width:"95%"}}>{
+                group.map((d,ind)=>(
+                    <div className={style.groupBox} key={ind+'gp'}>
+                        {console.log(d)}
                         <div className={style.head}>
-                            <img src={d.image}></img>
+                            <img src={d?.image}></img>
                             <div className={style.nameTitle}>
-                                <h4>{d.name}</h4>
-                                <span>{d.time}</span>
+                                <h4>{d?.name}</h4>
+                                <span>{d?.time}</span>
                             </div>
-                            <h4 className={style.compensation}>{d.compensation}</h4>
+                            <h4 className={style.compensation}>{d?.Compensation}</h4>
                         </div>
                         <div className={style.body}>
-                            <h2>{d.title}</h2>
-                            <p>{d.desc}</p>
+                            <h2>{d?.title}</h2>
+                            <p>{d?.description}</p>
                             <div>
                             {
-                                d.category.map((cat)=>(
+                                d?.category.map((cat)=>(
                                     <span>{cat}</span>
                                 ))
                             }
-                            </div>
-                            
+                            </div>     
                         </div>
                     </div>
                 ))
             }
         </div>
+        )}
     </div>
-   
    )
  }
  

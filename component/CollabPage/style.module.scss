@@ -1,7 +1,9 @@
 .groupFrame{
     width: 100%;
     height: fit-content;
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .createPost{
     position: absolute;
@@ -22,6 +24,8 @@
     width: 100%;
     border: 1px solid red;
     padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
 }
 .head{
     position: relative;
@@ -84,21 +88,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //------------------------Group Create Css
 .frame{
     width: 100%;
@@ -109,7 +98,7 @@
     flex-direction: column;
     align-items: center;
     z-index: 3;
-    position: relative;
+    position: absolute;
     background: olive;
 }
 .basicIntro{

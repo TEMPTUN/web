@@ -11,6 +11,7 @@ const Feed = () => {
   const user = useSelector((state)=>state.user);
   const [postId,setPostId] = useState([]);
   const [allPost,setAllPost] = useState([]);
+  const[category,setCategory] = useState("All");
 
   useEffect(()=>{
     if(user._id!==null && allPost.length===0){
@@ -47,15 +48,28 @@ const Feed = () => {
     }
   },[postId]);
 
-  return (
-    <div className={style.feedFrame}>
-      {
-        allPost.map((post,idx)=>(
-          <Post key={"post"+idx} post={post}/>
-        ))
-      }
-     
-    </div>
+  return (      
+    <>
+    <div className={style.showCategory}>
+        <span onClick={()=>setCategory("All")} style={{backgroundColor:category==='All'?"#ffc491":"transparent",color:category==='All'?"black":"#cacaca"}}>All</span>
+        {
+          category!=='All' &&  (<span style={{backgroundColor:"#ffc491",color:"black"}}>{category}</span>)  
+        }
+         
+        {
+            user.categoryId.map((cat)=>(
+              cat!==category && <span onClick={()=>setCategory(cat)} >{cat}</span>
+            ))
+          }
+        </div>
+      <div className={style.feedFrame}>
+        {
+          allPost.map((post,idx)=>(
+            <Post key={"post"+idx} post={post}/>
+          ))
+        }
+      </div>
+      </>
   )
 }
 
