@@ -49,39 +49,35 @@ import { useState } from 'react'
         <div className={style.createPost} onClick={()=>setOpen(true)}>Post</div>
         {open===true && (<CreateGroup setOpen={setOpen}/>)}
          {group!==null && (
-             <div>
-             {
-                 group.map((d,ind)=>(
-                     <div className={style.groupBox} key={ind+'gp'}>
+             <div style={{width:"95%"}}>{
+                group.map((d,ind)=>(
+                    <div className={style.groupBox} key={ind+'gp'}>
                         {console.log(d)}
-                         <div className={style.head}>
-                             <img src={d?.image}></img>
-                             <div className={style.nameTitle}>
-                                 <h4>{d?.name}</h4>
-                                 <span>{d?.time}</span>
-                             </div>
-                             <h4 className={style.compensation}>{d?.Compensation}</h4>
-                         </div>
-                         <div className={style.body}>
-                             <h2>{d?.title}</h2>
-                             <p>{d?.description}</p>
-                             <div>
-                             {
-                                 d?.category.map((cat)=>(
-                                     <span>{cat}</span>
-                                 ))
-                             }
-                             </div>
-                             
-                         </div>
-                     </div>
-                 ))
-             }
-         </div>
+                        <div className={style.head}>
+                            <img src={d?.image}></img>
+                            <div className={style.nameTitle}>
+                                <h4>{d?.name}</h4>
+                                <span>{d?.time}</span>
+                            </div>
+                            <h4 className={style.compensation}>{d?.Compensation}</h4>
+                        </div>
+                        <div className={style.body}>
+                            <h2>{d?.title}</h2>
+                            <p>{d?.description}</p>
+                            <div>
+                            {
+                                d?.category.map((cat)=>(
+                                    <span>{cat}</span>
+                                ))
+                            }
+                            </div>     
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
         )}
-       
     </div>
-   
    )
  }
  

@@ -7,11 +7,9 @@ import Feed from './Feed'
 function Index() {
 	const [showModal, setShowModal] = useState("close");
   	const user = useSelector((state)=>state.user);
+	
 	const clickHandler = (event) => {
 		event.preventDefault();
-		if (event.target !== event.currentTarget) {
-			return;
-		}
 		switch (showModal) {
 			case "open":
 				setShowModal("close");
@@ -30,13 +28,11 @@ function Index() {
 	return (
     <>
       <div className={style.Container}>
-			<div className={style.ShareBox}>
-				<div>
-					{user.profilePic ? <img src={user.profilePic} alt="" /> : <img src="/images/user.svg" alt="" />}
-					<button onClick={clickHandler} >
-						Start a post
-					</button>
-				</div>
+			<div className={style.startPost} onClick={clickHandler}> 
+				<img src={'/images/send.png'}></img>
+			</div>
+			<div className={style.feedPageHeader}>
+
 			</div>
 			<PostalModal showModal={showModal} clickHandler={clickHandler} />
 			<Feed/>
