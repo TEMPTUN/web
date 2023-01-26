@@ -18,14 +18,24 @@ const handler = async(req,res)=>{
         }else{
             res.status(404).json({ "message":"please enter valid postId.",success:false } );
         }
+    }else if(req.method==='GET' && req.query.other==='groupIds'){
+        const {category} = req.query;
+        const resp= await Category.find({"name":category}).select("GroupsIds");
+        if(resp){
+            res.status(200).json({ success:true,resp});
+        }else{
+            res.status(404).json({ "message":"please enter valid postId.",success:false } );
+        }
     }else if(req.method==='POST'){
-        let {postId,category,userId,GroupIds} = req.body;
+        let {postId,category,userId,GroupIds,DisscussionId} = req.body;
         category.map((cat)=>{
             const ct = cat.toLowerCase();
             const pId = postId===undefined?[]:postId;
             userId = userId===undefined?[]:userId;
             const gId = GroupIds===undefined?[]:GroupIds
-            const res = Category.findOneAndUpdate({name:ct},{$push:{"userId":userId,"postIds":pId,"GroupsIds":gId}},(err,doc)=>{
+            const dId = DisscussionId===undefined?[]:DisscussionId;
+            console.log(dId+" "+DisscussionId);
+            const res = Category.findOneAndUpdate({name:ct},{$push:{"userId":userId,"postIds":pId,"GroupsIds":gId,"DisscussionId":dId}},(err,doc)=>{
                 if(err){
                     console.log("---------categoryAPI------------");
                     console.log(err);

@@ -49,6 +49,7 @@ const signup = ()=> {
       const result=await axios.post(`${base_url}/api/auth/gauth`,user);
       localStorage.setItem("userId", result.data.id); 
       user._id=result.data.id;
+      user.friendId=[result.data.id];
       dispatch(CreateId(user));
   }
 
