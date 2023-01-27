@@ -1,8 +1,13 @@
-import React, { use, useState } from 'react'
+import React, { useState } from 'react'
 import style from './profile.module.scss'
 import {useDispatch, useSelector} from 'react-redux';
 import { useRouter } from 'next/router';
 import { reset } from '../../redux_feature/UserInfo/userSlice';
+import { useEffect } from 'react';
+import { base_url } from '../../utils/connection';
+import Posts from '../FeedComp/Post';
+import axios from 'axios';
+
 
 const UserProfile = () => {
 
@@ -11,12 +16,21 @@ const UserProfile = () => {
     const user = useSelector((state)=>state.user);
     const[openBar,setOpenBar] = useState(false);
     const[content,setContent] = useState("about");
+    const[posts,setPosts] = useState([]);
 
     const handleLogout = ()=>{
         localStorage.removeItem("userId");
         dispatch(reset());
         router.push("/signin");
     }
+
+    // useEffect(()=>{
+    //     const fetchPosts = async()=>{
+    //         const res = await axios.get(`${base_url}/api/post/getpost${user._id}`);
+    //         setPosts(res.data.result);
+    //     }
+    //     fetchPosts();
+    // })
     
   return (
     <div className={style.frame}>
@@ -57,26 +71,8 @@ const UserProfile = () => {
         </div>
         {
             content==="posts" && (
-                <div className={style.LowerCont}>
-                    <div className={style.postCont}>
-        
-                    </div>
-                    <div className={style.postCont}>
-        
-                    </div>
-                    <div className={style.postCont}>
-        
-                    </div>
-                    <div className={style.postCont}>
-        
-                    </div>
-                    <div className={style.postCont}>
-        
-                    </div>
-                    <div className={style.postCont}>
-        
-                    </div>
-                </div>
+                // <Posts post={posts}/>
+                <></>
             )
         }
         {

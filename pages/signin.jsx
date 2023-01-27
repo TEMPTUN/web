@@ -58,21 +58,23 @@ const signin = () => {
         <div className={styles.frame}>
            <h1>Sign In</h1>
            <div className={styles.box}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label>
-                   
-                    <input type="email" name="email" {...register("email",{required: true})} placeholder=" Email:" className={styles.input}/>
-                </label>
-                <label>
-                    <input type="password" name="password" {...register("password",{required: true,minLength: 6})} placeholder="Password" className={styles.input}/>
-                </label>
-                <button type="submit">Sign In</button>
-            </form>
+              <div className={styles.innerbox}>
+                <span>We'r are Open</span>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                        <input type="email" name="email" {...register("email",{required: true})} placeholder=" Email:" className={styles.input}/>
+                        <input type="password" name="password" {...register("password",{required: true,minLength: 6})} placeholder="Password" className={styles.input}/>
+                    <button type="submit">Sign In</button>
+                </form>
+              </div>
+              <span>OR</span>
+              <div>
+              {<GoogleLogin
+                  onSuccess={(res)=>CreateorGetUser(res)}
+                  onError={(res)=>console.log("google login error",res)}
+                />}
+              </div>
            </div>
-           {<GoogleLogin
-              onSuccess={(res)=>CreateorGetUser(res)}
-              onError={(res)=>console.log("google login error",res)}
-            />}
+           
           
         </div>
       )

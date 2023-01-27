@@ -1,6 +1,6 @@
 import { Schema,model,models } from "mongoose";
 
-const post = new Schema({
+const discussion = new Schema({
     userId:{
         type:String,
     },
@@ -10,28 +10,19 @@ const post = new Schema({
     image:{
         type:String,
     },
-    media:{
+    title:{
         type:String,
-        default:null
-    },
-    url:{
-        type:String,   
-        default:null
     },
     description:{
         type:String,
-        
     },
-    likeId:[{type:String}],
-    likenum:Number,
-    commentId:[{type:String}],
-    categoryId:[],
+    category:[{type:String,default:[]}],
     date:{
         type:Date,
         default:Date.now
     }
 });
 
-const Post =  models.Post || model("Post",post);
+const Discussion =  models.Discussion || model("Discussion",discussion);
 
-export default Post;
+export default Discussion;

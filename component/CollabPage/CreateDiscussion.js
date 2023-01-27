@@ -66,8 +66,9 @@ const CreateDiscussion = ({setOpen}) => {
             category:Array.from(selectedCats),
         }
         console.log(payload);
-        // const res = await axios.post(`${base_url}/api/group/create`,payload);
-        // await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.category,GroupIds:res.data.id});
+        const res = await axios.post(`${base_url}/api/post/discusspost`,payload);
+		console.log(res);
+        await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.category,DisscussionId:res.data});
         reset();   
     }
 
