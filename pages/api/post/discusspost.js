@@ -12,7 +12,7 @@ export default async function handler(req,res){
                 description,
                 category
             });
-            const result=await Discussion.insertMany(newDiscussion);
+            const result=await Discussion.insertMany([newDiscussion]);
             res.status(200).json(result[0].id);
         } catch (error) {
             res.status(400).json({message:error.message});
