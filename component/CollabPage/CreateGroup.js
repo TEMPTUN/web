@@ -31,6 +31,7 @@ const CreateGroup = ({setOpen}) => {
       setOpen(false);
     }
     const postGroup =  async()=>{
+        reset();
         const payload = {
             userId:user._id,
             name:user.name,
@@ -44,7 +45,6 @@ const CreateGroup = ({setOpen}) => {
         }
         const res = await axios.post(`${base_url}/api/group/create`,payload);
         await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.category,GroupIds:res.data.id});
-        reset();   
     }
 
     const HandleMainCategory = ()=>{
