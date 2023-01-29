@@ -1,56 +1,43 @@
  import React from 'react'
-import { useEffect } from 'react'
 import { useState } from 'react'
  import CreateGroup from './CreateGroup'
  import style from './style.module.scss'
  import { useSelector } from 'react-redux'
  import axios from 'axios';
  import base_url from '../../utils/connection'
+ import useSWR from 'swr'
 
  const Group = () => {
     const [open,setOpen] = useState(false);
-    const [groupId,setGroupId] = useState([]);
-    const [group,setGroup] = useState(null);
     const user = useSelector((state)=>state.user);
-    useEffect(()=>{
-            async function getGroupIds(){
-                let arr =[];
-                await Promise.all(user.categoryId.map(async(cat)=>{
-                    const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=groupIds`);
-                    arr.push(...res.data.resp[0].GroupsIds);
-                  }))
-                  setGroupId([...arr]);
-            }
-            getGroupIds();
-    },[user])
 
-    useEffect(()=>{
-        async function getGroups(){
-            if(groupId!==[]){
-                let arr=[];
-                await Promise.all(groupId.map(async(id)=>{
-                    const res= await axios.get(`${base_url}/api/group/fetch?id=${id}`);
-                    console.log(res.data.result);
-                    if(res.data.result!==null){
-                        arr.push(res.data.result);
-                    }
-                }))
-                setGroup(arr);
+    const{data,error} = useSWR(user._id===null?null:`${base_url}/api/group/fetch`,async function fetcher(){
+        let arr =[];
+        await Promise.all(user.categoryId.map(async(cat)=>{
+            const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=groupIds`);
+            arr.push(...res.data.resp[0].GroupsIds);
+        }))
+        console.log(user)
+        let groupPost =[];
+        await Promise.all(arr.map(async(id)=>{
+            const res= await axios.get(`${base_url}/api/group/fetch?id=${id}`);
+            console.log(res);
+            if(res.data.result!==null){
+                groupPost.push(res.data.result);
             }
-        }
-        getGroups();
-    },[groupId]);
-
-    if(group===null){
+        }))
+        return groupPost;
+    });
+    if(!data){
         return <div>Loading.........</div>;
     }
    return (
     <div className={style.groupFrame}> 
         <div className={style.createPost} onClick={()=>setOpen(true)}>Post</div>
         {open===true && (<CreateGroup setOpen={setOpen}/>)}
-         {group!==null && (
+         {data!==null && (
              <div style={{width:"95%"}}>{
-                group.map((d,ind)=>(
+                data.map((d,ind)=>(
                     <div className={style.groupBox} key={ind+'gp'}>
                         {console.log(d)}
                         <div className={style.head}>

@@ -57,6 +57,7 @@ const CreateDiscussion = ({setOpen}) => {
       setOpen(false);
     }
     const postGroup =  async()=>{
+		reset(); 
         const payload = {
             userId:user._id,
             name:user.name,
@@ -69,7 +70,7 @@ const CreateDiscussion = ({setOpen}) => {
         const res = await axios.post(`${base_url}/api/post/discusspost`,payload);
 		console.log(res);
         await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.category,DisscussionId:res.data});
-        reset();   
+         
     }
 
 

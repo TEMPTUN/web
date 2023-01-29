@@ -35,6 +35,14 @@ const handler = async(req,res)=>{
         }else{
             res.status(404).json({ "message":"please enter valid postId.",success:false } );
         }
+    }else if(req.method==='GET'&& req.query.other==='DiscussionIds'){
+        const {category} = req.query;
+        const resp= await Category.find({"name":category}).select("DisscussionId");
+        if(resp){
+            res.status(200).json({ success:true,resp});
+        }else{
+            res.status(404).json({ "message":"please enter valid postId.",success:false } );
+        }
     }else if(req.method==='POST'){
 
         // UPDATING CATEGORY
