@@ -31,9 +31,6 @@ function Index() {
 			<div className={style.startPost} onClick={clickHandler}> 
 				<img src={'/images/send.png'}></img>
 			</div>
-			<div className={style.feedPageHeader}>
-
-			</div>
 			<PostalModal showModal={showModal} clickHandler={clickHandler} />
 			<Feed/>
 		</div>

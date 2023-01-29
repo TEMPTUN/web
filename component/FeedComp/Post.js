@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateDoc } from "firebase/firestore";
 import { db } from "../../utils/fireconnect";
 import { doc,getDoc,onSnapshot,addDoc,collection } from "firebase/firestore";
-import FullPost from './FullPost';
+import Comment from './Comment';
 import { useRouter } from 'next/router';
- 
+ import { AnimatePresence } from 'framer-motion';
 
 const Post = ({post}) => {
     const user = useSelector((state)=>state.user);
@@ -77,9 +77,14 @@ const Post = ({post}) => {
                 </div>
                 <hr style={{margin: "8px 0px"}}></hr>
                 </div> 
+                <AnimatePresence>
                 {
-                    openComment===true && <FullPost post={postData} setComment={setComment}/>
+                    openComment===true &&
+                    (
+                        <Comment post={postData} setComment={setComment} openComment={openComment}/>
+                    ) 
                 }
+                  </AnimatePresence>
     </>
   )
 }
