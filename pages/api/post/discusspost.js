@@ -2,6 +2,9 @@ import Discussion from "../../../model/discussion";
 
 export default async function handler(req,res){
     if(req.method === "POST"){
+
+        // DISCUSSION CREATED
+
         const {userId,name,image,title,description,category} = req.body;
         try {
             const newDiscussion = new Discussion({
@@ -19,6 +22,9 @@ export default async function handler(req,res){
         }
     }
     if(req.method === "GET"){
+
+        // DISCUSSION FETCHED BY USER ID
+
         const {id} = req.query;
         try {
             const result = await Discussion.findById(id);

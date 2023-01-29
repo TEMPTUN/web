@@ -51,6 +51,24 @@ const Feed = () => {
     return<h1> Loading...</h1>
   }
 
+  useEffect(()=>{
+    if(category!=="All"){
+      async function getselectedPost(){
+        let arr =[];
+        await Promise.all(postIds.map(async(id)=>{ //check
+          const docRef = doc(db, "posts", id);
+          const docSnap = await getDoc(docRef);
+          if(docSnap.exists()){
+            const res = docSnap.data();
+            res.id = id;
+            arr.push(res);
+          }
+        }))
+      }
+      getselectedPost();
+    }
+  },[category]);
+
   return (      
     <>
     <div className={style.showCategory}>
@@ -64,7 +82,13 @@ const Feed = () => {
               cat!==category && <span onClick={()=>setCategory(cat)}  key={index+"cat"} >{cat}</span>
             ))
           }
-        </div>
+          
+          {
+              user.categoryId.map((cat)=>(
+                cat!==category && <span onClick={()=>setCategory(cat)} >{cat}</span>
+              ))
+            }
+      </div>
       <div className={style.feedFrame}>
         {
           category==="All"?(

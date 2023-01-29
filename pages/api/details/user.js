@@ -2,6 +2,9 @@ import User from "../../../model/user";
 import connectmongo from "../../../utils/mongoconnect";
 
 const handler = async(req, res)=> {
+
+    // INTIAL USER DATA POSTED
+
     if(req.method === 'POST'){
         await connectmongo();
         try{
@@ -14,31 +17,43 @@ const handler = async(req, res)=> {
             })
             const result = await User.insertMany([Userdata]);
             res.status(200).json({ id:result[0]._id,message:"User connected Succesfully"});
-        }catch{
-            res.status(400).json({message:"error occured"});
+        }catch(err){
+            res.status(400).json({message:err.message});
         }
-    }else if(req.method === 'PUT'){
+    }
+
+    // USER DATA UPDATED WITH POSTS,CATEGORYS AND FRIENDS
+
+    else if(req.method === 'PUT'){
         try{
             const id = req.body.id;
-            const selectedCats = req.body.selectedCats===undefined?[]:req.body.selectedCats;
-            const postIds =  req.body.postIds===undefined?[]:req.body.postIds;
-            const friendId = req.body.friendId===undefined?[]:req.body.friendId;
-            const r = User.findByIdAndUpdate(id,{
-                $push:{"categoryId":{$each:selectedCats},"PostId": postIds,"friendId":friendId}},(err,doc)=>{
+            const selectedCats = req.body?.selectedCats;
+            const postIds =  req.body?.postIds;
+            const friendId = req.body?.friendId;
+            User.findByIdAndUpdate(id,{
+                $push:{"categoryId":{$addToSet:{$each:selectedCats}},"PostId":{$addToSet:postIds},"friendId":{$addToSet:friendId}}},(err,doc)=>{
                     if(err){
                         res.status(400).json({message:"mongo error occured"});
                     }
             })
                 res.status(200).json({message:"success"});
-            }catch{
-                res.status(400).json({message:"error occured"});
+            }catch(err){
+                res.status(400).json({message:err.message});
             }
-    }else if(req.method==='GET' && req.query.other===undefined){ //user info
+    }
+
+    // USER DATA FETCHED
+    
+    else if(req.method==='GET' && req.query.other===undefined){ 
         const id = req.query.id;
         await connectmongo();
         const result = await User.findById(id);
         res.status(200).json({result});
-    }else if(req.method==='GET' && req.query.other==="allFriendsId"){  //all user info
+    }
+
+    // USER FRIENDS DATA FETCHED
+    
+    else if(req.method==='GET' && req.query.other==="allFriendsId"){  
         try{
             const id = req.query.id;
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -48,12 +63,13 @@ const handler = async(req, res)=> {
                 res.status(200).json([]);
             }
         }catch(err){
-            console.log("---all user data fetch error--------------------");
-            console.log(req.query.id);
-            console.log(err);
-            res.status(400).json({message:"error"});
+            res.status(400).json({message:err.message});
         }
-    }else if(req.method==='GET' && req.query.other==="allPostsId"){
+    }
+    
+    // USER POST DATA FETCHED
+    
+    else if(req.method==='GET' && req.query.other==="allPostsId"){
         try{
             const id = req.query.id;
             if(id.match(/^[0-9a-fA-F]{24}$/)) {
@@ -63,10 +79,7 @@ const handler = async(req, res)=> {
                 res.status(200).json([]);
             }
         }catch(err){
-            console.log("---all user data fetch error--------------------");
-            console.log(req.query.id);
-            console.log(err);
-            res.status(400).json({message:"error occured"});
+            res.status(400).json({message:err.message});
         }
     }
   }
