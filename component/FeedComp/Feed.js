@@ -29,8 +29,8 @@ const Feed = () => {
         res.id = id;
         postIds.push(res);
         res.categoryIds.map((cat)=>{
-          if(categoryData.hasOwnProperty(cat)){
-            categoryData[cat] = [...categoryData[cat],res];
+          if(categoryData.hasOwnProperty(cat) && categoryData[cat].has(res)===false){
+            categoryData[cat] = new Set([...categoryData[cat],res]);
           }
          else{
             categoryData[cat]=new Set([res]);
@@ -49,32 +49,27 @@ const Feed = () => {
 
   return (      
     <>
-    <div className={style.showCategory}>
-        <span onClick={()=>setCategory("All")} style={{backgroundColor:category==='All'?"#ffc491":"transparent",color:category==='All'?"black":"#cacaca"}}>All</span>
-        {
-          category!=='All' &&  (<span style={{backgroundColor:"#ffc491",color:"black"}}>{category}</span>)  
-        }
-         
-        {
-            user.categoryId.map((cat,index)=>(
-              cat!==category && <span onClick={()=>setCategory(cat)}  key={index+"cat"} >{cat}</span>
-            ))
-          }
-          
-          {
+   
+      <div className={style.feedFrame}>
+        <div style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+          <div className={style.showCategory}>
+          <span onClick={()=>setCategory("All")} style={{backgroundColor:category==='All'?"#ffc491":"transparent",color:category==='All'?"black":"#cacaca"}}>All</span>
+            {
               user.categoryId.map((cat,index)=>(
-                cat!==category && <span onClick={()=>setCategory(cat)}key={index+"cat"} >{cat}</span>
+                  <span onClick={()=>setCategory(cat)}  style={{backgroundColor:cat!==category?"transparent":"#ffc491",color:cat!==category?"white":"black"}} key={index+"cat"} >{cat}</span>
               ))
             }
-      </div>
-      <div className={style.feedFrame}>
+        </div>
+          <img src={'/images/search.png'} style={{height:"20px",marginRight:"10px"}}></img>
+        </div>
+    
         {
           category==="All"?(
             data.map((post,idx)=>(
               <Post key={"post"+idx} post={post}/>
             ))
           ):(
-            catData[category]!==undefined && catData[category].map((post,idx)=>(
+            catData[category]!==undefined && Array.from(catData[category]).map((post,idx)=>(
               <Post key={"post"+idx} post={post}/>
             ))
           )

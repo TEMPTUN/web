@@ -4,8 +4,9 @@ import { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { db } from "../../utils/fireconnect";
 import {updateDoc, doc,getDoc,addDoc,collection} from "firebase/firestore";
+import { motion ,AnimatePresence} from 'framer-motion';
 
-const FullPost = ({post,setComment}) => {
+const Comment = ({post,setComment,openComment}) => {
   const user = useSelector((state)=>state.user);
   const [comments,setComments] = useState([]);
   const [write,setWrite] = useState("");
@@ -43,32 +44,36 @@ const FullPost = ({post,setComment}) => {
         commentId: data.commentId===undefined?[commentref.id]:[...data.commentId, commentref.id]
     });
   }
+  const handleClose = ()=>{
+    setComment(false)
+  }
   return (
-    <div className={style.commentFrame}>
-      <div className={style.commcursor} onClick={()=>setComment(false)}></div>
-    <div className={style.inputFrame}>
-      <input type='text' placeholder='Comment...' onChange={(e)=>setWrite(e.target.value)}></input>
-      <button onClick={()=>handleSubmit(write)}>Submit</button>
-    </div>
-    <div className={style.comments}>
-      {
-        comments.map((commData,idx)=>{
-          return(
-            <div key={idx+"comm"} className={style.commFrame}>
-              <img src={commData.commentor_image}></img>
-              <div className={style.commentBox}>
-                <h3>{commData?.commentor_name}</h3>
-                <span>{commData?.comment}</span>
+    
+    <motion.div className={style.commentFrame} viewport={{once:true}} initial={{y:300}} whileInView={{y:0}} transition={{type: "tween"}} exit={{y:300}}>
+      <div as={motion.div} whileHover={{scale:1.2}} className={style.commcursor} onClick={()=>handleClose()} ></div>
+      <div className={style.inputFrame}>
+        <input type='text' placeholder='Comment...' onChange={(e)=>setWrite(e.target.value)}></input>
+        <button onClick={()=>handleSubmit(write)}>Submit</button>
+      </div>
+      <div className={style.comments}>
+        {
+          comments.map((commData,idx)=>{
+            return(
+              <div key={idx+"comm"} className={style.commFrame}>
+                <img src={commData.commentor_image}></img>
+                <div className={style.commentBox}>
+                  <h3>{commData?.commentor_name}</h3>
+                  <span>{commData?.comment}</span>
+                </div>
               </div>
-            </div>
-           
-          )
-        })
-      }
-      
-    </div>
-  </div>    
+            
+            )
+          })
+        }
+        
+      </div>
+    </motion.div>
   )
 }
 
-export default FullPost
+export default Comment
