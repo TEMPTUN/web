@@ -3,6 +3,9 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../utils/fireconnect";
 export default async function handler(req, res) {
     if (req.method === "GET") {
+
+        // USER POSTS FETCHED BY USER ID
+
         try {
             const id = req.query.id;
             const userdata=await User.findById(id);

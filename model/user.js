@@ -13,17 +13,52 @@ const user = new Schema({
     password:{
         type:String
     },
-    categoryId:[],
+    categoryId:[{type:String,default:[],unique:true}],
     image:{
         type:String,
     },
-    bio:{
+    headline:{
         type:String,
     },
-    friendId:[{type:String,default:[]}],
-    PostId:[{type:String,default:[]}],
-    LikeId:[{type:String,default:[]}],
+    friendId:[{type:String,default:[],unique:true}],
+    PostId:[{type:String,default:[],unique:true}],
+    LikeId:[{type:String,default:[],unique:true}],
     DisscussionId:[{type:String,default:[]}],
+    experinceId:[
+        {
+            title:{type:String,default:""},
+            company:{type:String,default:""},
+            employtype:{type:String,default:""},
+            start:{type:String,default:""},
+            end:{type:String,default:""},
+            location:{type:String,default:""},
+        }
+    ],
+    educationId:[
+        {
+            school:{type:String,default:""},
+            degree:{type:String,default:""},
+            start:{type:String,default:""},
+            end:{type:String,default:""},
+            location:{type:String,default:""},
+        }
+    ],
+    skillId:[{type:String,default:[]}],
+    projectId:[
+        {
+            title:{type:String,default:""},
+            description:{type:String,default:""},
+            link:{type:String,default:""},
+        }
+    ],
+    linkId:[{
+        github:{type:String,default:""},
+        linkedin:{type:String,default:""},
+        instagram:{type:String,default:""},
+    }],
+    location:{
+        type:String,
+    },
     date:{
         type:Date,
         default:Date.now

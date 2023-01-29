@@ -2,6 +2,9 @@ import Post from "../../../model/post";
 
 const handler = async(req, res)=> {
     if(req.method === 'POST'){
+
+        // POST DATA POSTED
+
         const {name,image, userId,media,url,description ,categoryIds} = req.body; 
         const Postdata = new Post({
             userId: userId,
@@ -16,6 +19,9 @@ const handler = async(req, res)=> {
         const result = await Post.insertMany([Postdata]);
         res.status(200).json({_id: result[0]._id});
     }
+
+    // POST DATA FETCHED
+
     if(req.method==='GET' && req.query.other==='allPosts'){
         const id= req.query.id;
         try{
@@ -26,9 +32,7 @@ const handler = async(req, res)=> {
                 res.status(200).json([]);
             }
         }catch(err){
-            console.log("---------Getpost--------------");
-            console.log(err);
-            res.status(400).json({message:"error"});
+            res.status(400).json({message:err.message});
         }
     }
   }

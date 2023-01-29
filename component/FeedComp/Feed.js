@@ -17,7 +17,6 @@ const Feed = () => {
     if(user._id!==null && allPost.length===0){
       async function getFreindsPostId(){
         let arr =[];
-        // console.log(user);
         await Promise.all(user.friendId.map(async(id)=>{
           const res = await axios.get(`${base_url}/api/details/user?id=${id}&other=allPostsId`);
           arr.push(...res.data.result.PostId);
@@ -42,26 +41,39 @@ const Feed = () => {
             arr.push(res);
           }
         }))
-        setAllPost(arr);
+        setAllPost([...arr]);
       }
       getFreindsPost();
     }
   },[postId]);
 
+  useEffect(()=>{
+    if(category!=="All"){
+      async function getselectedPost(){
+        let arr =[];
+        const result=await axios.get(`${base_url}/api/categorys/getposts?catname=${category}`);
+        arr=result.data.result[0].postIds;
+        console.log(arr);
+        setPostId(arr);
+      }
+      getselectedPost();
+    }
+  },[category]);
+
   return (      
     <>
-    <div className={style.showCategory}>
-        <span onClick={()=>setCategory("All")} style={{backgroundColor:category==='All'?"#ffc491":"transparent",color:category==='All'?"black":"#cacaca"}}>All</span>
-        {
-          category!=='All' &&  (<span style={{backgroundColor:"#ffc491",color:"black"}}>{category}</span>)  
-        }
-         
-        {
-            user.categoryId.map((cat)=>(
-              cat!==category && <span onClick={()=>setCategory(cat)} >{cat}</span>
-            ))
+      <div className={style.showCategory}>
+          <span onClick={()=>setCategory("All")} style={{backgroundColor:category==='All'?"#ffc491":"transparent",color:category==='All'?"black":"#cacaca"}}>All</span>
+          {
+            category!=='All' &&  (<span style={{backgroundColor:"#ffc491",color:"black"}}>{category}</span>)  
           }
-        </div>
+          
+          {
+              user.categoryId.map((cat)=>(
+                cat!==category && <span onClick={()=>setCategory(cat)} >{cat}</span>
+              ))
+            }
+      </div>
       <div className={style.feedFrame}>
         {
           allPost.map((post,idx)=>(
