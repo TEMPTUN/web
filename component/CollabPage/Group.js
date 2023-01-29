@@ -15,19 +15,20 @@ import { useState } from 'react'
         let arr =[];
         await Promise.all(user.categoryId.map(async(cat)=>{
             const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=groupIds`);
-            arr.push(...res.data.resp[0].GroupsIds);
+            arr.push(...res.data.result[0].GroupsIds);
         }))
-        console.log(user)
         let groupPost =[];
         await Promise.all(arr.map(async(id)=>{
             const res= await axios.get(`${base_url}/api/group/fetch?id=${id}`);
-            console.log(res);
             if(res.data.result!==null){
                 groupPost.push(res.data.result);
             }
         }))
         return groupPost;
     });
+    if(error){
+        return<>Error</>
+    }
     if(!data){
         return <div>Loading.........</div>;
     }
@@ -39,7 +40,6 @@ import { useState } from 'react'
              <div style={{width:"95%"}}>{
                 data.map((d,ind)=>(
                     <div className={style.groupBox} key={ind+'gp'}>
-                        {console.log(d)}
                         <div className={style.head}>
                             <img src={d?.image}></img>
                             <div className={style.nameTitle}>
@@ -53,8 +53,8 @@ import { useState } from 'react'
                             <p>{d?.description}</p>
                             <div>
                             {
-                                d?.category.map((cat)=>(
-                                    <span>{cat}</span>
+                                d?.category.map((cat,indx)=>(
+                                    <span key={indx+"mc"}>{cat}</span>
                                 ))
                             }
                             </div>     

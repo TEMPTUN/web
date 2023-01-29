@@ -15,7 +15,6 @@ const Feed = () => {
 
   const {data,error} = useSWR(user._id===null?null:`${base_url}/api/details/user?other=allPostsId`, async function fetcher(){
     let arr =[];
-    console.log(user);
     await Promise.all(user.friendId.map(async(id)=>{
       const res = await axios.get(`${base_url}/api/details/user?id=${id}&other=allPostsId`);
       arr.push(...res.data.result.PostId);
@@ -30,7 +29,6 @@ const Feed = () => {
         res.id = id;
         postIds.push(res);
         res.categoryIds.map((cat)=>{
-          console.log(categoryData.hasOwnProperty(cat))
           if(categoryData.hasOwnProperty(cat)){
             categoryData[cat] = [...categoryData[cat],res];
           }
@@ -40,9 +38,7 @@ const Feed = () => {
         });
       }
     }))
-    console.log(postIds)
     setCatData(categoryData);
-    console.log(categoryData);
     return postIds;
 
   })
@@ -50,24 +46,6 @@ const Feed = () => {
   if(!data){
     return<h1> Loading...</h1>
   }
-
-  useEffect(()=>{
-    if(category!=="All"){
-      async function getselectedPost(){
-        let arr =[];
-        await Promise.all(postIds.map(async(id)=>{ //check
-          const docRef = doc(db, "posts", id);
-          const docSnap = await getDoc(docRef);
-          if(docSnap.exists()){
-            const res = docSnap.data();
-            res.id = id;
-            arr.push(res);
-          }
-        }))
-      }
-      getselectedPost();
-    }
-  },[category]);
 
   return (      
     <>
@@ -84,8 +62,8 @@ const Feed = () => {
           }
           
           {
-              user.categoryId.map((cat)=>(
-                cat!==category && <span onClick={()=>setCategory(cat)} >{cat}</span>
+              user.categoryId.map((cat,index)=>(
+                cat!==category && <span onClick={()=>setCategory(cat)}key={index+"cat"} >{cat}</span>
               ))
             }
       </div>

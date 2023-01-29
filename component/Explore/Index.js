@@ -3,8 +3,6 @@ import React, { useEffect,useState } from 'react'
 import { useSelector } from 'react-redux';
 import base_url from '../../utils/connection';
 import style from './Explore.module.scss';
-import { doc,getDoc, onSnapshot } from "firebase/firestore";
-import { db } from "../../utils/fireconnect";
 import useSWR from 'swr';
 
 const Index = () => {  
@@ -15,7 +13,7 @@ const Index = () => {
       let arr= new Set();
       await Promise.all(user.categoryId.map(async(cat)=>{
           const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=friendId`);
-          res.data.resp[0].userId.map((id)=>{
+          res.data.result[0].userId.map((id)=>{
             if(user.friendId.includes(id)===false){
               arr.add(id);
             }
@@ -31,6 +29,10 @@ const Index = () => {
       return allUser;
   })
   
+  if(error){
+    {console.log(error)}
+  return <h1>Error</h1>
+  }
 
   if(!data){
     return <h1>Loading....</h1>
@@ -56,18 +58,19 @@ const Index = () => {
          
       <div className={style.userCont}>
         {
-          data.map((sug,idx)=>(
-            <>{
-              sug!==undefined && (
+          data.map((sug,idx)=>{
+            if(sug===undefined){
+              return <></>;
+            }
+            return (
               <div key={idx+"sug"} className={style.box}>
                 <img src={sug.image}></img>
                 <h4>{sug.name}</h4>
                 {!collabed.has(sug._id) && <button onClick={(e)=>handleCollab(sug._id)}>Collab</button>}
                 {collabed.has(sug._id) && <button >Friends</button>}  
               </div>
-            )}
-            </>
-          ))
+            )  
+          })
         }
       </div>
          

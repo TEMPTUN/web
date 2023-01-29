@@ -28,17 +28,13 @@ const Discussion = () => {
     });
     
 
-   if (error) {
-    console.log(error);
-    return <div>error</div>}
+   if (error) { return <div>error</div>}
   
-    console.log(data);
     if (!data) return <h1>loading...</h1>
     
    
   return (
     <div className={style.groupFrame}> 
-        {console.log(data)}
         <div className={style.createPost} onClick={()=>setOpen(true)}>Ask</div>
         {open===true && <CreateDiscussion setOpen={setOpen}/>}
 

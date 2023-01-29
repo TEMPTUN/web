@@ -24,14 +24,6 @@ const UserProfile = () => {
         dispatch(reset());
         router.push("/signin");
     }
-
-    // useEffect(()=>{
-    //     const fetchPosts = async()=>{
-    //         const res = await axios.get(`${base_url}/api/post/getpost${user._id}`);
-    //         setPosts(res.data.result);
-    //     }
-    //     fetchPosts();
-    // })
     
   return (
     <div className={style.frame}>

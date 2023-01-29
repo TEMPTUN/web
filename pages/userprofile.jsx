@@ -1,15 +1,26 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useState } from 'react'
+import { useSelector } from 'react-redux';
+import style from '../styles/updateProfile.module.scss';
+import { all } from 'axios';
+// import style from 'styled-components';
 
-const Experience  = ()=>{
+const Experience  = ({setForm,setAllData,allData})=>{
   const {register,handleSubmit,formState: { errors }} = useForm();
-  const exper = async(data)=>{
-    console.log(data);
+  const experience = async(data)=>{
+    setForm("");
+    setAllData((prev)=>({
+      ...prev,
+      Experience:[
+        ...allData.Experience,
+        data
+      ]
+    }))
   }
   return (
-    <div>
-        <form onSubmit={()=>handleSubmit(exper)}>
+    <div className={style.updateFrame}>
+        <form onSubmit={handleSubmit(experience)}>
           <input type="text" placeholder="company name" {...register("companyname")}></input>
           <input type="text" placeholder="position" {...register("position")}></input>
           <select {...register("emplotype")}>
@@ -26,14 +37,21 @@ const Experience  = ()=>{
   )
 }
 
-const Education = ()=>{
+const Education = ({setForm,setAllData,allData})=>{
   const {register,handleSubmit,formState: { errors }} = useForm();
   const educ=async(data)=>{
-    console.log(data);
+    setForm("");
+    setAllData((prev)=>({
+      ...prev,
+      Education:[
+        ...allData.Education,
+        data
+      ]
+    }))
   }
   return (
     <div>
-        <form onSubmit={()=>handleSubmit(educ)}>
+        <form onSubmit={handleSubmit(educ)}>
           <input type="text" placeholder="school name" {...register("schoolname")}></input>
           <input type="text" placeholder="degree" {...register("degree")}></input>
           <input type="text" placeholder="start year" {...register("startyear")}></input>
@@ -44,100 +62,159 @@ const Education = ()=>{
   )
 }
 
-const Skill = ()=>{
-  return (
-    <div>Skill</div>
-  )
-}
-
-const Project = ()=>{
-  return (
-    <div>Project</div>
-  )
-}
-
-const Link = ()=>{
+const Skill = ({setForm,setAllData,allData})=>{
   const {register,handleSubmit,formState: { errors }} = useForm();
-  const onsubmit = async(e,data)=>{
-    e.preventDefault();
-    console.log(data);
+  const onsubmit = (data)=>{
+    if(data.skill===""){
+      return;
+    }
+    setAllData((prev)=>({
+      ...prev,
+      Skill:[
+        ...allData.Skill,
+        data.skill,
+      ]
+    }))
+    setForm("");
   }
   return (
-    <div>
-      <form onSubmit={(e)=>{handleSubmit(e,onsubmit)}}>
-        <input type="text" placeholder="github link" {...register("github")}></input>
-        <input type="text" placeholder="linkedin link" {...register("linkedin")}></input>
-        <input type="text" placeholder="instagram link" {...register("instagram")}></input>
-        <button type='submit'>add</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(onsubmit)}>
+      <input type="text" placeholder="skill" {...register("skill")}></input>
+      <button type='submit'>add</button>
+    </form>
+  )
+}
+
+const Project = ({setForm,setAllData,allData})=>{
+  const {register,handleSubmit,formState: { errors }} = useForm();
+   
+  const onsubmit = (data)=>{
+    if(data.link===""){
+      return;
+    }
+    setAllData((prev)=>({
+      ...prev,
+      Project:[
+        ...allData.Project,
+        {link:data.link,description:data.desc},
+      ]
+    }))
+    setForm("");
+  }
+  return (
+    <form onSubmit={handleSubmit(onsubmit)}>
+      <input type="text" placeholder="Description" {...register("description")}></input>
+      <input type="text" placeholder="link" {...register("link")}></input>
+      <button type='submit'>add</button>
+    </form>
+  )
+}
+
+const Link = ({setForm,setAllData,allData})=>{ 
+  const {register,handleSubmit,formState: { errors }} = useForm();
+  const onsubmit = async(data)=>{
+    if(data.link===""){
+      return;
+    }
+    setAllData((prev)=>({
+      ...prev,
+      Links:[
+        ...allData.Links,
+        {platform:data.platform,
+        link:data.link},
+      ]
+    }))
+    setForm("");
+  }
+  return (
+
+    <form onSubmit={handleSubmit(onsubmit)}>
+      <input type="text" placeholder="Platform" {...register("platform")}></input>
+      <input type="text" placeholder="link" {...register("link")}></input>
+      <button type='submit'>add</button>
+    </form>
+    
   )
 }
 
 
 const userprofile = () => {
-  const [exper,setexper] = useState(false);
+  const user = useSelector((state)=>state.user);
+  const [form,setForm] = useState("");
+  const [allData,setAllData] = useState({
+    Personal:null,
+    Experience:[],
+    Education:[],
+    Skill:[],
+    Project:[],
+    Links:[],
+  });
   
-  const {register,handleSubmit,formState: { errors }} = useForm();
-  const handleexpert = (e)=>{
-    console.log(e);
-    // if(e==="experince"){
-    //   setexperience(!exper);
-    // }
-    // else if(e==="education"){
-    //   seteducation(!exper);
-    // }
-    // else if(e==="Skills"){
-    //   setskill(!exper);
-    // }
-    // else if(e==="projects"){
-    //   setproject(!exper);
-    // }
-    // else if(e==="links"){
-    //   setlink(!exper);
-    // }
-  } 
-  const onSubmit = async(e,data) => {
-    e.preventDefault();
-    console.log(data);
+  const {register,handleSubmit,formState: { errors }} = useForm(); 
+
+  const onSubmit = async(data) => {
+    setAllData((prev)=>({
+      ...prev,
+      Personal:[
+         data,
+      ]
+    }))
+    console.log(allData); // will get all DAta here
+
   }
   return (
-    <div>
-         
-        <form onSubmit={()=>handleSubmit(e,onSubmit)}>
-            <input type="text" placeholder="name" {...register("name",{required: true})}></input>
-            <input type="text" placeholder="email" {...register("email",{required: true})}></input>
-            <input type="text" placeholder="headline" {...register("headline")}></input>
-            <input type="text" placeholder='location' {...register("location")}></input>
-            <button type='submit'>submit</button>
+    
+    <div className={style.updateFrame}>
+        <form onSubmit={handleSubmit(onSubmit)} className={style.profileForm}>
+            <div>
+              {user.image===null && <img src={'/images/user.svg'}></img>}
+              {user.image!==null && <img src={user.image}></img>}
+              <label hrmlfor="image">Upload</label>
+              <input type="file" placeholder="image" id="image" {...register("image")} hidden></input>  
+            </div>
+            <div>
+              <label for="name">Full Name</label>
+              <input type="text" placeholder="name" id="name" {...register("name",{required: true})}></input>
+            </div>
+            <div>
+              <label for="name">Email</label>
+              <input type="text" placeholder="email" {...register("email",{required: true})}></input>
+            </div>
+            <div>
+              <label for="name">HeadLine</label>
+              <input type="text" placeholder="Ex: WEB DEVELOPER | DANCER | ACTOR" {...register("headline")}></input>           
+            </div>
+            <button type='submit' >submit</button>
         </form>
-        {/* <div>
-            <h3>Experience</h3>
-            <label onClick={()=>handleexpert("experince")}>+</label>
-            {experience && <Experience/>}
+        <div>
+          <h3>Experience</h3>
+          <label onClick={()=>setForm("experience")}>+</label>
+          {form==="experience" && <Experience setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
         <div>
             <h3>Education</h3>
-            <label onClick={()=>handleexpert("education")}>+</label>
-            {education && <Education/>}
+            <label onClick={()=>setForm("education")}>+</label>
+            {form==="education" && <Education setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
         <div>
             <h3>Skills</h3>
-            <label onClick={()=>handleexpert("Skills")}>+</label>
-            {skill && <Skill/>}
+            <label onClick={()=>setForm("skill")} >+</label>
+            {form==="skill" && <Skill setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
         <div>
             <h3>Projects</h3>
-            <label onClick={()=>handleexpert("projects")}>+</label>
-            {project && <Project/>}
+            <label onClick={()=>setForm("project")}>+</label>
+            {form==="project" && <Project setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
       <div>
           <h3>Links</h3>
-          <label onClick={()=>handleexpert("links")}>+</label>
-          {link && <Link/>} */}
-      {/* </div> */}
+          <label onClick={()=>setForm("link")}>+</label>
+          {form==="link" && <Link setForm={setForm} setAllData={setAllData } allData={allData}/>}
+      </div>
     </div>
   )
 }
 
 export default userprofile
+ 
+ 
