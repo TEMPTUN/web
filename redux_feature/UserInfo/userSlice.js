@@ -5,6 +5,7 @@ const initialState = {
   name:null,
   email:null,
   bio:null,
+  image:null,
   likeId:[],
   categoryId:[],
   friendId:[],
