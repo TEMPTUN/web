@@ -41,7 +41,7 @@ const Index = () => {
   const handleCollab = async(id)=>{
     try{
       if(collabed.has(id)===false){
-        await axios.put(`${base_url}/api/details/user`,{id:user._id,friendId:id});
+        await axios.put(`${base_url}/api/details/user`,{id:user._id,friendId:id});  //check it from here
         setCollabed(new Set([...collabed,id]));
       }else{
         console.log(friends);
@@ -64,10 +64,10 @@ const Index = () => {
             }
             return (
               <div key={idx+"sug"} className={style.box}>
-                <img src={sug.image}></img>
-                <h4>{sug.name}</h4>
-                {!collabed.has(sug._id) && <button onClick={(e)=>handleCollab(sug._id)}>Collab</button>}
-                {collabed.has(sug._id) && <button >Friends</button>}  
+                <img src={sug?.image}></img>
+                <h4>{sug?.name}</h4>
+                {!collabed.has(sug?._id) && <button onClick={(e)=>handleCollab(sug?._id)}>Collab</button>}
+                {collabed.has(sug?._id) && <button >Friends</button>}  
               </div>
             )  
           })

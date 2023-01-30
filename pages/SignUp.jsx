@@ -21,13 +21,14 @@ const signup = ()=> {
     const[ppic,setppic]=useState(false);
 
     const onSubmit = async(data) => {
-      const base64 = await convertToBase64(data.profilePic[0]);
-      data.profilePic = base64;
+      // const base64 = await convertToBase64(data.profilePic[0]);
+      // data.profilePic = base64;
       try {
         const res= await axios.post(`${base_url}/api/details/user`,data);
         localStorage.setItem("userId", res.data.id); 
         data._id=res.data.id; //adding over form data
         dispatch(CreateId(data));
+        router.push("/categories");
       } catch (error) {
         console.log("------------SignupError-----------------------------");
         console.log(error);

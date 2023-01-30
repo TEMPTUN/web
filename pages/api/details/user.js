@@ -24,17 +24,38 @@ const handler = async(req, res)=> {
 
     // USER DATA UPDATED WITH POSTS,CATEGORYS AND FRIENDS
 
-    else if(req.method === 'PUT'){
+     if(req.method === 'PUT'){
         try{
             const id = req.body.id;
-            const selectedCats = req.body?.selectedCats;
-            const postIds =  req.body?.postIds;
-            const friendId = req.body?.friendId;
+            const allData = req.body.allData===undefined?[]:req.body.allData;
+            const selectedCats = req.body.selectedCats===undefined?[]:req.body.selectedCats;
+            const postIds =  req.body.postIds===undefined?[]:req.body.postIds;
+            const friendId = req.body.friendId===undefined?[]:req.body.friendId;
+            const Experience = allData.Experience===undefined?[]:allData.Experience;
+            const Education = allData.Education===undefined?[]:allData.Education;
+            const Projects = allData.Projects===undefined?[]:allData.Projects;
+            const Skills = allData.Skills===undefined?[]:allData.Skills;
+            const Links = allData.Links===undefined?[]:allData.Links;
+            const Personal = allData.Personal===undefined?[]:allData.Personal;
             User.findByIdAndUpdate(id,{
-                $push:{"categoryId":{$addToSet:{$each:selectedCats}},"PostId":{$addToSet:postIds},"friendId":{$addToSet:friendId}}},(err,doc)=>{
-                    if(err){
-                        res.status(400).json({message:"mongo error occured"});
+                    $push:{
+                        "categoryId":{$each:selectedCats},
+                        "PostId":{$each:postIds},
+                        "friendId":{$each:friendId},
+                        "experienceId":{$each:Experience},
+                        "educationId":{$each:Education},
+                        "skillId":{$each:Skills},
+                        "projectId":{$each:Projects},
+                        "linkId":{$each:Links},
+                        "location":Personal?.location,
+                        "headline":Personal?.headline,
+                        "image":Personal?.profilePic,
+                        "name":Personal?.name,
                     }
+            },(err,doc)=>{
+                if(err){
+                    res.status(400).json({message:err.message});
+                }
             })
                 res.status(200).json({message:"success"});
             }catch(err){

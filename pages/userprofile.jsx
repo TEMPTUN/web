@@ -3,8 +3,10 @@ import { useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { useSelector } from 'react-redux';
 import style from '../styles/updateProfile.module.scss';
-import { all } from 'axios';
+import axios from 'axios';
+import base_url from '../utils/connection';
 // import style from 'styled-components';
+// import axios from 'axios';
 
 const Experience  = ({setForm,setAllData,allData})=>{
   const {register,handleSubmit,formState: { errors }} = useForm();
@@ -29,8 +31,8 @@ const Experience  = ({setForm,setAllData,allData})=>{
             <option value="freelance">Freelance</option>
             <option value="internship">Internship</option>
           </select>
-          <input type="text" placeholder="start year" {...register("startyear")}></input>
-          <input type="text" placeholder="end year" {...register("endyear")}></input>
+          <input type="text" placeholder="start year" {...register("experstartyear")}></input>
+          <input type="text" placeholder="end year" {...register("experendyear")}></input>
           <button type='submit'>add</button>
         </form>
     </div>
@@ -54,8 +56,8 @@ const Education = ({setForm,setAllData,allData})=>{
         <form onSubmit={handleSubmit(educ)}>
           <input type="text" placeholder="school name" {...register("schoolname")}></input>
           <input type="text" placeholder="degree" {...register("degree")}></input>
-          <input type="text" placeholder="start year" {...register("startyear")}></input>
-          <input type="text" placeholder="end year" {...register("endyear")}></input>
+          <input type="text" placeholder="start year" {...register("edustartyear")}></input>
+          <input type="text" placeholder="end year" {...register("eduendyear")}></input>
           <button type='submit'>add</button>
         </form>
     </div>
@@ -103,8 +105,9 @@ const Project = ({setForm,setAllData,allData})=>{
   }
   return (
     <form onSubmit={handleSubmit(onsubmit)}>
+      <input type="text" placeholder="title" {...register("title")}></input>
       <input type="text" placeholder="Description" {...register("description")}></input>
-      <input type="text" placeholder="link" {...register("link")}></input>
+      <input type="text" placeholder="link" {...register("projectlink")}></input>
       <button type='submit'>add</button>
     </form>
   )
@@ -125,6 +128,7 @@ const Link = ({setForm,setAllData,allData})=>{
       ]
     }))
     setForm("");
+    console.log(allData)
   }
   return (
 
@@ -159,17 +163,20 @@ const userprofile = () => {
          data,
       ]
     }))
-    console.log(allData); // will get all DAta here
+   // will get all DAta here
+    // console.log(allData)
+    await axios.put(`${base_url}/api/details/user`,{allData,id:user._id});
 
   }
   return (
     
     <div className={style.updateFrame}>
+      {console.log(allData)}
         <form onSubmit={handleSubmit(onSubmit)} className={style.profileForm}>
             <div>
               {user.image===null && <img src={'/images/user.svg'}></img>}
               {user.image!==null && <img src={user.image}></img>}
-              <label hrmlfor="image">Upload</label>
+              <label htmlfor="image">Upload</label>
               <input type="file" placeholder="image" id="image" {...register("image")} hidden></input>  
             </div>
             <div>
