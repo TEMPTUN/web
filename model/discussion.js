@@ -21,7 +21,7 @@ const discussion = new Schema({
         type:Date,
         default:Date.now
     }
-});
+}, { timestamps: true });
 
 const Discussion =  models.Discussion || model("Discussion",discussion);
 

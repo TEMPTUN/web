@@ -1,52 +1,47 @@
-import axios from 'axios';
 import React, { useState } from 'react'
-import { useForm } from 'react-hook-form';
-import base_url from '../utils/connection'
-import { useRouter } from 'next/router'
 import {useSelector,useDispatch } from 'react-redux';
-import {updateId} from '../redux_feature/UserInfo/userSlice' 
 import { useEffect } from 'react';
-import Live from '../component/Livechat/Live';
+import { Timestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc,collection } from 'firebase/firestore';
+import { addDoc } from 'firebase/firestore';
+import { db } from '../utils/fireconnect';
 
 const Home = ()=> {
-  const [message, setMessage] = useState("");
-  const [username, setUsername] = useState("");
-  const [allMessages, setAllMessages] = useState([]);
-  const [comment,setComment] = useState([]);
-
+  const [message,setMessage] = useState([]);
+  const [write,setwrite] = useState("");
+  const user = useSelector((state)=>state.user);
   
+  useEffect(()=>{
+    // const getmessage = async()=>{
+    //   const docRef = doc(db, "messages");
+    //   const docSnap = await getDoc(docRef);
+    //   if (docSnap.exists()) {
+    //     setMessage(docSnap.data().text);
+    //   }
+    // }
+    // getmessage();
+  },[])
+
+  const handlesubmit=async()=>{
+    const doc = await addDoc(collection(db, "messages"), {
+      text:write,
+      messager_id:user._id,
+      messager_name:user?.name||null,
+      messager_image:user?.image||null,
+      createdAt:Timestamp.fromDate(new Date()),
+    });
+    console.log(doc.id);
+    console.log(new Date().toDateString());
+  }
 
   return (
     <>
-      <div>
-      <h1>Chat app</h1>
-      <h1>Enter a username</h1>
-
-      <input value={username} onChange={(e) => setUsername(e.target.value)} />
-
-      <br />
-      <br />
-
-      <div>
-        {comment.map(({ username, message }, index) => (
-          <div key={index}>
-            {username}: {message}
-          </div>
-        ))}
-
-        <br />
-
-        {/* <form onSubmit={handleSubmit}>
-          <input
-            name="message"
-            placeholder="enter your message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            autoComplete={"off"}
-          />
-        </form> */}
-      </div>
-    </div>
+      {/* {message?.map((msg)=>{
+        return <div>{msg.text}</div>
+      })
+      } */}
+      <input onChange={(e)=>setwrite(e.target.value)}></input>
+      <button onClick={()=>handlesubmit()}>submit</button>
     </>
   )
 }

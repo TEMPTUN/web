@@ -7,6 +7,7 @@ import { useState } from 'react';
 import {category_Data,allCategory} from '../category/category_data';
 import axios from 'axios';
 import base_url from '../../utils/connection';
+import { addDoc, collection } from 'firebase/firestore';
 
 
 const CreateDiscussion = ({setOpen}) => {
@@ -67,8 +68,9 @@ const CreateDiscussion = ({setOpen}) => {
             category:Array.from(selectedCats),
         }
         console.log(payload);
-        const res = await axios.post(`${base_url}/api/post/discusspost`,payload);
-		console.log(res);
+        // const res = await axios.post(`${base_url}/api/post/discusspost`,payload);
+		const discussref= await addDoc(collection(db, "discussion"), payload);
+		console.log(discussref.id);
         await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.category,DisscussionId:res.data});
          
     }

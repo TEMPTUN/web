@@ -5,6 +5,7 @@ import axios from 'axios';
 import base_url from '../../utils/connection';
 import Post from './Post';
 import { doc,getDoc, onSnapshot } from "firebase/firestore";
+import { orderBy } from 'firebase/firestore';
 import { db } from "../../utils/fireconnect";
 import useSWR from 'swr';
 
@@ -24,6 +25,7 @@ const Feed = () => {
     await Promise.all(arr.map(async(id)=>{
       const docRef = doc(db, "posts", id);
       const docSnap = await getDoc(docRef);
+      console.log(docSnap);
       if(docSnap.exists()){
         const res = docSnap.data();
         res.id = id;

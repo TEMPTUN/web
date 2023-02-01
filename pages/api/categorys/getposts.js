@@ -7,7 +7,7 @@ export default async function handler(req,res){
 
         const {catname} = req.query;
         try {
-            const result=await Category.find({name:catname}).select("postIds");
+            const result=await Category.find({name:catname}).select("postIds").sort({'createdAt':-1});
             res.status(200).json({success:true,result});
         } catch (error) {
             res.status(500).json({success:false,message:error.message});

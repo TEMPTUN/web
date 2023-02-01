@@ -6,7 +6,7 @@ const handler = async(req,res)=>{
         // FETCHING USERID FOR GIVEN CATEGORY
     
         const {category} = req.query;
-        const result= await Category.find({"name":category}).select("userId");
+        const result= await Category.find({"name":category}).select("userId").sort({'createdAt':-1});
         if(result){
             res.status(200).json({ success:true,result});
         }else{
@@ -18,7 +18,7 @@ const handler = async(req,res)=>{
         // FETCHING POSTID FOR GIVEN CATEGORY
 
         const {category} = req.query;
-        const result= await Category.find({"name":category}).select("postIds");
+        const result= await Category.find({"name":category}).select("postIds").sort({'createdAt':-1});
         if(result){
             res.status(200).json({ success:true,result});
         }else{
@@ -29,7 +29,7 @@ const handler = async(req,res)=>{
         // FETCHING GROUPID FOR GIVEN CATEGORY
 
         const {category} = req.query;
-        const result= await Category.find({"name":category}).select("GroupsIds");
+        const result= await Category.find({"name":category}).select("GroupsIds").sort({'createdAt':-1});
         if(result){
             res.status(200).json({ success:true,result});
         }else{
@@ -37,7 +37,7 @@ const handler = async(req,res)=>{
         }
     }else if(req.method==='GET'&& req.query.other==='DiscussionIds'){
         const {category} = req.query;
-        const resp= await Category.find({"name":category}).select("DisscussionId");
+        const resp= await Category.find({"name":category}).select("DisscussionId").sort({'createdAt':-1});
         if(resp){
             res.status(200).json({ success:true,resp});
         }else{

@@ -146,7 +146,7 @@ const userprofile = () => {
   const user = useSelector((state)=>state.user);
   const [form,setForm] = useState("");
   const [allData,setAllData] = useState({
-    Personal:null,
+    Personal:{},
     Experience:[],
     Education:[],
     Skill:[],
@@ -159,14 +159,16 @@ const userprofile = () => {
   const onSubmit = async(data) => {
     setAllData((prev)=>({
       ...prev,
-      Personal:[
-         data,
-      ]
+      Personal:{
+         name:data.name,
+          email:data.email,
+          headline:data.headline,
+      }
     }))
    // will get all DAta here
-    // console.log(allData)
-    await axios.put(`${base_url}/api/details/user`,{allData,id:user._id});
-
+    console.log(allData)
+    const res=await axios.put(`${base_url}/api/details/user`,{allData,id:user._id});
+    console.log(res.data);
   }
   return (
     
