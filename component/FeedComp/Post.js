@@ -50,41 +50,40 @@ const Post = ({post}) => {
   return (
     <>
         
-                <div className={style.feed}>
-                <div className={style.info}>
-                    <img src={postData?.image}></img>
-                    <h3>{postData?.name}</h3>
-                </div>
+        <div className={style.feed}>
+        <div className={style.info}>
+            <img src={postData?.image}></img>
+            <h3>{postData?.name}</h3>
+        </div>
+        {
+        (post?.url || post?.media) && (
+            <div className={style.media} >
+                {postData.url && <ReactPlayer  className="react-player" playing={true} controls={true} width={"100%"} url={postData.url}/>}
+                {postData.media && ReactPlayer.canPlay(postData.media)===false && <img src={ post.media} alt="" />}
+                {postData.media && ReactPlayer.canPlay(postData.media) && <ReactPlayer  className="react-player" onClick={()=>{console.log("video")}} playing={true} controls={true} width={"100%"} url={post.media} />}
+            </div>
+        )}
                 <div className={style.description} onClick={()=>setComment(false)}>{postData?.description}</div>
-                {
-                (post?.url || post?.media) && (
-                    <div className={style.media} >
-                        {postData.url && <ReactPlayer  className="react-player" playing={true} controls={true} width={"100%"} url={postData.url}/>}
-                        {postData.media && ReactPlayer.canPlay(postData.media)===false && <img src={ post.media} alt="" />}
-                        {postData.media && ReactPlayer.canPlay(postData.media) && <ReactPlayer  className="react-player" onClick={()=>{console.log("video")}} playing={true} controls={true} width={"100%"} url={post.media} />}
-                    </div>
-                )}
-                <div className={style.social}>
-                    <div>
-                        <img src={'/images/like.svg'} onClick={()=>handleLike(postData.id)}></img> 
-                        {postData?.likeId?.length}    
-                    </div>
-                   
-                    <div onClick={()=>handleFullPost()}>
-                    <img src="/images/comment-icon.svg" alt="" />
-                        {postData?.commentId?.length}    
-                    </div>
-                </div>
-                <hr style={{margin: "8px 0px"}}></hr>
-                </div> 
-                <AnimatePresence>
-                {
-                    openComment===true &&
-                    (
-                        <Comment post={postData} setComment={setComment} openComment={openComment}/>
-                    ) 
-                }
-                  </AnimatePresence>
+        <div className={style.social}>
+            <div>
+                <img src={'/images/like.svg'} onClick={()=>handleLike(postData.id)}></img> 
+                {postData?.likeId?.length}    
+            </div>
+            
+            <div onClick={()=>handleFullPost()}>
+            <img src="/images/comment-icon.svg" alt="" />
+                {postData?.commentId?.length}    
+            </div>
+        </div>
+        </div> 
+        <AnimatePresence>
+        {
+            openComment===true &&
+            (
+                <Comment post={postData} setComment={setComment} openComment={openComment}/>
+            ) 
+        }
+            </AnimatePresence>
     </>
   )
 }
