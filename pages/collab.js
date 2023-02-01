@@ -13,6 +13,12 @@ const collab = () => {
           <span style={{color:open==="Group"?"red":"white"}} onClick={()=>setOpen("Group")}>Groups</span>
           <span style={{color:open==="Discuss"?"red":"white"}}  onClick={()=>setOpen("Discuss")}>Discussion</span>
         </div>
+
+        <div className={style.options}>
+          <span>Sort</span>
+          <span>Filter</span>
+          <img src={'images/search.png'}></img>
+        </div>
         <div className={style.optionBox}>
           {open==="Group" &&<Group/>}
           {open==="Discuss" &&<Discussion/>}

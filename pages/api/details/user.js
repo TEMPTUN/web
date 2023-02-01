@@ -29,8 +29,8 @@ const handler = async(req, res)=> {
             const id = req.body.id;
             const allData = req.body.allData===undefined?[]:req.body.allData;
             const selectedCats = req.body.selectedCats===undefined?[]:req.body.selectedCats;
-            const postIds =  req.body.postIds===undefined?[]:req.body.postIds;
-            const friendId = req.body.friendId===undefined?[]:req.body.friendId;
+            const postIds =  req.body.postIds===undefined?[]:[req.body.postIds];
+            const friendId = req.body.friendId===undefined?[]:[req.body.friendId];
             const Experience = allData.Experience===undefined?[]:allData.Experience;
             const Education = allData.Education===undefined?[]:allData.Education;
             const Projects = allData.Projects===undefined?[]:allData.Projects;
