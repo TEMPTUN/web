@@ -25,7 +25,7 @@ export const UserSlice = createSlice({
           categoryId:action.payload.categoryId,
           likeId:action.payload.LikeId,
           image:  action.payload.image,
-          friendId: [...action.payload?.friendId],
+          friendId: [...action?.payload?.friendId],
           PostId: action.payload.PostId,
         }
       },

@@ -13,7 +13,7 @@ const Index = () => {
       let arr= new Set();
       await Promise.all(user.categoryId.map(async(cat)=>{
           const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=friendId`);
-          res.data.result[0].userId.map((id)=>{
+          res.data.result[0]?.userId.map((id)=>{
             if(user.friendId.includes(id)===false){
               arr.add(id);
             }
@@ -29,7 +29,7 @@ const Index = () => {
   })
   
   if(error){
-    {console.log(error)}
+    {console.log(error, user._id)}
   return <h1>Error</h1>
   }
 

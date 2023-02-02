@@ -8,6 +8,7 @@ import {category_Data,allCategory} from '../category/category_data';
 import axios from 'axios';
 import base_url from '../../utils/connection';
 import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../../utils/fireconnect';
 
 
 const CreateDiscussion = ({setOpen}) => {
@@ -65,13 +66,13 @@ const CreateDiscussion = ({setOpen}) => {
             image:user.image,
             title:groupData.title,
             description:groupData.description,
+			messageId:[],
             category:Array.from(selectedCats),
         }
         console.log(payload);
         // const res = await axios.post(`${base_url}/api/post/discusspost`,payload);
 		const discussref= await addDoc(collection(db, "discussion"), payload);
-		console.log(discussref.id);
-        await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.category,DisscussionId:res.data});
+        await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.category,DisscussionId:discussref.id});
          
     }
 
