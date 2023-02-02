@@ -16,6 +16,7 @@ import { useState } from 'react'
         await Promise.all(user.categoryId.map(async(cat)=>{
             const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=groupIds`);
             if(res.data.result.length!==0)
+                if(res.data.result.length!==0)
                 arr.push(...res.data.result[0]?.GroupsIds);
         }))
         let groupPost =[];
