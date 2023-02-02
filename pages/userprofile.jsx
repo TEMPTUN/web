@@ -1,10 +1,12 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useState ,useEffect} from 'react'
 import { useSelector } from 'react-redux';
 import style from '../styles/updateProfile.module.scss';
 import axios from 'axios';
 import base_url from '../utils/connection';
+import { motion } from 'framer-motion';
+// import { useSelector } from 'react-redux';
 // import style from 'styled-components';
 // import axios from 'axios';
 
@@ -21,19 +23,19 @@ const Experience  = ({setForm,setAllData,allData})=>{
     }))
   }
   return (
-    <div className={style.updateFrame}>
+    <div className={style.experienceFrame}>
         <form onSubmit={handleSubmit(experience)}>
-          <input type="text" placeholder="company name" {...register("companyname")}></input>
-          <input type="text" placeholder="position" {...register("position")}></input>
-          <select {...register("emplotype")}>
+          <input style={{width:"100%"}} type="text" placeholder="company name" {...register("companyname")}></input>
+          <input  style={{width:"60%"}} type="text" placeholder="position" {...register("position")}></input>
+          <select {...register("emplotype")} style={{width:"35%",height:"40px",marginLeft:"10px"}}>
             <option value="fulltime" >Full Time</option>
             <option value="parttime">Part Time</option>
             <option value="freelance">Freelance</option>
             <option value="internship">Internship</option>
           </select>
-          <input type="text" placeholder="start year" {...register("experstartyear")}></input>
-          <input type="text" placeholder="end year" {...register("experendyear")}></input>
-          <button type='submit'>add</button>
+          <input style={{width:"45%",height:"30px"}} type="text" placeholder="start year" {...register("edustartyear")}></input>
+          <input style={{width:"45%",height:"30px",marginLeft:"20px"}} type="text" placeholder="end year" {...register("eduendyear")}></input>
+          <button style={{width:"80%",margin:"auto"}} type='submit'>Add</button>
         </form>
     </div>
   )
@@ -52,13 +54,13 @@ const Education = ({setForm,setAllData,allData})=>{
     }))
   }
   return (
-    <div>
+    <div className={style.educationFrame}>
         <form onSubmit={handleSubmit(educ)}>
-          <input type="text" placeholder="school name" {...register("schoolname")}></input>
-          <input type="text" placeholder="degree" {...register("degree")}></input>
-          <input type="text" placeholder="start year" {...register("edustartyear")}></input>
-          <input type="text" placeholder="end year" {...register("eduendyear")}></input>
-          <button type='submit'>add</button>
+          <input style={{width:"100%"}} type="text" placeholder="school name" {...register("schoolname")}></input>
+          <input style={{width:"100%"}} type="text" placeholder="degree" {...register("degree")}></input>
+          <input style={{width:"45%",height:"30px"}} type="text" placeholder="start year" {...register("edustartyear")}></input>
+          <input style={{width:"45%",height:"30px",marginLeft:"20px"}} type="text" placeholder="end year" {...register("eduendyear")}></input>
+          <button style={{width:"80%"}} type='submit'>add</button>
         </form>
     </div>
   )
@@ -80,9 +82,9 @@ const Skill = ({setForm,setAllData,allData})=>{
     setForm("");
   }
   return (
-    <form onSubmit={handleSubmit(onsubmit)}>
-      <input type="text" placeholder="skill" {...register("skill")}></input>
-      <button type='submit'>add</button>
+    <form onSubmit={handleSubmit(onsubmit)} style={{width:"90%"}}>
+      <input style={{width:"70%",height:"40px",padding:"4px"}}type="text" placeholder="skill" {...register("skill")}></input>
+      <button  style={{width:"20%",height:"40px",margin:"5%"}}type='submit'>add</button>
     </form>
   )
 }
@@ -98,18 +100,20 @@ const Project = ({setForm,setAllData,allData})=>{
       ...prev,
       Project:[
         ...allData.Project,
-        {link:data.link,description:data.desc},
+        {title:data.title,description:data.desc,link:data.projectlink},
       ]
     }))
     setForm("");
   }
   return (
-    <form onSubmit={handleSubmit(onsubmit)}>
-      <input type="text" placeholder="title" {...register("title")}></input>
-      <input type="text" placeholder="Description" {...register("description")}></input>
-      <input type="text" placeholder="link" {...register("projectlink")}></input>
-      <button type='submit'>add</button>
+    <div className={style.projectFrame}>
+    <form onSubmit={handleSubmit(onsubmit)} style={{width:"90%",display:"flex",flexWrap:"wrap",justifyContent:"center"}}>
+      <input style={{width:"100%",height:"40px"}}type="text" placeholder="title" {...register("title")}></input>
+      <input  style={{width:"100%",height:"40px"}} type="text" placeholder="Description" {...register("description")}></input>
+      <input  style={{width:"100%",height:"40px"}} type="text" placeholder="link" {...register("projectlink")}></input>
+      <button style={{width:"50%"}}type='submit'>add</button>
     </form>
+    </div>
   )
 }
 
@@ -131,12 +135,14 @@ const Link = ({setForm,setAllData,allData})=>{
     console.log(allData)
   }
   return (
-
-    <form onSubmit={handleSubmit(onsubmit)}>
-      <input type="text" placeholder="Platform" {...register("platform")}></input>
-      <input type="text" placeholder="link" {...register("link")}></input>
-      <button type='submit'>add</button>
-    </form>
+    <div className={style.linkFrame}>
+      <form onSubmit={handleSubmit(onsubmit)}>
+      <input style={{width:"80%"}} type="text" placeholder="Platform" {...register("platform")}></input>
+      <input style={{width:"80%"}} type="text" placeholder="link" {...register("link")}></input>
+      <button  style={{width:"50%"}} type='submit'>add</button>
+      </form>
+    </div>
+    
     
   )
 }
@@ -146,7 +152,6 @@ const userprofile = () => {
   const user = useSelector((state)=>state.user);
   const [form,setForm] = useState("");
   const [allData,setAllData] = useState({
-    Personal:{},
     Experience:[],
     Education:[],
     Skill:[],
@@ -154,70 +159,63 @@ const userprofile = () => {
     Links:[],
   });
   
-  const {register,handleSubmit,formState: { errors }} = useForm(); 
+  const {register,handleSubmit,reset,formState: { errors }} = useForm(); 
+  useEffect(() => {
+    reset(user);
+  }, [user])
+  
 
   const onSubmit = async(data) => {
-    setAllData((prev)=>({
-      ...prev,
-      Personal:{
-         name:data.name,
-          email:data.email,
-          headline:data.headline,
-      }
-    }))
-   // will get all DAta here
     console.log(allData)
-    const res=await axios.put(`${base_url}/api/details/user`,{allData,id:user._id});
-    console.log(res.data);
+    await axios.put(`${base_url}/api/details/user`,{allData,personal:data,id:user._id});
   }
   return (
     
     <div className={style.updateFrame}>
-      {console.log(allData)}
         <form onSubmit={handleSubmit(onSubmit)} className={style.profileForm}>
             <div>
               {user.image===null && <img src={'/images/user.svg'}></img>}
               {user.image!==null && <img src={user.image}></img>}
-              <label htmlfor="image">Upload</label>
+              <label htmlFor="image">Upload</label>
               <input type="file" placeholder="image" id="image" {...register("image")} hidden></input>  
             </div>
             <div>
               <label for="name">Full Name</label>
-              <input type="text" placeholder="name" id="name" {...register("name",{required: true})}></input>
+              <input type="text"  placeholder="name" id="name" {...register("name")}></input>
             </div>
             <div>
               <label for="name">Email</label>
-              <input type="text" placeholder="email" {...register("email",{required: true})}></input>
+              <input type="text" placeholder="email" {...register("email")}></input>
             </div>
             <div>
               <label for="name">HeadLine</label>
               <input type="text" placeholder="Ex: WEB DEVELOPER | DANCER | ACTOR" {...register("headline")}></input>           
             </div>
-            <button type='submit' >submit</button>
+            <motion.button  whileTap={{scale:"0.8"}} transition={{type:"tween"}}  type='submit'>add</motion.button>
         </form>
-        <div>
+        <div className={style.boxFrame}>
           <h3>Experience</h3>
-          <label onClick={()=>setForm("experience")}>+</label>
+          <span onClick={()=>{form==="experience"?setForm(""):setForm("experience")}}>+</span>
           {form==="experience" && <Experience setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
-        <div>
+        <div className={style.boxFrame}>
             <h3>Education</h3>
-            <label onClick={()=>setForm("education")}>+</label>
+            <span onClick={()=>{form==="education"?setForm(""):setForm("education")}}>+</span>
             {form==="education" && <Education setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
-        <div>
+        <div className={style.boxFrame}>
             <h3>Skills</h3>
-            <label onClick={()=>setForm("skill")} >+</label>
+            <span onClick={()=>{form==="skill"?setForm(""):setForm("skill")}} >+</span>
             {form==="skill" && <Skill setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
-        <div>
+        <div className={style.boxFrame}>
             <h3>Projects</h3>
-            <label onClick={()=>setForm("project")}>+</label>
+            <span onClick={()=>{form==="project"?setForm(""):setForm("project")}}>+</span>
             {form==="project" && <Project setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
-      <div>
+      <div className={style.boxFrame}>
           <h3>Links</h3>
-          <label onClick={()=>setForm("link")}>+</label>
+          <span onClick={()=>{form==="link"?setForm(""):setForm("link")}}>+</span>
           {form==="link" && <Link setForm={setForm} setAllData={setAllData } allData={allData}/>}
       </div>
     </div>

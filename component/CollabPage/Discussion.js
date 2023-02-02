@@ -15,7 +15,8 @@ const Discussion = () => {
         let arr =[];
         await Promise.all(user.categoryId.map(async(cat)=>{
             const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=DiscussionIds`);
-            arr.push(...res.data.resp[0].DisscussionId);
+            if(res.data.resp.length!==0)
+                arr.push(...res.data.resp[0].DisscussionId);
         }));
         let discussPost =[];
         await Promise.all(arr.map(async(id)=>{
