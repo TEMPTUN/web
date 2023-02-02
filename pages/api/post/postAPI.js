@@ -8,7 +8,7 @@ const handler = async(req,res)=>{
         try{
             const id = req.query.id;
             if (id.match(/^[0-9a-fA-F]{24}$/)) {
-                const result = await Post.findById(id);
+                const result = await Post.findById(id).sort({'createdAt':-1});
                 res.status(200).json({result});
             }else{
                 res.status(200).json([]);

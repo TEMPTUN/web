@@ -8,7 +8,7 @@ const category = new Schema({
     GroupsIds:[{type:String,default:[]}],
     userId:[{type:String,default:[]}],
     DisscussionId:[{type:String,default:[]}],
-})
+}, { timestamps: true })
 
 const Category =  models.Category || model("Category",category);
 export default Category;

@@ -36,7 +36,7 @@ const user = new Schema({
         type:Date,
         default:Date.now
     }
-});
+}, { timestamps: true });
 
 const User =  models.User || model("User",user);
 

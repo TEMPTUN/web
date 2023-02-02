@@ -27,7 +27,7 @@ const group = new Schema({
     },
     category:[{type:String,default:[]}],
 
-});
+}, { timestamps: true });
 
 const Group = models.Group || model("Group",group);
 export default Group;
