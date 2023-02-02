@@ -29,7 +29,7 @@ const Index = () => {
   })
   
   if(error){
-    {console.log(error)}
+    {console.log(error, user._id)}
   return <h1>Error</h1>
   }
 

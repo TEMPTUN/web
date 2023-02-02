@@ -27,16 +27,18 @@ const handler = async(req, res)=> {
      if(req.method === 'PUT'){
         try{
             const id = req.body.id;
-            const allData = req.body.allData;
+            console.log(req.body.Personal);
+            const allData = req.body.allData===undefined?[]:req.body.allData;
             const selectedCats = req.body.selectedCats===undefined?[]:req.body.selectedCats;
             const postIds =  req.body.postIds===undefined?[]:[req.body.postIds];
             const friendId = req.body.friendId===undefined?[]:[req.body.friendId];
-            const Experience = allData===undefined?[]:allData.Experience;
-            const Education = allData===undefined?[]:allData.Education;
-            const Projects = allData===undefined?[]:allData.Project;
-            const Skills = allData===undefined?[]:allData.Skill;
-            const Links = allData===undefined?[]:allData.Links;
+            const Experience = allData.Experience===undefined?[]:allData.Experience;
+            const Education = allData.Education===undefined?[]:allData.Education;
+            const Projects = allData.Projects===undefined?[]:allData.Projects;
+            const Skills = allData.Skills===undefined?[]:allData.Skills;
+            const Links = allData.Links===undefined?[]:allData.Links;
             const Personal = allData.Personal===undefined?{}:allData.Personal;
+            
             User.findByIdAndUpdate(id,{
                     $push:{
                         "categoryId":{$each:selectedCats},
@@ -57,7 +59,7 @@ const handler = async(req, res)=> {
                     console.log(err);
                 }
             })
-            res.status(200).json({message:"success"});
+                res.status(200).json({message:"success"});
             }catch(err){
                 res.status(400).json({message:err.message});
             }
