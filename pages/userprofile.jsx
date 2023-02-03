@@ -6,9 +6,7 @@ import style from '../styles/updateProfile.module.scss';
 import axios from 'axios';
 import base_url from '../utils/connection';
 import { motion } from 'framer-motion';
-// import { useSelector } from 'react-redux';
-// import style from 'styled-components';
-// import axios from 'axios';
+import { StyleRegistry } from 'styled-jsx';
 
 const Experience  = ({setForm,setAllData,allData})=>{
   const {register,handleSubmit,formState: { errors }} = useForm();
@@ -164,7 +162,55 @@ const userprofile = () => {
     reset(user);
   }, [user])
   
-
+  const handleDelete = (exp,type)=>{
+    if(type==="Project"){
+      setAllData((prev)=>({
+        ...prev,
+        Project:[
+          ...prev.Project.filter((proj)=>{
+            return proj.title!==exp.title;
+          })
+        ]
+      }))
+    }else if(type==="Experience"){
+      setAllData((prev)=>({
+        ...prev,
+        Experience:[
+          ...prev.Experience.filter((expr)=>{
+            return expr.title!==exp.title;
+          })
+        ]
+      }))
+    }else if(type==="Education"){
+      setAllData((prev)=>({
+        ...prev,
+        Education:[
+          ...prev.Education.filter((expr)=>{
+            return expr.degree!==exp.degree;
+          })
+        ]
+      }))
+    }else if(type==="Links"){
+      setAllData((prev)=>({
+        ...prev,
+        Links:[
+          ...prev.Links.filter((expr)=>{
+            return expr.platform!==exp.platform;
+          })
+        ]
+      }))
+    }else if(type==="Skill"){
+      setAllData((prev)=>({
+        ...prev,
+        Skill:[
+          ...prev.Skill.filter((expr)=>{
+            return expr!==exp;
+          })
+        ]
+      }))
+    }
+   
+  }
   const onSubmit = async(data) => {
     console.log(allData)
     await axios.put(`${base_url}/api/details/user`,{allData,personal:data,id:user._id});
@@ -191,31 +237,128 @@ const userprofile = () => {
               <label for="name">HeadLine</label>
               <input type="text" placeholder="Ex: WEB DEVELOPER | DANCER | ACTOR" {...register("headline")}></input>           
             </div>
+            <div>
+              <label for="name">Location</label>
+              <input type="text" placeholder="District, State" {...register("location")}></input>           
+            </div>
             <motion.button  whileTap={{scale:"0.8"}} transition={{type:"tween"}}  type='submit'>add</motion.button>
         </form>
         <div className={style.boxFrame}>
           <h3>Experience</h3>
-          <span onClick={()=>{form==="experience"?setForm(""):setForm("experience")}}>+</span>
+          <p onClick={()=>{form==="experience"?setForm(""):setForm("experience")}}>+</p>
+          {user.experienceId.map((exp,idx)=>(
+            <div className={style.miniFrame}  key={idx+"expframe1"}>
+              <img src={"/images/desk.png"} style={{height:"65%",width:"40px"}}></img>
+              <div>
+                <h3>{exp.position}</h3>
+                <span>{exp.companyname}, {exp.emplotype}</span>
+              </div>
+              <img src={'/images/delete.svg'}></img>
+            </div>
+          ))}
+          {allData.Experience.map((exp,idx)=>(
+            <div className={style.miniFrame} key={idx+"expframe2"}>
+              <img src={"/images/desk.png"} style={{height:"65%",width:"40px"}}></img>
+              <div>
+                <h3>{exp.position}</h3>
+                <span>{exp.companyname}, {exp.emplotype}</span>
+              </div>
+              <img src={'/images/delete.svg'} onClick={()=>handleDelete(exp,"Experience")}></img>
+            </div>
+          ))}
           {form==="experience" && <Experience setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
         <div className={style.boxFrame}>
             <h3>Education</h3>
-            <span onClick={()=>{form==="education"?setForm(""):setForm("education")}}>+</span>
-            {form==="education" && <Education setForm={setForm} setAllData={setAllData} allData={allData}/>}
+            <p onClick={()=>{form==="education"?setForm(""):setForm("education")}}>+</p>
+            {user.educationId.map((exp,idx)=>(
+            <div className={style.miniFrame}  key={idx+"eduframe1"}>
+              <img src={"/images/college.svg"} style={{height:"50%",width: "45px"}}></img>
+              <div>
+                <h3>{exp.degree}</h3>
+                <span>{exp.schoolname}, {exp.edustartyear}-{exp.eduendyear}</span>
+              </div>
+              <img src={'/images/delete.svg'}></img>
+            </div>
+            ))}
+             {allData.Education.map((exp,idx)=>(
+            <div className={style.miniFrame} key={idx+"eduframe2"}>
+              <img src={"/images/college.svg"} style={{height:"50%",width: "45px"}}></img>
+              <div>
+                <h3>{exp.degree}</h3>
+                <span>{exp.schoolname}, {exp.edustartyear}-{exp.eduendyear}</span>
+              </div>
+              <img src={'/images/delete.svg'} onClick={()=>handleDelete(exp,"Education")}></img>
+            </div>
+            ))}
+            
+          {form==="education" && <Education setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
         <div className={style.boxFrame}>
             <h3>Skills</h3>
-            <span onClick={()=>{form==="skill"?setForm(""):setForm("skill")}} >+</span>
+            <p onClick={()=>{form==="skill"?setForm(""):setForm("skill")}} >+</p>
+            <div className={style.miniSkillFrame}>
+              {
+                user.skillId.map((skill,idx)=>(
+                  <span key={idx+"skillFrame1"}>{skill}<img src={'/images/delete.svg'} ></img></span>
+                ))
+              }
+               {
+                allData.Skill.map((skill,idx)=>(
+                  <span key={idx+"skillFrame2"}>{skill}<img src={'/images/delete.svg'}  onClick={()=>handleDelete(skill,"Skill")}></img></span>
+                ))
+              }
+            </div>
             {form==="skill" && <Skill setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
         <div className={style.boxFrame}>
             <h3>Projects</h3>
-            <span onClick={()=>{form==="project"?setForm(""):setForm("project")}}>+</span>
+            <p onClick={()=>{form==="project"?setForm(""):setForm("project")}}>+</p>
+            {user.projectId.map((exp,idx)=>(
+            <div className={style.miniFrame} key={idx+"projFrame1"}>
+              <img src={"/images/college.svg"} style={{height:"50%",width: "45px"}}></img>
+              <div>
+                <h3>{exp.title}</h3>
+                <span>{exp.link}</span>
+              </div>
+              <img src={'/images/delete.svg'}></img>
+            </div>
+            ))}
+             {allData.Project.map((exp,idx)=>(
+            <div className={style.miniFrame} key={idx+"projFrame2"}>
+              <img src={"/images/college.svg"} style={{height:"50%",width: "45px"}}></img>
+              <div>
+                <h3>{exp.title}</h3>
+                <span>{exp.link}</span>
+              </div>
+              <img src={'/images/delete.svg'} onClick={()=>handleDelete(exp,"Project")}></img>
+            </div>
+            ))}
             {form==="project" && <Project setForm={setForm} setAllData={setAllData} allData={allData}/>}
         </div>
       <div className={style.boxFrame}>
           <h3>Links</h3>
-          <span onClick={()=>{form==="link"?setForm(""):setForm("link")}}>+</span>
+          <p onClick={()=>{form==="link"?setForm(""):setForm("link")}}>+</p>
+          {user.linkId.map((exp,idx)=>(
+            <div className={style.miniFrame} key={idx+"linkFrame1"}>
+              <img src={"/images/college.svg"} style={{height:"50%",width: "45px"}}></img>
+              <div>
+                <h3>{exp.platform}</h3>
+                <span>{exp.link}</span>
+              </div>
+              <img src={'/images/delete.svg'}></img>
+            </div>
+            ))}
+            {allData.Links.map((exp,idx)=>(
+            <div className={style.miniFrame}  key={idx+"linkFrame2"}>
+              <img src={"/images/college.svg"} style={{height:"50%",width: "45px"}}></img>
+              <div>
+                <h3>{exp.platform}</h3>
+                <span>{exp.link}</span>
+              </div>
+              <img src={'/images/delete.svg'}></img>
+            </div>
+            ))}
           {form==="link" && <Link setForm={setForm} setAllData={setAllData } allData={allData}/>}
       </div>
     </div>
