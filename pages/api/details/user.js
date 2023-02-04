@@ -37,7 +37,7 @@ const handler = async(req, res)=> {
             const Projects = allData.Projects===undefined?[]:allData.Projects;
             const Skills = allData.Skills===undefined?[]:allData.Skills;
             const Links = allData.Links===undefined?[]:allData.Links;
-            const Personal = allData.Personal===undefined?{}:allData.Personal;
+            const Personal = Personal===undefined?{}:Personal;
             
             User.findByIdAndUpdate(id,{
                     $push:{
