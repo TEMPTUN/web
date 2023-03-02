@@ -36,9 +36,9 @@ const handler = async(req, res)=> {
             const Education = allData.Education===undefined?[]:allData.Education;
             const Projects = allData.Project===undefined?[]:allData.Project;
             const Skills = allData.Skill===undefined?[]:allData.Skill;
-            const Links = allData.Links===undefined?[]:allData.Links;
+            const Links = allData.Links===undefined?[]:allData.Link
             const Personal = req.body.personal===undefined?{}:req.body.personal;
-            console.log(Projects)
+            console.log(Projects);
             User.findByIdAndUpdate(id,{
                     $push:{
                         "categoryId":{$each:selectedCats},
