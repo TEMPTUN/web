@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    // background-color: #EEEEEE;
 }
 .createPost{
     position: absolute;
@@ -17,6 +18,7 @@
     justify-content: center;
     background-color: #929aab;
     cursor: pointer;
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
 }
 
 .groupBox{
@@ -65,10 +67,11 @@
     }
     span{
         display: block;
-        background-color: #EEEEEE;
+        background-color: #eeeeee;
         width: fit-content;
-        padding: 3px 10px;
-        margin: 3px 3px;
+        padding: 5px 10px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 10px 30px -12px inset, rgba(0, 0, 0, 0.3) 0px 15px 25px -18px inset;
+        margin: 5px 3px;
         border-radius: 15px;
     }
 }
@@ -146,4 +149,44 @@
 .submit{
     width: 60%;
     height: 50px;
+}
+
+.filterCont{
+    padding-top: 10px;
+    width: 90%;
+    height: 80px;
+}
+.filterOne{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 22px;
+    img{
+        height: 20px;
+        cursor: pointer;
+    }
+}
+.filterTwo{
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    p{
+        background-color: #929AAB;
+        padding: 5px 10px;
+        border-radius:15px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+}
+
+.chatCont{
+    height: 30px;
+    width: 200px;
+    margin: 8px 0px;
+    font-size: 18px;
+    background-color: #929AAB;
+    display: flex;
+    border-radius: 18px;
+    align-items: center;
+    padding: 8px;
 }

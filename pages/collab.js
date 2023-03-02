@@ -9,24 +9,23 @@ const collab = () => {
   return (
    
       <div className={style.collabFrame}>
-        <div className={style.collabHeader}>
-          <span style={{color:open==="Group"?"red":"white"}} onClick={()=>setOpen("Group")}>Groups</span>
-          <span style={{color:open==="Discuss"?"red":"white"}}  onClick={()=>setOpen("Discuss")}>Discussion</span>
+        <div className={style.switchbutton}>
+          <input className={style.switchbuttoncheckbox} onClick={()=>open==="Group"?setOpen("Discuss"):setOpen("Group")} type="checkbox"></input>
+          <label className={style.switchbuttonlabel} for=""><span   className={style.switchbuttonlabelspan}>Groups</span></label>
         </div>
-
-        <div className={style.options}>
-          <span>Sort</span>
-          <span>Filter</span>
-          <img src={'images/search.png'}></img>
-        </div>
+         
         <div className={style.optionBox}>
           {open==="Group" &&<Group/>}
           {open==="Discuss" &&<Discussion/>}
         </div>
          
         <Footer/>
+
+        <styled jsx>{`
+        
+        
+      `}</styled>
       </div>
-      
    
     
   )

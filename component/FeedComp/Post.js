@@ -26,7 +26,6 @@ const Post = ({post}) => {
         }});
         return unsub;
     },[])
-
     const handleFullPost = ()=>{
         setComment(!openComment);
     }

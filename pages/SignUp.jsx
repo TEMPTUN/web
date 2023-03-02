@@ -21,8 +21,6 @@ const signup = ()=> {
     const[ppic,setppic]=useState(false);
 
     const onSubmit = async(data) => {
-      // const base64 = await convertToBase64(data.profilePic[0]);
-      // data.profilePic = base64;
       try {
         const res= await axios.post(`${base_url}/api/details/user`,data);
         localStorage.setItem("userId", res.data.id); 

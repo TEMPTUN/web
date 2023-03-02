@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { doc,getDoc } from 'firebase/firestore';
 import { db } from '../../utils/fireconnect';
 import Link from 'next/link';
+import Filter from './Filter';
 
 const Discussion = () => {
     const user = useSelector((state)=>state.user);
@@ -49,6 +50,7 @@ const Discussion = () => {
   return (
     <div className={style.groupFrame}> 
         <div className={style.createPost} onClick={()=>setOpen(true)}>Ask</div>
+        <Filter opt={"Discussion"}/>
         {open===true && <CreateDiscussion setOpen={setOpen}/>}
 
         <div style={{width:"95%"}}>{
@@ -75,13 +77,13 @@ const Discussion = () => {
                             }
                             </div>     
                         </div>
-                        <div>
+                        <div className={style.chatCont}>
                             <Link href={
                                 {
                                     pathname:'/chat',
                                     query:{id:d.id}
                                 }
-                            }>start messages</Link>
+                            }>Start Discussion</Link>
                         </div>
                     </div>
                 ))
