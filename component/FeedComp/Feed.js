@@ -5,12 +5,12 @@ import axios from 'axios';
 import base_url from '../../utils/connection';
 import Post from './Post';
 import { doc,getDoc, onSnapshot } from "firebase/firestore";
-import { orderBy } from 'firebase/firestore';
 import { db } from "../../utils/fireconnect";
 import useSWR from 'swr';
 import {allCategory} from '../category/category_data'
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
+import { BarLoader } from 'react-spinners';
 
 const Explore = ({setExplore})=>{
   useEffect(()=>{
@@ -75,16 +75,23 @@ const Feed = () => {
             categoryData[cat]=new Set([res]);
           }
         });
-        console.log(categoryData);
       }
     }));
     setCatData(categoryData);
     return postIds;
 
-  })
+  },
+  {revalidateOnFocus: false,
+  revalidateOnMount:true,
+  revalidateOnReconnect: true,
+  refreshWhenOffline: true,
+  refreshWhenHidden: true,
+  refreshInterval: 0});
   if(!data){
-    // {console.log(user)}
-    return<h1> Loading...</h1>
+    return (
+    <div style={{height:"fit-content",width:"fit-content",margin:"20px auto"}}>
+        <BarLoader  color="#3675d6"  height={6} width={131} />
+    </div>);
   }
 
   return (      

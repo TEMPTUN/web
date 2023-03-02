@@ -163,16 +163,18 @@
   bottom: 0px;
   height: 50vh;
   width: 100%;
-  background: radial-gradient(94.38% 94.38% at 43.47% 0%, #323232 0%, black 100%);;
   border-radius:  50px 50px 0px 0px;
+  background-color: hsl(0, 3%, 88%);
+  box-shadow: rgb(50 50 93 / 25%) 0px 30px 60px -12px inset, rgb(0 0 0 / 30%) 0px 18px 36px -18px inset;
+  
 }
 .commcursor{
   width: 30%;
-  height: 2px;
-  border-bottom: 2.5px solid #ffc491;
+  height: 5px;
+  background-color: #393E46;
   border-radius: 20px;
-  margin: 5px auto;
   cursor: pointer;
+  margin: 9px auto 0px;
 }
 .inputFrame{
   margin: 10px auto; 
@@ -183,11 +185,11 @@
     width: 60%;
     height: 50px;
     background-color: transparent;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid #393E46;
   } 
   button{
     height: 50px;
-    width: 25%;
+    width: 30%;
     background-color: transparent;
     border-radius: 35px;
     cursor: pointer;
@@ -220,13 +222,14 @@
   min-width: 150px;
   max-width: 250px;
   width: fit-content;
-  color: #cacaca;
+  color: #393e46;
   margin-left: 5px;
   // border:1px solid red;
   padding: 4px;
 }
 .commentBox{
-  background-color: wheat;
+  background-color: #d6d6d6;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 }
 
 
