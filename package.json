@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.11",
     "@next/font": "13.1.0",
     "@react-oauth/google": "^0.5.1",
     "@reduxjs/toolkit": "^1.9.1",
@@ -29,6 +32,8 @@
     "react-hook-form": "^7.38.0",
     "react-player": "^2.11.0",
     "react-redux": "^8.0.5",
+    "react-spinner": "^0.2.7",
+    "react-spinners": "^0.13.8",
     "sass": "^1.57.1",
     "stream-chat": "^8.3.0",
     "stream-chat-react": "^10.5.0",

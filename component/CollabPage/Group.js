@@ -7,10 +7,12 @@ import { useState } from 'react'
  import base_url from '../../utils/connection'
  import useSWR from 'swr'
 import Filter from './Filter'
+import CircleLoader from "react-spinners/CircleLoader";
 
  const Group = () => {
     const [open,setOpen] = useState(false);
     const user = useSelector((state)=>state.user);
+    const [load,setLoad]=useState(true);
 
     const{data,error} = useSWR(user._id===null?null:`${base_url}/api/group/fetch`,async function fetcher(){
         let arr =[];
@@ -33,11 +35,19 @@ import Filter from './Filter'
         console.log( error);
         return<>Error</>
     }
-    if(!data){
-        return <div>Loading.........</div>;
-    }
+    
+    if (!data) return 
+    (setTimeout(()=>{
+        setLoad(false);
+      },1000)
+    )
    return (
     <div className={style.groupFrame}> 
+        {load && 
+        <div className={style.loader}>
+          <CircleLoader color="#369cd6" loading={load} size={50}  />
+          <h3>Find your Complement</h3>
+        </div>}
         <div className={style.createPost} onClick={()=>setOpen(true)}>Post</div>
         <Filter opt={"group"}/>
         {open===true && (<CreateGroup setOpen={setOpen}/>)}

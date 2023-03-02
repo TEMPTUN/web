@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import jwtDecode from "jwt-decode"
 import styles from "../styles/signin.module.scss"
 import { GoogleLogin,googleLogout } from '@react-oauth/google';
+import HashLoader from "react-spinners/HashLoader";
 
 
 const signin = () => {
@@ -16,6 +17,7 @@ const signin = () => {
     const {register,handleSubmit,formState: { errors }} = useForm();
     const Userid = useSelector((state)=>state.user._id);
     const dispatch = useDispatch();
+    const [load,setLoad]=useState(true);
 
     const onSubmit = async(data) => {
         try {
@@ -51,22 +53,36 @@ const signin = () => {
       useEffect(()=>{
         if(Userid!==null){
           router.push("/feed");
-        }
+        } 
+        setTimeout(()=>{
+          setLoad(false);
+        },4000)
       },[Userid])
 
+      const onClickFunc=()=>{
+        router.push("/signup");
+      }
+
+
     return (
+      <>
+        {load && 
+        <div className={styles.loader}>
+          <HashLoader color="#369cd6" loading={load} size={50}  />
+          <h3>Find your Complement</h3>
+        </div>}
         <div className={styles.frame}>
            <h1>Sign In</h1>
            <div className={styles.box}>
               <div className={styles.innerbox}>
-                <span>We'r are Open</span>
+                <p>Already a user?<span style={{marginLeft:"7px",fontSize:"18px",color:"blue",cursor:"pointer"}} onClick={()=>onClickFunc()}>SignUp</span></p>
                 <form onSubmit={handleSubmit(onSubmit)}>
                         <input type="email" name="email" {...register("email",{required: true})} placeholder=" Email:" className={styles.input}/>
                         <input type="password" name="password" {...register("password",{required: true,minLength: 6})} placeholder="Password" className={styles.input}/>
                     <button type="submit">Sign In</button>
                 </form>
               </div>
-              <span>OR</span>
+               <span>OR</span>
               <div>
               {<GoogleLogin
                   onSuccess={(res)=>CreateorGetUser(res)}
@@ -77,6 +93,7 @@ const signin = () => {
            
           
         </div>
+        </>
       )
     };
 

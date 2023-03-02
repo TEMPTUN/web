@@ -5,6 +5,7 @@ import { Timestamp } from 'firebase/firestore';
 import { doc, getDoc, setDoc,collection } from 'firebase/firestore';
 import { addDoc } from 'firebase/firestore';
 import { db } from '../utils/fireconnect';
+import Signup from './signup';
 
 const Home = ()=> {
   const [message,setMessage] = useState([]);
@@ -36,12 +37,7 @@ const Home = ()=> {
 
   return (
     <>
-      {/* {message?.map((msg)=>{
-        return <div>{msg.text}</div>
-      })
-      } */}
-      <input onChange={(e)=>setwrite(e.target.value)}></input>
-      <button onClick={()=>handlesubmit()}>submit</button>
+      <Signup/>
     </>
   )
 }
