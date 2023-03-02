@@ -6,6 +6,7 @@ import { useState } from 'react'
  import axios from 'axios';
  import base_url from '../../utils/connection'
  import useSWR from 'swr'
+import Filter from './Filter'
 
  const Group = () => {
     const [open,setOpen] = useState(false);
@@ -38,6 +39,7 @@ import { useState } from 'react'
    return (
     <div className={style.groupFrame}> 
         <div className={style.createPost} onClick={()=>setOpen(true)}>Post</div>
+        <Filter opt={"group"}/>
         {open===true && (<CreateGroup setOpen={setOpen}/>)}
          {data!==null && (
              <div style={{width:"95%"}}>{

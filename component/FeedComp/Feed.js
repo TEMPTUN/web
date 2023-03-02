@@ -62,7 +62,7 @@ const Feed = () => {
     await Promise.all(arr.map(async(id)=>{
       const docRef = doc(db, "posts", id);
       const docSnap = await getDoc(docRef);
-      console.log(docSnap);
+      console.log(id);
       if(docSnap.exists()){
         const res = docSnap.data();
         res.id = id;
@@ -75,13 +75,15 @@ const Feed = () => {
             categoryData[cat]=new Set([res]);
           }
         });
+        console.log(categoryData);
       }
-    }))
+    }));
     setCatData(categoryData);
     return postIds;
 
   })
   if(!data){
+    // {console.log(user)}
     return<h1> Loading...</h1>
   }
 
