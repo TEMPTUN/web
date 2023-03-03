@@ -4,13 +4,14 @@ import style from './Index.module.scss'
 import axios from 'axios';
 import base_url from '../../utils/connection';
 import Post from './Post';
-import { doc,getDoc, onSnapshot } from "firebase/firestore";
+import { doc,getDoc } from "firebase/firestore";
+import { orderBy,limit } from 'firebase/firestore';
 import { db } from "../../utils/fireconnect";
 import useSWR from 'swr';
 import {allCategory} from '../category/category_data'
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
-import { BarLoader } from 'react-spinners';
+import { BarLoader } from 'react-spinner';
 
 const Explore = ({setExplore})=>{
   useEffect(()=>{
@@ -49,10 +50,13 @@ const Feed = () => {
   const user = useSelector((state)=>state.user);
   const[category,setCategory] = useState("All");
   const [catData,setCatData] = useState({});
+  const[specificCat,setSpecificCat] = useState([]);
   const [explore,setExplore] = useState(false);
+  const [post,setPost] = useState([]);
+ 
 
   const {data,error} = useSWR(user._id===null?null:`${base_url}/api/details/user?other=allPostsId`, async function fetcher(){
-    let arr =[];
+    let arr = [];
     await Promise.all(user.friendId.map(async(id)=>{
       const res = await axios.get(`${base_url}/api/details/user?id=${id}&other=allPostsId`);
       arr.push(...res.data.result.PostId);
@@ -61,8 +65,7 @@ const Feed = () => {
     let categoryData = catData;
     await Promise.all(arr.map(async(id)=>{
       const docRef = doc(db, "posts", id);
-      const docSnap = await getDoc(docRef);
-      console.log(id);
+      const docSnap = await getDoc(docRef,orderBy("date", "desc"), limit(10));
       if(docSnap.exists()){
         const res = docSnap.data();
         res.id = id;
@@ -76,7 +79,7 @@ const Feed = () => {
           }
         });
       }
-    }));
+    }))
     setCatData(categoryData);
     return postIds;
 
@@ -94,8 +97,27 @@ const Feed = () => {
     </div>);
   }
 
-  return (      
-    <>
+   const getCatPost = async(cat)=>{
+      const res = await axios.get(`${base_url}/api/categorys/getposts?catname=${cat}`);
+      let posts =[];
+      if(!res.data.result[0]?.postIds){
+        setSpecificCat([]);
+        return;
+      }
+      await Promise.all(res.data.result[0]?.postIds.map(async(id)=>{
+        const docRef = doc(db, "posts", id);
+        const docSnap = await getDoc(docRef,orderBy("date", "desc"), limit(10));
+        if(docSnap.exists()){
+          const res = docSnap.data();
+          res.id= id;
+          posts.push(res);
+        }
+      }))
+      setSpecificCat(posts);
+   }  
+
+  return (   
+    <>   
     <AnimatePresence>
       {explore===true && (
         <Explore setExplore={setExplore}/>
@@ -107,7 +129,7 @@ const Feed = () => {
           <span onClick={()=>setCategory("All")} style={{backgroundColor:category==='All'?"#929AAB":"transparent",color:category==='All'?"#F7F7F7":"#393E46"}}>All</span>
             {
               user.categoryId.map((cat,index)=>(
-                  <span onClick={()=>setCategory(cat)}  style={{backgroundColor:cat!==category?"transparent":"#929AAB",color:cat!==category?"#393E46":"#F7F7F7"}} key={index+"cat"} >{cat}</span>
+                  <span onClick={()=>{setCategory(cat); getCatPost(cat)}}  style={{backgroundColor:cat!==category?"transparent":"#929AAB",color:cat!==category?"#393E46":"#F7F7F7"}} key={index+"cat"} >{cat}</span>
               ))
             }
         </div>
@@ -120,7 +142,7 @@ const Feed = () => {
               <Post key={"post"+idx} post={post}/>
             ))
           ):(
-            catData[category]!==undefined && Array.from(catData[category]).map((post,idx)=>(
+            specificCat.map((post,idx)=>(
               <Post key={"post"+idx} post={post}/>
             ))
           )

@@ -11,11 +11,13 @@ import { doc,getDoc } from 'firebase/firestore';
 import { db } from '../../utils/fireconnect';
 import Link from 'next/link';
 import Filter from './Filter';
+import CircleLoader from "react-spinners/CircleLoader";
 
 const Discussion = () => {
     const user = useSelector((state)=>state.user);
     const [open,setOpen] = useState(false);
     const [categorydiss,setcategorydiss] = useState([]);
+    const [load,setLoad]=useState(true);
 
     const {data,error} = useSWR(user._id===null?null:`${base_url}/api/post/discusspost`,async function fetcher(){
         let arr =[];
@@ -44,11 +46,21 @@ const Discussion = () => {
     console.log(error)
     return <div>error</div>}
   
-    if (!data) return <h1>loading...</h1>
+    if (!data) return 
+    (
+        setTimeout(()=>{
+            setLoad(false);
+          },1000)
+    )
     
    
   return (
     <div className={style.groupFrame}> 
+        {load && 
+        <div className={style.loader}>
+          <CircleLoader color="#369cd6" loading={load} size={50}  />
+          <h3>Find your Complement</h3>
+        </div>}
         <div className={style.createPost} onClick={()=>setOpen(true)}>Ask</div>
         <Filter opt={"Discussion"}/>
         {open===true && <CreateDiscussion setOpen={setOpen}/>}

@@ -4,10 +4,12 @@ import { useSelector } from 'react-redux';
 import base_url from '../../utils/connection';
 import style from './Explore.module.scss';
 import useSWR from 'swr';
+import { Autocomplete,TextField } from '@mui/material';
 
 const Index = () => {  
   const user = useSelector((state)=>state.user);
   const[collabed,setCollabed] = useState(new Set());
+  const[name,setName] = useState([]);
 
   const {data,error} = useSWR(user._id===null?null:`${base_url}/api/details/user?ther=allFriendsId`,async function fetcher(){
       let arr= new Set();
@@ -29,12 +31,29 @@ const Index = () => {
   })
   
   if(error){
-    {console.log(error, user._id)}
   return <h1>Error</h1>
   }
 
   if(!data){
     return <h1>Loading....</h1>
+  }
+
+  const getname = async(str)=>{
+    try{
+      let searchname=str.replace(/ /g,"");
+      let url=`${base_url}/api/search/auto?name=${searchname}`;
+      let {data}=await axios.get(url);
+      return data.result;
+    }catch(err){
+      console.log("--------------------getname---------------------");
+      console.log(err);
+    }
+  }
+  
+  const onchange = async(e)=>{
+    let str=e.target.value;
+    let result=await getname(str);
+    setName(result);
   }
 
   const handleCollab = async(id)=>{
@@ -54,29 +73,57 @@ const Index = () => {
 
   return (
     <div className={style.frame}>
-      <input type="text" placeholder='Search'></input>
-         
-      <div className={style.userCont}>
-        {
-          data.map((sug,idx)=>{
-            {console.log(sug)}
-            if(sug===undefined){
-              return <></>;
-            }
-            return (
-              <div key={idx+"sug"} className={style.box}>
-                <img src={sug.image}></img>
-                <h4>{sug.name}</h4>
-                {!collabed.has(sug._id) && <button onClick={(e)=>handleCollab(sug._id)}>Collab</button>}
-                {collabed.has(sug._id) && <button >Friends</button>}  
-              </div>
-            )  
-          })
-        }
+      <div className={style.block}>
+        <h1>Explore</h1>
+        <input type="text" placeholder='Search' id="combo"></input>
+        <div className={style.block}>
+          <Autocomplete
+            freeSolo
+            sx={{  width: 300 }}
+            onChange={(e, value) => console.log(value)}
+            options={name? name.map((option) => option.name) : ""}
+            renderInput={(params) => <TextField {...params} label="Search" onChange={(e) => onchange(e)}/>}
+          />
+        </div>
+        <div className={style.options}>
+          <select>
+            <option value="all">All</option>
+            <option value="music">Music</option>
+            <option value="art">Art</option>
+            <option value="dance">Dance</option>
+            <option value="sports">Sports</option>
+          </select>
+          <select>
+            <option value="all">All</option>
+            <option value="music">Music</option>
+            <option value="art">Art</option>
+            <option value="dance">Dance</option>
+            <option value="sports">Sports</option>
+          </select>
+        </div>
       </div>
-         
-       
-       
+      <div className={style.block2}>
+        <div className={style.userCont}>
+          {
+            data.map((sug,idx)=>{
+              if(sug===undefined){
+                return <></>;
+              }
+              return (
+                <div key={idx+"sug"} className={style.box}>
+                  <div className={style.info}>
+                    <img src={sug.image}></img>
+                    <h4>{sug.name}</h4>
+                    <p>talent|work</p>
+                  </div>
+                  {!collabed.has(sug._id) && <button onClick={(e)=>handleCollab(sug._id)}>Collab</button>}
+                  {collabed.has(sug._id) && <button >Friends</button>}  
+                </div>
+              )  
+            })
+          }
+        </div>
+      </div>
     </div>
   )
 }
