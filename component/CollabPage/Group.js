@@ -14,6 +14,8 @@ import { BarLoader } from 'react-spinners';
     const [open,setOpen] = useState(false);
     const user = useSelector((state)=>state.user);
     const [load,setLoad]=useState(true);
+    const [myWork,setMyWork] = useState(false);
+    const [grouppost2,setgroupPost2] = useState([]);
 
     const MailMessage = async (e,toemail,describe)=>{
         e.preventDefault();
@@ -38,6 +40,20 @@ import { BarLoader } from 'react-spinners';
                 groupPost.push(res.data.result);
             }
         }))
+
+        const rest = await axios.get(`${base_url}/api/group/usergroup?userId=${user._id}`);
+        let mypost=[];
+        if(rest.data.result.groupId.length!==0){
+            await Promise.all(rest.data.result.groupId.map(async(d)=>{
+                const res= await axios.get(`${base_url}/api/group/fetch?id=${d}`);
+                console.log(d);
+                if(res.data.result!==null){
+                    mypost.push(res.data.result);
+                }
+            }))
+        }
+        setgroupPost2(mypost);
+
         return groupPost;
     },{revalidateOnFocus: false,
         revalidateOnMount:true,
@@ -46,8 +62,7 @@ import { BarLoader } from 'react-spinners';
         refreshWhenHidden: true,
         refreshInterval: 0});
     if(error){
-        console.log( error);
-        return<>Error</>
+        return<>{error.message}</>
     }
     
     if (!data) return 
@@ -63,9 +78,9 @@ import { BarLoader } from 'react-spinners';
           <h3>Find your Complement</h3>
         </div>}
         <div className={style.createPost} onClick={()=>setOpen(true)}>Post</div>
-        <Filter opt={"group"}/>
+        <Filter opt={"group"} setMyWork={setMyWork}/>
         {open===true && (<CreateGroup setOpen={setOpen}/>)}
-         {data!==null && (
+         {data!==null && myWork===false && (
              <div style={{width:"95%",paddingBottom:"30px"}}>{
                 data.map((d,ind)=>(
                     <div className={style.groupBox} key={ind+'gp'}>
@@ -103,6 +118,45 @@ import { BarLoader } from 'react-spinners';
                 ))
             }
         </div>
+        )}
+
+        {data!==null && myWork===true && (
+            <div style={{width:"95%",paddingBottom:"30px"}}>
+                {grouppost2.map((d)=>(
+                    <div className={style.groupBox}>
+                    <div className={style.head}>
+                        <img src={d?.image}></img>
+                        <div className={style.nameTitle}>
+                            <h4 style={{marginBottom:"2px"}}>{d?.name}</h4>
+                            <span>{d?.location}</span>
+                        </div>
+                        <h4 className={style.compensation}>{d?.Compensation}</h4>
+                    </div>
+                    <div className={style.body}>
+                        <h2>{d?.title}</h2>
+                        <p>{d?.description}</p>
+
+                        <div>
+                            <h2>About Group</h2>
+                            <p>{d?.about}</p>
+                        </div>
+                        <p style={{fontWeight:"600"}}>Required Skills</p>
+                        <div>
+                        {
+                            d?.category.map((cat,indx)=>(
+                                <span key={indx+"mc"}>{cat}</span>
+                            ))
+                        }
+
+                        </div>     
+                    </div>
+                    {/* <div className={style.dock} onClick={(e)=>MailMessage(e,d?.groupEmail,d?.title)}>
+                        {console.log(d?.groupEmail)}
+                        <button>dock</button>
+                    </div> */}
+                </div>
+                ))}
+            </div>
         )}
     </div>
    )
