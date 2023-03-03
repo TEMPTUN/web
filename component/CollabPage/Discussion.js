@@ -18,7 +18,10 @@ const Discussion = () => {
     const [open,setOpen] = useState(false);
     const [categorydiss,setcategorydiss] = useState([]);
     const [load,setLoad]=useState(true);
+    
     const [myWork,setMyWork] = useState(false);
+
+
 
 
     const {data,error} = useSWR(user._id===null?null:`${base_url}/api/post/discusspost`,async function fetcher(){
