@@ -13,7 +13,7 @@ import styles from '../styles/signup.module.scss'
 import { DotLoader } from 'react-spinners';
 
 
-const signup = ()=> {
+const Signup = ()=> {
     const router = useRouter();
     const {register,handleSubmit,formState: { errors }} = useForm();
     const Userid = useSelector((state)=>state.user._id);
@@ -115,5 +115,5 @@ const signup = ()=> {
   )
 }
 
-export default signup;
+export default Signup;
 
