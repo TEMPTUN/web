@@ -17,8 +17,9 @@ const Discussion = () => {
     const user = useSelector((state)=>state.user);
     const [open,setOpen] = useState(false);
     const [categorydiss,setcategorydiss] = useState([]);
-    const [load,setLoad]=useState(true);
     
+    const [load,setLoad]=useState(true);
+
     const [myWork,setMyWork] = useState(false);
 
 
