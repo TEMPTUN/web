@@ -146,7 +146,7 @@ const Link = ({setForm,setAllData,allData})=>{
 }
 
 
-const userprofile = () => {
+const Userprofile = () => {
   const user = useSelector((state)=>state.user);
   const [form,setForm] = useState("");
   const [allData,setAllData] = useState({
@@ -365,6 +365,6 @@ const userprofile = () => {
   )
 }
 
-export default userprofile
+export default Userprofile
  
  

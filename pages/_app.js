@@ -1,10 +1,9 @@
+/* eslint-disable no-alert */
 import '../styles/globals.css';
 import { store } from '../app/store'
-import { Provider, useSelector } from 'react-redux'
+import { Provider } from 'react-redux'
 import First from '../utils/firstconnect';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { useEffect } from 'react';
-import Head from 'next/head';
 import { Inter } from '@next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
