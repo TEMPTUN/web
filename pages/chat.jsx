@@ -14,6 +14,7 @@ const chat = () => {
     const [messageId, setMessageId] = useState([]);
     const [comments, setcomments] = useState([]);
     const [id,setId] = useState(null);
+    const [load,setLoad] = useState(false);
     
     const user = useSelector((state)=>state.user);
     useEffect(() => {
@@ -21,7 +22,9 @@ const chat = () => {
     },[router.query.id]);
 
     const handlechat = async(e) => {
+        setLoad(true); 
         e.preventDefault();
+        setMessages("");
         const docref = await addDoc(collection(db, "messages"), {
             text:messages,
             messager_id:user._id,
@@ -29,7 +32,6 @@ const chat = () => {
             messager_image:user?.image||null,
             createdAt:Timestamp.fromDate(new Date()),
           });
-          // console.log(docref);
           if(id){
             const discussref = doc(db, "discussion", id);
             const docSnap = await getDoc(discussref);
@@ -38,14 +40,17 @@ const chat = () => {
             updateDoc(discussref, {
                 messageId: [...data.messageId, docref.id]
             });
-            console.log(messageId);
           }
-          
+          setLoad(false);
     }
 
     const handle = async(e) => {
         const message = e.target.value;
         setMessages(message);
+    }
+
+    const handleOut = ()=>{
+      router.back();
     }
 
     useEffect(() => {
@@ -78,13 +83,19 @@ const chat = () => {
         fetchMessage();
     },[messageId]);
 
+    useEffect(()=>{
+      let elem = document.getElementById("bott");
+      elem.scrollIntoView();
+    },[load,comments]);
+
   return (
-    <div className={styles.frame}>
-        <h1>Chat</h1>
-        {console.log(id)}
-        {comments.map((comment)=>{
+    <div className={styles.frame} id="frame">
+      <div style={{width:"100%",position:"fixed",top:"0px",display:"flex",alignItems:"center",backgroundColor:"white",zIndex:"99"}}>
+      <img src={'images/leftArroa.png'} onClick={()=>handleOut()}></img><p style={{fontSize:"22px"}}>Chat</p>
+      </div>
+        {comments.map((comment,idx)=>{
             return(
-                <div className={styles.comment_box}>
+                <div className={styles.comment_box} style={user._id!==comment.messager_id?{}:{left:"60%"}} >
                   <div style={user._id!==comment.messager_id?{borderLeft:"2px solid red",paddingLeft:"5px"}:{borderLeft:"2px solid blue",paddingLeft:"5px"}}>
                     <h3>{user._id!==comment.messager_id?comment.messager_name:"You"}</h3>
                     <p>{comment.text}</p>
@@ -92,9 +103,10 @@ const chat = () => {
                 </div>
             )
         })}
+        <div id="bott" style={{height:"50px",width:"100%"}}></div>
         <div className={styles.input_box}>
-            <input type="text" placeholder="Enter your message" onChange={(e)=>handle(e)}/>
-            <button onClick={(e)=>handlechat(e)}>Send</button>
+            <input type="text" value={messages} placeholder="Enter your message" onChange={(e)=>handle(e)}/>
+            <button onClick={(e)=>handlechat(e)} disabled={load}>Send</button>
         </div>
     </div>
   )

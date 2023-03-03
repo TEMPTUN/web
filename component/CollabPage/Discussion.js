@@ -22,16 +22,19 @@ const Discussion = () => {
 
 
     const {data,error} = useSWR(user._id===null?null:`${base_url}/api/post/discusspost`,async function fetcher(){
-        let arr =[];
+        let arr = new Set([]);
         await Promise.all(user.categoryId.map(async(cat)=>{
             const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=DiscussionIds`);
             if(res.data.resp.length!==0)
-                arr.push(...res.data.resp[0].DisscussionId);
+                // arr.push(...res.data.resp[0].DisscussionId);
+                res.data.resp[0].DisscussionId.map((dat)=>{
+                    arr.add(dat);
+                })
         }));
-        setcategorydiss(arr)
+        setcategorydiss(Array.from(arr));
         let discussPost =[];
-        console.log(arr);
-        await Promise.all(arr.map(async(id)=>{
+        // console.log(arr);
+        await Promise.all(Array.from(arr).map(async(id)=>{
             const docRef=doc(db,'discussion',id);
             const docSnap=await getDoc(docRef);
             if(docSnap.exists()){
@@ -58,11 +61,11 @@ const Discussion = () => {
    
   return (
     <div className={style.groupFrame}> 
-        {load && 
+        {/* {load && 
         <div className={style.loader}>
           <CircleLoader color="#369cd6" loading={load} size={50}  />
           <h3>Find your Complement</h3>
-        </div>}
+        </div>} */}
         <div className={style.createPost} onClick={()=>setOpen(true)}>Ask</div>
         <Filter opt={"Discussion"} setMyWork={setMyWork}/>
         {open===true && <CreateDiscussion setOpen={setOpen}/>}
@@ -104,8 +107,8 @@ const Discussion = () => {
             }
         </div>}
 
-        {myWork===true && <div style={{width:"95%"}}>
-                <p>my work</p>
+        {myWork===true && <div style={{width:"95%",textAlign:"center"}}>
+                <h2 style={{margin:"10px auto"}}>You have no discussion</h2>
         </div>}
 
     </div>

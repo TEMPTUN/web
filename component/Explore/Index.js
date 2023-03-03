@@ -13,7 +13,7 @@ const Index = () => {
   const[name,setName] = useState([]);
 
   const {data,error} = useSWR(user._id===null?null:`${base_url}/api/details/user?ther=allFriendsId`,async function fetcher(){
-      let arr= new Set();
+      let arr= new Set([]);
       await Promise.all(user.categoryId.map(async(cat)=>{
           const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=friendId`);
           res.data.result[0]?.userId.map((id)=>{
@@ -111,9 +111,9 @@ const Index = () => {
                   {console.log(sug)}
                   <div className={style.info}>
                     <div className={style.info2}>
-                      <div style={{alignItems: "center"}}>{sug.image!==undefined && <img src={sug.image}></img>}</div>
+                      <div style={{alignItems: "center"}}><img src={'images/user.svg'}></img></div>
                       <div style={{flexDirection:"column"}}>
-                        <h2 style={{margin:"3px 7px"}}>{sug.name}</h2>
+                        <h2 style={{margin:"3px 7px"}}>{sug?.name}</h2>
                         <p style={{margin:"0px 7px"}}>Mohali,punjab</p>
                       </div>
                       <div style={{position:"absolute",right:"10px",alignItems: "center"}}><button>msg</button></div>
@@ -124,9 +124,9 @@ const Index = () => {
                       <div><span>Java</span> <span>Java</span>
                       <span>Java</span><span>Java</span></div>
                     </div>
-                  </div> 
-                  {!collabed.has(sug._id) && <button onClick={(e)=>handleCollab(sug._id)}>Collab</button>}
-                  {collabed.has(sug._id) && <button>Friends</button>}  
+                  </div>
+                  {!collabed.has(sug?._id) && <button onClick={(e)=>handleCollab(sug?._id)}>Collab</button>}
+                  {collabed.has(sug?._id) && <button>Friends</button>}  
                 </div>
               )  
             })

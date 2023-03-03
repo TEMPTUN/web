@@ -13,10 +13,9 @@ const Filter = ({opt,setMyWork}) => {
         </div>
         <div className={style.filterTwo}>
             <p onClick={()=>setMyWork(false)}>explore</p>
-            <p onClick={()=>setMyWork(true)}>My Discussion</p>
+            <p onClick={()=>setMyWork(true)}>{opt==="group"?"My Groups":"My Discussion"}</p>
             <p>Filter</p>
-        </div>
-        
+        </div>     
     </div>
   )
 }
