@@ -61,20 +61,25 @@ import { BarLoader } from 'react-spinners';
         <Filter opt={"group"}/>
         {open===true && (<CreateGroup setOpen={setOpen}/>)}
          {data!==null && (
-             <div style={{width:"95%"}}>{
+             <div style={{width:"95%",paddingBottom:"30px"}}>{
                 data.map((d,ind)=>(
                     <div className={style.groupBox} key={ind+'gp'}>
                         <div className={style.head}>
                             <img src={d?.image}></img>
                             <div className={style.nameTitle}>
-                                <h4>{d?.name}</h4>
-                                <span>{d?.time}</span>
+                                <h4 style={{marginBottom:"2px"}}>{d?.name}</h4>
+                                <span>{d?.location}</span>
                             </div>
                             <h4 className={style.compensation}>{d?.Compensation}</h4>
                         </div>
                         <div className={style.body}>
                             <h2>{d?.title}</h2>
                             <p>{d?.description}</p>
+                            <div>
+                                <h2>About Group</h2>
+                                <p>{d?.about}</p>
+                            </div>
+                            <p style={{fontWeight:"600"}}>Required Skills</p>
                             <div>
                             {
                                 d?.category.map((cat,indx)=>(

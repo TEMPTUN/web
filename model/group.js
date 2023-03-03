@@ -26,6 +26,9 @@ const group = new Schema({
         type:String,
     },
     category:[{type:String,default:[]}],
+    location:{
+        type:String,
+    }
 
 }, { timestamps: true });
 
