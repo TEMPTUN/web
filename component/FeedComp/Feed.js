@@ -85,7 +85,7 @@ const Feed = () => {
 
   })
   if(!data){
-    return <ClimbingBoxLoader color="hsla(168, 67%, 53%, 1)" style={{display:"flex",justifyContent:"center",alignContent:"center"}} loading={true} size={25} />
+    return <h1>loading...</h1>
   }
 
    const getCatPost = async(cat)=>{

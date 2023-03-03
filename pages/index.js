@@ -6,6 +6,7 @@ import { doc, getDoc, setDoc,collection } from 'firebase/firestore';
 import { addDoc } from 'firebase/firestore';
 import { db } from '../utils/fireconnect';
 import Signup from './signup';
+import Signin from './signin'
 
 const Home = ()=> {
   const [message,setMessage] = useState([]);
@@ -37,7 +38,7 @@ const Home = ()=> {
 
   return (
     <>
-      <Signup/>
+      <Signin/>
     </>
   )
 }
