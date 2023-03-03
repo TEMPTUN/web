@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode"
 import axios from "axios"
-import base_url from "./connection";
+const base_url = process.env.NEXT_PUBLIC_URL;
 
 export const CreateorGetUser = async (res) => {
     const decode=jwtDecode(res.credential);

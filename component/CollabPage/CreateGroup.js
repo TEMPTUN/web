@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { useState } from 'react';
 import {category_Data,allCategory} from '../category/category_data';
 import axios from 'axios';
-import base_url from '../../utils/connection';
+const base_url = process.env.NEXT_PUBLIC_URL;
 
 const CreateGroup = ({setOpen}) => {
     const user = useSelector((state)=>state.user);

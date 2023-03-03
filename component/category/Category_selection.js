@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {allCategory} from './category_data'
 import styles from "./category.module.scss"
-import base_url from '../../utils/connection';
+const base_url = process.env.NEXT_PUBLIC_URL;
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { updateCategory } from '../../redux_feature/UserInfo/userSlice';

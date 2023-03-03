@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect,useState } from 'react'
 import { useSelector } from 'react-redux';
-import base_url from '../../utils/connection';
+const base_url = process.env.NEXT_PUBLIC_URL;
 import style from './Explore.module.scss';
 import useSWR from 'swr';
 import { Autocomplete,TextField } from '@mui/material';

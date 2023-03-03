@@ -1,9 +1,11 @@
 import React from 'react'
 import { useEffect } from 'react';
 import {useDispatch,useSelector } from 'react-redux';
-import base_url from './connection'
+const base_url = process.env.NEXT_PUBLIC_URL;
 import {CreateId} from '../redux_feature/UserInfo/userSlice' 
 import axios from 'axios';
+
+
 
 const First = () => {
 

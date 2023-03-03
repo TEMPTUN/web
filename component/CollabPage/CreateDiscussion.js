@@ -6,9 +6,11 @@ import styled from "styled-components";
 import { useState } from 'react';
 import {category_Data,allCategory} from '../category/category_data';
 import axios from 'axios';
-import base_url from '../../utils/connection';
+// const base_url = process.env.NEXT_PUBLIC_URL;
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '../../utils/fireconnect';
+const base_url = process.env.NEXT_PUBLIC_URL;
+console.log(base_url);
 
 
 const CreateDiscussion = ({setOpen}) => {
@@ -70,7 +72,7 @@ const CreateDiscussion = ({setOpen}) => {
             category:Array.from(selectedCats),
         }
         console.log(payload);
-        // const res = await axios.post(`${base_url}/api/post/discusspost`,payload);
+        const res = await axios.post(`${base_url}/api/post/discusspost`,payload);
 		const discussref= await addDoc(collection(db, "discussion"), payload);
         await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.category,DisscussionId:discussref.id});
          
