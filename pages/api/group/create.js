@@ -6,9 +6,9 @@ const handler = async(req, res)=> {
         // GROUP CREATED
 
         try{
-            const {userId,name,image,title,about,Compensation,description,company,category} = req.body;
+            const {userId,name,image,title,about,Compensation,description,company,category,groupEmail} = req.body;
             const groupData = new Group({
-                userId,name,image,title,about,description,company,category,Compensation
+                userId,name,image,title,about,description,company,category,Compensation,groupEmail,
             });
             const result = await Group.insertMany([groupData]);
             res.status(200).json({ message:"User connected Succesfully",id:result[0]._id});

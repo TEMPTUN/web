@@ -42,6 +42,7 @@ const CreateGroup = ({setOpen}) => {
             Compensation:groupData.employment,            
             company:groupData.comp,
             category:Array.from(selectedCats),
+            groupEmail:user.email,
         }
         const res = await axios.post(`${base_url}/api/group/create`,payload);
         await axios.post(`${base_url}/api/categorys/updateCategories`,{category:payload.category,GroupIds:res.data.id});

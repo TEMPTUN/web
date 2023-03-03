@@ -25,6 +25,9 @@ const group = new Schema({
     company:{
         type:String,
     },
+    groupEmail:{
+        type:String,
+    },
     category:[{type:String,default:[]}],
 
 }, { timestamps: true });
