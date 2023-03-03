@@ -10,6 +10,7 @@ import {convertToBase64} from '../utils/base64'
 import jwtDecode from "jwt-decode"
 import { GoogleLogin,googleLogout } from '@react-oauth/google';
 import styles from '../styles/signup.module.scss'
+import { DotLoader } from 'react-spinners';
 
 
 const signup = ()=> {
@@ -25,11 +26,11 @@ const signup = ()=> {
         const res= await axios.post(`${base_url}/api/details/user`,data);
         localStorage.setItem("userId", res.data.id); 
         data._id=res.data.id; //adding over form data
+        console.log(data._id);
         dispatch(CreateId(data));
         router.push("/categories");
       } catch (error) {
-        console.log("------------SignupError-----------------------------");
-        console.log(error);
+        console.log(error.message);
       }
     }
 
@@ -55,8 +56,17 @@ const signup = ()=> {
     useEffect(()=>{
       if(Userid!==null){
         router.push("/categories");
+      }else{
+        setTimeout(()=>{
+          <DotLoader color="hsla(238, 67%, 53%, 1)" style={{display:"flex",justifyContent:"center",alignContent:"center"}} loading={true} size={25} />
+        },5000)
       }
+      
     },[Userid])
+
+    const onClickFunc = ()=>{
+      router.push("/signin");
+    }
     
   return (
     <div className={styles.box}>
@@ -69,7 +79,7 @@ const signup = ()=> {
               <p className="errorMsg">Profile is required.</p>
             )} */}
        
-           
+       <p>Already a user?<span style={{marginLeft:"7px",fontSize:"18px",color:"blue",cursor:"pointer"}} onClick={()=>onClickFunc()}>SignIn</span></p>
             <input type="text" name="name" {...register("name",{required: true})} placeholder={"Name"}/>
             {errors.name && errors.name.type === "required" && (
               <p className="errorMsg">name is required.</p>
@@ -93,7 +103,7 @@ const signup = ()=> {
             )}
           
        
-          <button type='submit'>Hit n Run</button>
+          <button type='submit'>Sign up</button>
       </form>
       <div>
         {<GoogleLogin
