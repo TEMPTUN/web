@@ -41,6 +41,7 @@ const CreateGroup = ({setOpen}) => {
             description:groupData.desc,
             Compensation:groupData.employment,            
             company:groupData.comp,
+            location:groupData.loc,
             category:Array.from(selectedCats),
         }
         const res = await axios.post(`${base_url}/api/group/create`,payload);
@@ -148,6 +149,10 @@ const CreateGroup = ({setOpen}) => {
              <label>
              Company Name(Optional):
                  <input type="text" name="comp" {...register("comp",{required: true})} placeholder="Place where you work" />
+             </label>
+             <label>
+             Based In:
+                 <input type="text" name="loc" {...register("loc",{required: true})} placeholder="location based in" />
              </label>
              </div>
              <input className={style.submit} type="submit" value="Next" />
