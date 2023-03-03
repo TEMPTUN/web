@@ -13,10 +13,9 @@ const Filter = ({opt}) => {
         </div>
         <div className={style.filterTwo}>
             <p>explore</p>
-            <p>My Discussion</p>
+            <p>{opt==="group"?"My Groups":"My Discussion"}</p>
             <p>Filter</p>
-        </div>
-        
+        </div>     
     </div>
   )
 }

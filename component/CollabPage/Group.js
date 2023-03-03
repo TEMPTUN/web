@@ -8,7 +8,7 @@ import { useState } from 'react'
  import useSWR from 'swr'
 import Filter from './Filter'
 import { BarLoader } from 'react-spinners';
-
+import { motion ,AnimatePresence} from 'framer-motion';
 
  const Group = () => {
     const [open,setOpen] = useState(false);
@@ -57,11 +57,11 @@ import { BarLoader } from 'react-spinners';
     )
    return (
     <div className={style.groupFrame}> 
-        {load && 
+        {/* {load && 
         <div className={style.loader}>
           <BarLoader  color="#3675d6"  height={6} width={131} />
           <h3>Find your Complement</h3>
-        </div>}
+        </div>} */}
         <div className={style.createPost} onClick={()=>setOpen(true)}>Post</div>
         <Filter opt={"group"}/>
         {open===true && (<CreateGroup setOpen={setOpen}/>)}
@@ -97,7 +97,7 @@ import { BarLoader } from 'react-spinners';
                         </div>
                         <div className={style.dock} onClick={(e)=>MailMessage(e,d?.groupEmail,d?.title)}>
                             {console.log(d?.groupEmail)}
-                            <button>dock</button>
+                            <motion.button whileTap={{scale:"0.8"}}>dock</motion.button>
                         </div>
                     </div>
                 ))
