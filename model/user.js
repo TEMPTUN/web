@@ -16,6 +16,7 @@ const user = new Schema({
     categoryId:[{type:String,default:[],unique:true}],
     image:{
         type:String,
+        default:"/images/user.svg",
     },
     headline:{
         type:String,

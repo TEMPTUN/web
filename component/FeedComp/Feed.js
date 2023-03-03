@@ -41,7 +41,6 @@ const Explore = ({setExplore,setCategory,getCatPost})=>{
             }
           </div>
         </motion.div>
-    // </div>
    
   )
 }
@@ -56,17 +55,21 @@ const Feed = () => {
  
 
   const {data,error} = useSWR(user._id===null?null:`${base_url}/api/details/user?other=allPostsId`, async function fetcher(){
-    let arr = [];
+    let arr = new Set([]);
     setLoad(true);
     await Promise.all(user.friendId.map(async(id)=>{
       const res = await axios.get(`${base_url}/api/details/user?id=${id}&other=allPostsId`);
-      arr.push(...res.data.result.PostId);
+      console.log(res.data.result.PostId);
+      res.data.result.PostId.map((pId)=>{
+        arr.add(pId);
+      })
     }));
+    console.log(arr);
     let postIds = [];
     let categoryData = catData;
-    await Promise.all(arr.map(async(id)=>{
+    await Promise.all(Array.from(arr).map(async(id)=>{
       const docRef = doc(db, "posts", id);
-      const docSnap = await getDoc(docRef,orderBy("date", "desc"), limit(10));
+      const docSnap = await getDoc(docRef,orderBy("date", "desc"), limit(20));
       if(docSnap.exists()){
         const res = docSnap.data();
         
@@ -145,9 +148,13 @@ const Feed = () => {
     
         {
           category==="All"?(
-            data.map((post,idx)=>(
-              <Post key={"post"+idx} post={post}/>
-            ))
+            <>
+              { data.map((post,idx)=>(
+                <Post key={"post"+idx} post={post}/>
+              ))}
+              {data.length===0 && <h2>Please make friends</h2>}
+            </>
+           
           ):(
             specificCat.length===0?(<>{category} doesn't have posts yet</>):(
               <> {

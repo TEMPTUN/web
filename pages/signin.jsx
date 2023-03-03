@@ -10,7 +10,7 @@ import jwtDecode from "jwt-decode"
 import styles from "../styles/signin.module.scss"
 import { GoogleLogin,googleLogout } from '@react-oauth/google';
 import HashLoader from "react-spinners/HashLoader";
-
+import { motion } from "framer-motion";
 
 const signin = () => {
     const router = useRouter();
@@ -79,7 +79,7 @@ const signin = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                         <input type="email" name="email" {...register("email",{required: true})} placeholder=" Email:" className={styles.input}/>
                         <input type="password" name="password" {...register("password",{required: true,minLength: 6})} placeholder="Password" className={styles.input}/>
-                    <button type="submit">Sign In</button>
+                    <motion.button whileTap={{scale:"0.8"}} type="submit">Sign In</motion.button>
                 </form>
               </div>
                <span>OR</span>

@@ -142,7 +142,7 @@ function PostalModal(props) {
 			description: editorText,
 			userId: user._id,
 			name:user.name,
-			image:user.image,
+			image:user.image===undefined?null:user.image,
 			categoryIds:Array.from(selectedCats),
 			likeId:[],
 			commentId:[],
@@ -409,7 +409,8 @@ const SharedContent = styled.div`
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
-	overflow-y: auto;
+	height:65vh;
+	overflow-y: scroll;
 	vertical-align: baseline;
 	background: transparent;
 	padding: 5px 12px;
@@ -481,7 +482,8 @@ const ShareComment = styled.div`
 `;
 
 const PostButton = styled.button`
-	min-width: 60px;
+	margin-right: 32px;
+    min-width: 80px
 	height:30px;
 	padding: 0 16px;
 	border-radius: 20px;
