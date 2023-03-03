@@ -111,7 +111,7 @@ const Index = () => {
                   {console.log(sug)}
                   <div className={style.info}>
                     <div className={style.info2}>
-                      <div style={{alignItems: "center"}}><img src={sug.image}></img></div>
+                      <div style={{alignItems: "center"}}>{sug.image!==undefined && <img src={sug.image}></img>}</div>
                       <div style={{flexDirection:"column"}}>
                         <h2 style={{margin:"3px 7px"}}>{sug.name}</h2>
                         <p style={{margin:"0px 7px"}}>Mohali,punjab</p>

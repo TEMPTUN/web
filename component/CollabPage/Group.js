@@ -7,7 +7,8 @@ import { useState } from 'react'
  import base_url from '../../utils/connection'
  import useSWR from 'swr'
 import Filter from './Filter'
-import CircleLoader from "react-spinners/CircleLoader";
+import { BarLoader } from 'react-spinners';
+
 
  const Group = () => {
     const [open,setOpen] = useState(false);
@@ -15,22 +16,29 @@ import CircleLoader from "react-spinners/CircleLoader";
     const [load,setLoad]=useState(true);
 
     const{data,error} = useSWR(user._id===null?null:`${base_url}/api/group/fetch`,async function fetcher(){
-        let arr =[];
+        let arr = new Set([]);
         await Promise.all(user.categoryId.map(async(cat)=>{
             const res = await axios.get(`${base_url}/api/categorys/updateCategories?category=${cat}&other=groupIds`);
             if(res.data.result.length!==0)
                 if(res.data.result.length!==0)
-                arr.push(...res.data.result[0]?.GroupsIds);
+                res.data.result[0]?.GroupsIds.map((ids)=>{
+                    arr.add(ids)
+                })
         }))
-        let groupPost =[];
-        await Promise.all(arr.map(async(id)=>{
+        let groupPost = [];
+        await Promise.all(Array.from(arr).map(async(id)=>{
             const res= await axios.get(`${base_url}/api/group/fetch?id=${id}`);
             if(res.data.result!==null){
                 groupPost.push(res.data.result);
             }
         }))
         return groupPost;
-    });
+    },{revalidateOnFocus: false,
+        revalidateOnMount:true,
+        revalidateOnReconnect: true,
+        refreshWhenOffline: true,
+        refreshWhenHidden: true,
+        refreshInterval: 0});
     if(error){
         console.log( error);
         return<>Error</>
@@ -43,9 +51,10 @@ import CircleLoader from "react-spinners/CircleLoader";
     )
    return (
     <div className={style.groupFrame}> 
+        { console.log(data)  }
         {load && 
         <div className={style.loader}>
-          <CircleLoader color="#369cd6" loading={load} size={50}  />
+          <BarLoader  color="#3675d6"  height={6} width={131} />
           <h3>Find your Complement</h3>
         </div>}
         <div className={style.createPost} onClick={()=>setOpen(true)}>Post</div>
