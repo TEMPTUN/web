@@ -10,6 +10,8 @@ import {getDownloadURL, ref,uploadBytesResumable} from 'firebase/storage';
 import axios from "axios";
 import { doc,setDoc,collection,addDoc,Timestamp } from "firebase/firestore";
 import {db} from '../../utils/fireconnect';
+import styles from './Index.module.scss'
+
 
 
 
@@ -152,111 +154,114 @@ function PostalModal(props) {
 
 	return (
 		<>
-			{props.showModal === "open" && showCategory===false && (
-				 
-				<Container>
+			<div >
+				{props.showModal === "open" && showCategory===false && (
+					<div className={styles.goal}>
+					<Container>
+						<Content>
+							<Header>
+								<h2>Create a post</h2>
+								<button onClick={(event) => reset(event)}>
+									<img src="/images/close-icon.svg" alt="" />
+								</button>
+							</Header>
+							
+							<SharedContent>
+								<UserInfo>
+									{user.profilePic ? <img src={user.profilePic} alt="" /> : <img src="/images/user.svg" alt="" />}
+									<span>{user.name ? user.name : "Name"}</span>
+								</UserInfo>
+								<Editor>
+									<textarea value={editorText} onChange={(event) => setEditorText(event.target.value)} placeholder="What do you want to talk about?" autoFocus={true} className={styles.textedit}/>
+									<UploadImage>
+										{
+											assetArea==="media" && (
+												<>
+													<input type="file" accept="image/gif, image/jpeg, image/png,video/*" name="image" id="imageFile" onChange={handleFile} style={{ display: "none" }} />
+													<p>
+														<label htmlFor="imageFile">Select an image/video to share</label>
+													</p>
+													{console.log(mediaFile)}
+													{ReactPlayer.canPlay(mediaFile)===false && <img src={ mediaFile} alt="" />}
+													{ReactPlayer.canPlay(mediaFile) && <ReactPlayer onClick={()=>{console.log("video")}} playing={true} controls={true} width={"100%"} url={mediaFile} />}
+												</>
+											)
+										}
+										{
+											assetArea === "url" && (
+												<>
+													<input
+														type="text"
+														name="video"
+														id="videoFile"
+														value={urlFile}
+														placeholder="Enter the video link"
+														onChange={(event) => setUrlFile(event.target.value)}
+													/>
+													{urlFile && <ReactPlayer playing={true} controls={true} width={"100%"} url={urlFile} />}
+												</>
+											)
+										}					
+									</UploadImage>
+								</Editor>
+							</SharedContent>
+	
+							<ShareCreation>
+								<AttachAsset>
+									<AssetButton onClick={() => switchAssetArea("media")}>
+										<img src="/images/share-image.svg" alt="" />
+									</AssetButton>
+									<AssetButton onClick={() => switchAssetArea("url")}>
+										<img src="/images/share-video.svg" alt="" />
+									</AssetButton>
+								</AttachAsset>
+								<PostButton  disabled={!editorText? true : false} onClick={(event) => handleNext()}>
+									Next
+								</PostButton>
+							</ShareCreation>
+						</Content>
+					</Container>	
+					</div>
+				)}
+				{props.showModal === "open" && showCategory===true && (
+					<Container>
 					<Content>
 						<Header>
-							<h2>Create a post</h2>
+							<h2>Plz choose category related to post </h2>
 							<button onClick={(event) => reset(event)}>
 								<img src="/images/close-icon.svg" alt="" />
 							</button>
 						</Header>
-						 
-                        <SharedContent>
-							<UserInfo>
-								{user.profilePic ? <img src={user.profilePic} alt="" /> : <img src="/images/user.svg" alt="" />}
-								<span>{user.name ? user.name : "Name"}</span>
-							</UserInfo>
-							<Editor>
-								<textarea value={editorText} onChange={(event) => setEditorText(event.target.value)} placeholder="What do you want to talk about?" autoFocus={true} />
-								<UploadImage>
-									{
-										assetArea==="media" && (
-											<>
-												<input type="file" accept="image/gif, image/jpeg, image/png,video/*" name="image" id="imageFile" onChange={handleFile} style={{ display: "none" }} />
-												<p>
-													<label htmlFor="imageFile">Select an image/video to share</label>
-												</p>
-												{console.log(mediaFile)}
-												{ReactPlayer.canPlay(mediaFile)===false && <img src={ mediaFile} alt="" />}
-												{ReactPlayer.canPlay(mediaFile) && <ReactPlayer onClick={()=>{console.log("video")}} playing={true} controls={true} width={"100%"} url={mediaFile} />}
-											</>
-										)
-									}
-									{
-										assetArea === "url" && (
-											<>
-												<input
-													type="text"
-													name="video"
-													id="videoFile"
-													value={urlFile}
-													placeholder="Enter the video link"
-													onChange={(event) => setUrlFile(event.target.value)}
-												/>
-												{urlFile && <ReactPlayer playing={true} controls={true} width={"100%"} url={urlFile} />}
-											</>
-										)
-									}					
-								</UploadImage>
-							</Editor>
-						</SharedContent>
-
+	
+						<CategorySection>
+							<input type='text'placeholder="Search your category" onChange={(e)=>handleSearch(e)}/>
+							
+							{options.length>=1 && 
+							<Option>{
+								options.map((data,idx)=>(
+									<>
+										<button key={idx} style={{backgroundColor:selectedCats.has(data)?"blue":"white"}}onClick={()=>handleCatClick(data)}>{data}</button>
+									</>
+								))	
+							}
+							</Option>}
+							<Categories>
+								<HandleMainCategory/>
+							</Categories>
+							<SubCategory>
+								<HandleSubCategories/>
+							</SubCategory>
+						</CategorySection>
+	
 						<ShareCreation>
-							<AttachAsset>
-								<AssetButton onClick={() => switchAssetArea("media")}>
-									<img src="/images/share-image.svg" alt="" />
-								</AssetButton>
-								<AssetButton onClick={() => switchAssetArea("url")}>
-									<img src="/images/share-video.svg" alt="" />
-								</AssetButton>
-							</AttachAsset>
-							<PostButton  disabled={!editorText? true : false} onClick={(event) => handleNext()}>
-								Next
+							<PostButton  disabled={selectedCats.length>0? true : false}  onClick={(event) => postArticle(event)}>
+								Post
 							</PostButton>
 						</ShareCreation>
 					</Content>
 				</Container>	
-			)}
-			{props.showModal === "open" && showCategory===true && (
-				<Container>
-				<Content>
-					<Header>
-						<h2>Plz choose category related to post </h2>
-						<button onClick={(event) => reset(event)}>
-							<img src="/images/close-icon.svg" alt="" />
-						</button>
-					</Header>
-
-					<CategorySection>
-						<input type='text'placeholder="Search your category" onChange={(e)=>handleSearch(e)}/>
-						
-						{options.length>=1 && 
-						<Option>{
-							options.map((data,idx)=>(
-								<>
-									<button key={idx} style={{backgroundColor:selectedCats.has(data)?"blue":"white"}}onClick={()=>handleCatClick(data)}>{data}</button>
-								</>
-							))	
-						}
-						</Option>}
-						<Categories>
-							  <HandleMainCategory/>
-						</Categories>
-						<SubCategory>
-							 <HandleSubCategories/>
-						</SubCategory>
-					</CategorySection>
-
-					<ShareCreation>
-						<PostButton  disabled={selectedCats.length>0? true : false}  onClick={(event) => postArticle(event)}>
-							Post
-						</PostButton>
-					</ShareCreation>
-				</Content>
-			</Container>	
-			)}
+				)}
+			</div>
 		</>
 	);
 }
@@ -349,6 +354,7 @@ const Container = styled.div`
 	left: 0;
 	right: 0;
 	z-index: 11;
+	padding:5px 15px;
 	background-color: rgba(0, 0, 0, 0.8);
 	animation: fadeIn 0.3s ease;
 `;
@@ -356,10 +362,10 @@ const Container = styled.div`
 const Content = styled.div`
 	width: 100%;
 	max-width: 552px;
-	max-height: 90%;
+	max-height: 120%;
 	background-color: #fff;
 	overflow: initial;
-	border-radius: 5px;
+	border-radius: 20px;
 	position: relative;
 	display: flex;
 	flex-direction: column;

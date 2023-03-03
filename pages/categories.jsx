@@ -10,10 +10,6 @@ function categories() {
   
   return (
     <>
-      {Userid===null && <p>Plz signup first</p>}
-      {console.log(Userid)}
-      <h1>{Userid}</h1>
-
         <Category_selection/>
     </>
    
