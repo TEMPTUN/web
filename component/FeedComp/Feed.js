@@ -13,7 +13,7 @@ import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
 import { BarLoader } from 'react-spinners';
 
-const Explore = ({setExplore})=>{
+const Explore = ({setExplore,setCategory,getCatPost})=>{
   useEffect(()=>{
     document.addEventListener("mousedown",handleClick);
 
@@ -36,7 +36,7 @@ const Explore = ({setExplore})=>{
           <div className={style.categoryFrame}>
             {
               allCategory.map((cat,idx)=>(
-                <span className={style.catName}key={idx+"c"} >{cat}</span>
+                <span onClick={()=>{setCategory(cat); getCatPost(cat)}}  className={style.catName}key={idx+"c"} >{cat}</span>
               ))
             }
           </div>
@@ -52,11 +52,12 @@ const Feed = () => {
   const [catData,setCatData] = useState({});
   const[specificCat,setSpecificCat] = useState([]);
   const [explore,setExplore] = useState(false);
-  const [post,setPost] = useState([]);
+  const [load,setLoad] = useState(true);
  
 
   const {data,error} = useSWR(user._id===null?null:`${base_url}/api/details/user?other=allPostsId`, async function fetcher(){
     let arr = [];
+    setLoad(true);
     await Promise.all(user.friendId.map(async(id)=>{
       const res = await axios.get(`${base_url}/api/details/user?id=${id}&other=allPostsId`);
       arr.push(...res.data.result.PostId);
@@ -68,6 +69,7 @@ const Feed = () => {
       const docSnap = await getDoc(docRef,orderBy("date", "desc"), limit(10));
       if(docSnap.exists()){
         const res = docSnap.data();
+        
         res.id = id;
         postIds.push(res);
         res.categoryIds.map((cat)=>{
@@ -81,8 +83,8 @@ const Feed = () => {
       }
     }))
     setCatData(categoryData);
+    setLoad(false);
     return postIds;
-
   },
   {revalidateOnFocus: false,
   revalidateOnMount:true,
@@ -90,7 +92,7 @@ const Feed = () => {
   refreshWhenOffline: true,
   refreshWhenHidden: true,
   refreshInterval: 0});
-  if(!data){
+  if(load){
     return (
     <div style={{height:"fit-content",width:"fit-content",margin:"20px auto"}}>
         <BarLoader  color="#3675d6"  height={6} width={131} />
@@ -98,29 +100,34 @@ const Feed = () => {
   }
 
    const getCatPost = async(cat)=>{
+      setLoad(true);
       const res = await axios.get(`${base_url}/api/categorys/getposts?catname=${cat}`);
       let posts =[];
       if(!res.data.result[0]?.postIds){
+        setLoad(false);
         setSpecificCat([]);
         return;
       }
       await Promise.all(res.data.result[0]?.postIds.map(async(id)=>{
         const docRef = doc(db, "posts", id);
+        
         const docSnap = await getDoc(docRef,orderBy("date", "desc"), limit(10));
         if(docSnap.exists()){
           const res = docSnap.data();
+          // console.log(res);
           res.id= id;
           posts.push(res);
         }
       }))
       setSpecificCat(posts);
+      setLoad(false);
    }  
 
   return (   
     <>   
     <AnimatePresence>
       {explore===true && (
-        <Explore setExplore={setExplore}/>
+         <Explore setExplore={setExplore}  setCategory={setCategory} getCatPost={getCatPost}/>
       )}
       </AnimatePresence>
       <div className={style.feedFrame}>
@@ -142,11 +149,14 @@ const Feed = () => {
               <Post key={"post"+idx} post={post}/>
             ))
           ):(
-            specificCat.map((post,idx)=>(
-              <Post key={"post"+idx} post={post}/>
-            ))
+            specificCat.length===0?(<>{category} doesn't have posts yet</>):(
+              <> {
+                specificCat.map((post,idx)=>(
+                  <Post key={"post"+idx} post={post}/>
+                ))}
+              </>
+           )
           )
-          
         }
       </div>
       </>
