@@ -1,4 +1,4 @@
-import Post from "../../../model/post";
+
 
 const handler = async(req, res)=> {
     if(req.method === 'POST'){

@@ -1,6 +1,7 @@
-import User from "../../../model/User";
+import User from "../../../model/user";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../utils/fireconnect";
+
 export default async function handler(req, res) {
     if (req.method === "GET") {
 
