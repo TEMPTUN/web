@@ -15,6 +15,12 @@ import { BarLoader } from 'react-spinners';
     const user = useSelector((state)=>state.user);
     const [load,setLoad]=useState(true);
 
+    const MailMessage = async (e,toemail,describe)=>{
+        e.preventDefault();
+        console.log(toemail);
+        const res = await axios.post(`${base_url}/api/mail/`,{myemail:user.email,name:user.name,toemail:toemail,desc:describe});
+    }
+
     const{data,error} = useSWR(user._id===null?null:`${base_url}/api/group/fetch`,async function fetcher(){
         let arr = new Set([]);
         await Promise.all(user.categoryId.map(async(cat)=>{
@@ -51,7 +57,6 @@ import { BarLoader } from 'react-spinners';
     )
    return (
     <div className={style.groupFrame}> 
-        { console.log(data)  }
         {load && 
         <div className={style.loader}>
           <BarLoader  color="#3675d6"  height={6} width={131} />
@@ -75,6 +80,7 @@ import { BarLoader } from 'react-spinners';
                         <div className={style.body}>
                             <h2>{d?.title}</h2>
                             <p>{d?.description}</p>
+ 
                             <div>
                                 <h2>About Group</h2>
                                 <p>{d?.about}</p>
@@ -86,7 +92,12 @@ import { BarLoader } from 'react-spinners';
                                     <span key={indx+"mc"}>{cat}</span>
                                 ))
                             }
+ 
                             </div>     
+                        </div>
+                        <div className={style.dock} onClick={(e)=>MailMessage(e,d?.groupEmail,d?.title)}>
+                            {console.log(d?.groupEmail)}
+                            <button>dock</button>
                         </div>
                     </div>
                 ))
