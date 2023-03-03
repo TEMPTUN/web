@@ -5,6 +5,7 @@ import base_url from '../../utils/connection';
 import style from './Explore.module.scss';
 import useSWR from 'swr';
 import { Autocomplete,TextField } from '@mui/material';
+import { allCategory } from '../category/category_data';
 
 const Index = () => {  
   const user = useSelector((state)=>state.user);
@@ -86,20 +87,16 @@ const Index = () => {
           />
         </div>
         <div className={style.options}>
-          <select>
+          <select placeholder='Categories'>
             <option value="all">All</option>
-            <option value="music">Music</option>
-            <option value="art">Art</option>
-            <option value="dance">Dance</option>
-            <option value="sports">Sports</option>
+            {
+                allCategory.map((cat,idx)=>(
+                  <option value={cat} key={"idx@"+cat}>{cat}</option>
+                ))
+            }
+             
           </select>
-          <select>
-            <option value="all">All</option>
-            <option value="music">Music</option>
-            <option value="art">Art</option>
-            <option value="dance">Dance</option>
-            <option value="sports">Sports</option>
-          </select>
+           <p>Filter</p>
         </div>
       </div>
       <div className={style.block2}>

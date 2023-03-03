@@ -29,18 +29,24 @@ const Post = ({post}) => {
     const handleFullPost = ()=>{
         setComment(!openComment);
     }
-    const handleLike = async(id)=>{  //post id is passed whihc is to be liked
+
+    const handleLike = async(id)=>{  //post id is passed is to be liked
         const postref = doc(db, "posts", id);
         const docSnap = await getDoc(postref);
         const data = docSnap.data();
         if(data.likeId!==undefined &&  data.likeId.includes(user._id)){
+            let newIds =[];
+            data.likeId.map((ids)=>{
+                if(ids!==user._id){
+                    newIds.push(ids);
+                }
+            })            
             await updateDoc(postref, {
-                likeId: data.likeId.filter((id)=>{
-                    id!==user._id;
-                })
+                likeId: newIds,
             });
            return;
         }
+        
         await updateDoc(postref, {
             likeId: data.likeId===undefined?[user._id]:[...data.likeId,user._id]
         });    

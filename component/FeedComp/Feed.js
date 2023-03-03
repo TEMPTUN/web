@@ -11,7 +11,7 @@ import useSWR from 'swr';
 import {allCategory} from '../category/category_data'
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
-import { BarLoader } from 'react-spinner';
+import { BarLoader } from 'react-spinners';
 
 const Explore = ({setExplore})=>{
   useEffect(()=>{

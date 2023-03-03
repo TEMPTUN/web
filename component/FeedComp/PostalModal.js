@@ -63,8 +63,9 @@ function PostalModal(props) {
         })
 	}
 
-	async function handleFile(event) {
+	function handleFile(event) {
 		let file = event.target.files[0];
+		console.log(event)
 		upf(file);
 	}
 
@@ -165,7 +166,7 @@ function PostalModal(props) {
 						 
                         <SharedContent>
 							<UserInfo>
-								{user.profilePic ? <img src={user.profilePic} alt="" /> : <img src="/images/user.svg" alt="" />}
+								{user.profilePic!==undefined ? <img src={user.profilePic} alt="" /> : <img src="/images/user.svg" alt="" />}
 								<span>{user.name ? user.name : "Name"}</span>
 							</UserInfo>
 							<Editor>
@@ -174,11 +175,11 @@ function PostalModal(props) {
 									{
 										assetArea==="media" && (
 											<>
-												<input type="file" accept="image/gif, image/jpeg, image/png,video/*" name="image" id="imageFile" onChange={handleFile} style={{ display: "none" }} />
+												<input type="file" accept="image/*,video/*" name="image" id="imageFile"  onChange={(e)=>handleFile(e)} style={{ display: "none" }} />
 												<p>
-													<label htmlFor="imageFile">Select an image/video to share</label>
+													<label  htmlFor="imageFile">Select an image/video to share</label>
 												</p>
-												{console.log(mediaFile)}
+												{/* {console.log(mediaFile)} */}
 												{ReactPlayer.canPlay(mediaFile)===false && <img src={ mediaFile} alt="" />}
 												{ReactPlayer.canPlay(mediaFile) && <ReactPlayer onClick={()=>{console.log("video")}} playing={true} controls={true} width={"100%"} url={mediaFile} />}
 											</>
@@ -200,22 +201,22 @@ function PostalModal(props) {
 										)
 									}					
 								</UploadImage>
+								<ShareCreation>
+									<AttachAsset>
+										<AssetButton onClick={() => switchAssetArea("media")}>
+											<img src="/images/share-image.svg" alt="" />
+										</AssetButton>
+										<AssetButton onClick={() => switchAssetArea("url")}>
+											<img src="/images/share-video.svg" alt="" />
+										</AssetButton>
+									</AttachAsset>
+									<PostButton  disabled={!editorText? true : false} onClick={(event) => handleNext()}>
+										Next
+									</PostButton>
+								</ShareCreation>
 							</Editor>
 						</SharedContent>
 
-						<ShareCreation>
-							<AttachAsset>
-								<AssetButton onClick={() => switchAssetArea("media")}>
-									<img src="/images/share-image.svg" alt="" />
-								</AssetButton>
-								<AssetButton onClick={() => switchAssetArea("url")}>
-									<img src="/images/share-video.svg" alt="" />
-								</AssetButton>
-							</AttachAsset>
-							<PostButton  disabled={!editorText? true : false} onClick={(event) => handleNext()}>
-								Next
-							</PostButton>
-						</ShareCreation>
 					</Content>
 				</Container>	
 			)}
@@ -267,7 +268,7 @@ export default PostalModal;
 //----------------------------------CSS-----------------------------
 const CategorySection = styled.div`
 	position:relative;
-	height:80vh;
+	height:60vh;
 	width:100%;
 	border:1px solid grey;
 	display:flex;
@@ -276,7 +277,7 @@ const CategorySection = styled.div`
 	input{
 		padding-left:20px;
 		margin-top:10px;
-		height:10%;
+		height:15%;
 		width:70%;
 		border-radius:30px;
 		border:0.3px solid grey;
@@ -304,8 +305,8 @@ const Option = styled.div`
 `;
 const Categories = styled.div`
 	margin-top:10px;
-	height:15%;
-	width:90%;
+	height:20%;
+	width:100%;
 	border:1px solid grey;
 	display:flex;
 	align-items:center;
@@ -317,7 +318,9 @@ const Categories = styled.div`
 	}
 	button{
 		height:70%;
-		padding:10px;
+		width:fit-content;
+		padding:3px;
+		min-width:80px;
 		border-radius:10px;
 		margin:0px 5px;
 		background:transparent;
@@ -326,15 +329,17 @@ const Categories = styled.div`
 	}
 `;
 const SubCategory = styled.div`
-	height:80%;
+	height:60%;
 	width:100%;
 	border:1px solid red;
 	display:flex;
 	justify-content:space-evenly;
 	flex-wrap:wrap;
+	overflow:scroll;
+	overflow-x:hidden;
 	
 	button{
-		height:12%;
+		height:40px;
 		width:fit-content;
 		min-width:15%;
 		padding:2px;
@@ -354,7 +359,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-	width: 100%;
+	width: 95%;
 	max-width: 552px;
 	max-height: 90%;
 	background-color: #fff;
@@ -363,7 +368,7 @@ const Content = styled.div`
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	top: 32px;
+	top: 5%;
 	margin: 0 auto;
 `;
 
@@ -372,7 +377,7 @@ const Header = styled.div`
 	padding: 10px 20px;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 	font-size: 20px;
-	line-height: 1.5;
+	line-height: 1.1;
 	color: rgba(0, 0, 0, 0.9);
 	display: flex;
 	justify-content: space-between;
@@ -425,8 +430,11 @@ const UserInfo = styled.div`
 
 const ShareCreation = styled.div`
 	display: flex;
+	width:100%;
+	// border:1px solid red;
 	justify-content: space-between;
-	padding: 10px 24px 10px 16px;
+	margin: 5px 15px;
+    width: 100%;
 `;
 
 const AttachAsset = styled.div`
@@ -468,6 +476,7 @@ const ShareComment = styled.div`
 
 const PostButton = styled.button`
 	min-width: 60px;
+	height:30px;
 	padding: 0 16px;
 	border-radius: 20px;
 	background: ${(props) => (props.disabled ? "#b8b8b8" : "#0a66c2")};
@@ -482,11 +491,24 @@ const PostButton = styled.button`
 `;
 
 const Editor = styled.div`
-	padding: 12px 24px;
+	padding: 12px 10px;
+	height: fit-content;
+	overflow:scrollable;
 	textarea {
 		width: 100%;
-		min-height: 100px;
+		height:100px;
+		background-color: transparent;
+		font-size: 16px;
+		padding: 5px;
 		resize: none;
+		overflow: hidden;
+		outline: none;
+		overflow: scroll;
+		&::-webkit-scrollbar {
+		  display: none;
+		}
+		border:0.5px solid black;
+	  
 	}
 	input {
 		width: 100%;
