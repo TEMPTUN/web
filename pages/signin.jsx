@@ -2,7 +2,7 @@ import axios from "axios";
 import React,{ useState,useEffect } from "react";
 import { useRouter } from "next/router";
 import { useForm } from 'react-hook-form';
-import base_url from '../utils/connection'
+const base_url = process.env.NEXT_PUBLIC_URL;
 import { useDispatch } from 'react-redux';
 import {CreateId} from '../redux_feature/UserInfo/userSlice'
 import { useSelector } from "react-redux";

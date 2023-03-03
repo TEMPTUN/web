@@ -1,13 +1,13 @@
 import { useState } from "react";
 import ReactPlayer from "react-player";
-import base_url from '../../utils/connection'
+import axios from 'axios';
+ const base_url = process.env.NEXT_PUBLIC_URL;
 import styled from "styled-components";
 import {useSelector} from 'react-redux';
 import {category_Data,allCategory} from '../category/category_data';
 import 'firebase/firestore';
 import {storage} from '../../utils/fireconnect';
 import {getDownloadURL, ref,uploadBytesResumable} from 'firebase/storage';
-import axios from "axios";
 import { doc,setDoc,collection,addDoc,Timestamp } from "firebase/firestore";
 import {db} from '../../utils/fireconnect';
 import styles from './Index.module.scss'

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import style from './Index.module.scss'
 import axios from 'axios';
-import base_url from '../../utils/connection';
+// const base_url = process.env.NEXT_PUBLIC_URL;
 import Post from './Post';
 import { doc,getDoc } from "firebase/firestore";
 import { orderBy,limit } from 'firebase/firestore';
@@ -12,6 +12,8 @@ import {allCategory} from '../category/category_data'
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
 import { BarLoader } from 'react-spinners';
+const base_url = process.env.NEXT_PUBLIC_URL;
+
 
 const Explore = ({setExplore,setCategory,getCatPost})=>{
   useEffect(()=>{

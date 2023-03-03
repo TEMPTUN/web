@@ -4,7 +4,7 @@ import { useState ,useEffect} from 'react'
 import { useSelector } from 'react-redux';
 import style from '../styles/updateProfile.module.scss';
 import axios from 'axios';
-import base_url from '../utils/connection';
+const base_url = process.env.NEXT_PUBLIC_URL;
 import { motion } from 'framer-motion';
 import { StyleRegistry } from 'styled-jsx';
 

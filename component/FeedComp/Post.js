@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 import style from './Index.module.scss'
 import ReactPlayer from 'react-player'
 import axios  from 'axios';
-import base_url from '../../utils/connection';
+const base_url = process.env.NEXT_PUBLIC_URL;
 import { useDispatch, useSelector } from 'react-redux'
 import { updateDoc } from "firebase/firestore";
 import { db } from "../../utils/fireconnect";

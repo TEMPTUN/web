@@ -3,7 +3,7 @@ import style from './style.module.scss';
 import { useState } from 'react';
 import CreateDiscussion from './CreateDiscussion';
 import useSWR from 'swr';
-import base_url from '../../utils/connection';
+const base_url = process.env.NEXT_PUBLIC_URL;
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react';
