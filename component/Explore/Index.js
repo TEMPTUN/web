@@ -5,6 +5,7 @@ import base_url from '../../utils/connection';
 import style from './Explore.module.scss';
 import useSWR from 'swr';
 import { Autocomplete,TextField } from '@mui/material';
+import { allCategory } from '../category/category_data';
 
 const Index = () => {  
   const user = useSelector((state)=>state.user);
@@ -75,7 +76,7 @@ const Index = () => {
     <div className={style.frame}>
       <div className={style.block}>
         <h1>Explore</h1>
-        <input type="text" placeholder='Search' id="combo"></input>
+        {/* <input type="text" placeholder='Search' id="combo"></input> */}
         <div className={style.block}>
           <Autocomplete
             freeSolo
@@ -86,20 +87,16 @@ const Index = () => {
           />
         </div>
         <div className={style.options}>
-          <select>
+          <select placeholder='Categories'>
             <option value="all">All</option>
-            <option value="music">Music</option>
-            <option value="art">Art</option>
-            <option value="dance">Dance</option>
-            <option value="sports">Sports</option>
+            {
+                allCategory.map((cat,idx)=>(
+                  <option value={cat} key={"idx@"+cat}>{cat}</option>
+                ))
+            }
+             
           </select>
-          <select>
-            <option value="all">All</option>
-            <option value="music">Music</option>
-            <option value="art">Art</option>
-            <option value="dance">Dance</option>
-            <option value="sports">Sports</option>
-          </select>
+           <p>Filter</p>
         </div>
       </div>
       <div className={style.block2}>
@@ -111,11 +108,12 @@ const Index = () => {
               }
               return (
                 <div key={idx+"sug"} className={style.box}>
+                  {console.log(sug)}
                   <div className={style.info}>
                     <div className={style.info2}>
                       <div style={{alignItems: "center"}}><img src={sug.image}></img></div>
                       <div style={{flexDirection:"column"}}>
-                        <h2 style={{margin:"7px"}}>{sug.name}</h2>
+                        <h2 style={{margin:"3px 7px"}}>{sug.name}</h2>
                         <p style={{margin:"0px 7px"}}>Mohali,punjab</p>
                       </div>
                       <div style={{position:"absolute",right:"10px",alignItems: "center"}}><button>msg</button></div>
