@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Top from '../component/Explore/Top';
 
 const collab = () => {
-  const[open,setOpen] = useState("Group"); 
   return (
    
        
