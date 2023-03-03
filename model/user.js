@@ -30,6 +30,7 @@ const user = new Schema({
     projectId:[{type:Schema.Types.Mixed,default:[]}],
     linkId:[{type:Schema.Types.Mixed,default:[]}],
     notificationId:[{type:Schema.Types.Mixed,default:[]}],
+    groupId:[{type:Schema.Types.Mixed,default:[]}],
     location:{
         type:String,
     },

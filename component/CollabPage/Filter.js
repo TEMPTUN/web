@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import style from './style.module.scss'
 
-const Filter = ({opt}) => {
+const Filter = ({opt,setMyWork}) => {
   const [search,openSearch] = useState(false);
   return (
     <div className={style.filterCont}>
@@ -12,8 +12,8 @@ const Filter = ({opt}) => {
             <img onClick={()=>openSearch(!search)} src={'/images/search.png'}></img>
         </div>
         <div className={style.filterTwo}>
-            <p>explore</p>
-            <p>{opt==="group"?"My Groups":"My Discussion"}</p>
+            <p onClick={()=>setMyWork(false)}>explore</p>
+            <p onClick={()=>setMyWork(true)}>{opt==="group"?"My Groups":"My Discussion"}</p>
             <p>Filter</p>
         </div>     
     </div>

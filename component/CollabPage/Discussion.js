@@ -18,6 +18,8 @@ const Discussion = () => {
     const [open,setOpen] = useState(false);
     const [categorydiss,setcategorydiss] = useState([]);
     const [load,setLoad]=useState(true);
+    const [myWork,setMyWork] = useState(false);
+
 
     const {data,error} = useSWR(user._id===null?null:`${base_url}/api/post/discusspost`,async function fetcher(){
         let arr = new Set([]);
@@ -65,10 +67,10 @@ const Discussion = () => {
           <h3>Find your Complement</h3>
         </div>} */}
         <div className={style.createPost} onClick={()=>setOpen(true)}>Ask</div>
-        <Filter opt={"Discussion"}/>
+        <Filter opt={"Discussion"} setMyWork={setMyWork}/>
         {open===true && <CreateDiscussion setOpen={setOpen}/>}
 
-        <div style={{width:"95%"}}>{
+        {myWork===false && <div style={{width:"95%"}}>{
                 data.map((d,ind)=>(
                    
                     <div className={style.groupBox} key={ind+'gp'}>
@@ -103,7 +105,11 @@ const Discussion = () => {
                     </div>
                 ))
             }
-        </div>
+        </div>}
+
+        {myWork===true && <div style={{width:"95%",textAlign:"center"}}>
+                <h2 style={{margin:"10px auto"}}>You have no discussion</h2>
+        </div>}
 
     </div>
   )
