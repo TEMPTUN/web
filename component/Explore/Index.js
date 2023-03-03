@@ -124,7 +124,7 @@ const Index = () => {
                       <div><span>Java</span> <span>Java</span>
                       <span>Java</span><span>Java</span></div>
                     </div>
-                  </div>
+                  </div> 
                   {!collabed.has(sug._id) && <button onClick={(e)=>handleCollab(sug._id)}>Collab</button>}
                   {collabed.has(sug._id) && <button>Friends</button>}  
                 </div>
