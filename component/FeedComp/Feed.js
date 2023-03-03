@@ -11,7 +11,7 @@ import useSWR from 'swr';
 import {allCategory} from '../category/category_data'
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
-import { ClimbingBoxLoader } from 'react-spinners';
+import { BarLoader } from 'react-spinner';
 
 const Explore = ({setExplore})=>{
   useEffect(()=>{
@@ -83,9 +83,18 @@ const Feed = () => {
     setCatData(categoryData);
     return postIds;
 
-  })
+  },
+  {revalidateOnFocus: false,
+  revalidateOnMount:true,
+  revalidateOnReconnect: true,
+  refreshWhenOffline: true,
+  refreshWhenHidden: true,
+  refreshInterval: 0});
   if(!data){
-    return <ClimbingBoxLoader color="hsla(168, 67%, 53%, 1)" style={{display:"flex",justifyContent:"center",alignContent:"center"}} loading={true} size={25} />
+    return (
+    <div style={{height:"fit-content",width:"fit-content",margin:"20px auto"}}>
+        <BarLoader  color="#3675d6"  height={6} width={131} />
+    </div>);
   }
 
    const getCatPost = async(cat)=>{
