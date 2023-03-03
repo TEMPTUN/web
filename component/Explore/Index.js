@@ -31,7 +31,7 @@ const Index = () => {
   })
   
   if(error){
-  return <h1>Error</h1>
+  return <h1>{error.message}</h1>
   }
 
   if(!data){
@@ -112,12 +112,23 @@ const Index = () => {
               return (
                 <div key={idx+"sug"} className={style.box}>
                   <div className={style.info}>
-                    <img src={sug.image}></img>
-                    <h4>{sug.name}</h4>
-                    <p>talent|work</p>
+                    <div className={style.info2}>
+                      <div style={{alignItems: "center"}}><img src={sug.image}></img></div>
+                      <div style={{flexDirection:"column"}}>
+                        <h2 style={{margin:"7px"}}>{sug.name}</h2>
+                        <p style={{margin:"0px 7px"}}>Mohali,punjab</p>
+                      </div>
+                      <div style={{position:"absolute",right:"10px",alignItems: "center"}}><button>msg</button></div>
+                    </div>
+                    <div className={style.info3}>
+                      <p>Ml learner working | web</p>
+                      <h6>Talk to me about</h6>
+                      <div><span>Java</span> <span>Java</span>
+                      <span>Java</span><span>Java</span></div>
+                    </div>
                   </div>
                   {!collabed.has(sug._id) && <button onClick={(e)=>handleCollab(sug._id)}>Collab</button>}
-                  {collabed.has(sug._id) && <button >Friends</button>}  
+                  {collabed.has(sug._id) && <button>Friends</button>}  
                 </div>
               )  
             })

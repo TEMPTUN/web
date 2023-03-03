@@ -29,7 +29,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 30px 30px;
+    padding: 30px 10px;
     h1{
         font-size: 45px;
         font-weight: 300;
@@ -49,63 +49,101 @@
 }
 
 .block2{
+    width: 100%;
+    padding-bottom: 20px;
     border-radius: 35px 35px 0px 0px;
     background-color: aliceblue;
-    height: 100%;
+    height: 60vh;
+    border:1px solid red;
+    overflow: scroll;
+    overflow-x: hidden;
 }
 
 .userCont{
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 30px 30px;
+    padding: 30px 10px;
+    overflow: scroll;
 }
 
 .info{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
+    
+    
+}
+
+.info2{
+    height: 80px;
+    display: flex;
     align-items: center;
-    padding: 30px 30px;
-    h1{
-        font-size: 30px;
-        font-weight: 300;
-        padding: 10px 10px;
-    }
+    position: relative;
+    padding-bottom:5px ;
+    border-bottom: 1px solid grey;
     p{
-        font-size: 20px;
-        font-weight: 300;
-        padding: 10px 10px;
+        font-size: 15px;
+        
+    }
+    div{
+        height: 100%;
+        display: flex;
+        img{
+            border-radius: 50%;
+            height: 90%;
+            width: 70px;
+            margin: 0px 10px;
+        }
     }
 }
 
 .box{
     color: black;
-    // border: 1px solid red;
     border-radius: 20px;
     background-color: white;
-    height: 40%;
+    height: fit-content;
     width: 100%;
-    padding: 15px 15px;
-    margin: 10px;
-    img{
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-    }
+    margin: 10px 0px;
+    padding: 10px;
     button{
         background-color:black;
         color: aliceblue;
         border: none;
         border-radius: 12px;
         padding: 10px 10px;
-        margin: 10px 10px;
-        font-size: 15px;
+        font-size: 22px;
+        cursor: pointer;
         font-weight: 500;
         outline: none;
     }
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+.info3{
+    padding-top: 7px;
+    p{
+        font-size: 22px;
+        padding: 8px 0px;
+    }
+    h6{
+        font-size: 22px;
+        padding: 8px 0px;
+    }
+    div{
+        display: flex;
+        flex-wrap: wrap;
+        span{
+            margin: 10px;
+            text-align: center;
+            min-width: 70px;
+            font-size: 20px;
+            padding: 5px 8px;
+            background-color: grey;
+            border-radius: 16px;
+        }
+    }
 }
 
 .box:hover{
