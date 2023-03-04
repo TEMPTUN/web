@@ -1,4 +1,4 @@
-import Group from '../../../model/group';
+import Group from '../../model/group';
 
 const handler = async(req, res)=> {
     if(req.method==='POST'){

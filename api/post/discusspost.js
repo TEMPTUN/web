@@ -1,4 +1,4 @@
-import Discussion from "../../../model/discussion";
+import Discussion from "../../model/discussion";
 
 export default async function handler(req,res){
     if(req.method === "POST"){

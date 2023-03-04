@@ -1,5 +1,5 @@
-import Category from "../../../model/category";
-import User from "../../../model/user";
+import Category from "../../model/category";
+import User from "../../model/user";
 
 export default async function handler(req,res){
     if(req.method === 'GET'){

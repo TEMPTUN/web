@@ -1,4 +1,4 @@
-import Category from '../../../model/category';
+import Category from '../../model/category';
 
 const handler = async(req,res)=>{
     if(req.method==='GET' && req.query.other==='friendId'){
