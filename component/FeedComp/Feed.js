@@ -78,11 +78,12 @@ const Feed = () => {
         res.id = id;
         postIds.push(res);
         res.categoryIds.map((cat)=>{
-          
+
           if(categoryData.hasOwnProperty(cat) && categoryData[cat].has(res)===false){
             categoryData[cat] = new Set([...categoryData[cat],res]);
           }
          else{
+          
             categoryData[cat]=new Set([res]);
           }
         });
