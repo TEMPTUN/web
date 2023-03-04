@@ -6,6 +6,7 @@ import style from './style.module.scss';
 import styled from "styled-components";
 import { useState } from 'react';
 import {category_Data,allCategory} from '../category/category_data';
+
 import axios from 'axios';
 
 const base_url = process.env.NEXT_PUBLIC_URL;
