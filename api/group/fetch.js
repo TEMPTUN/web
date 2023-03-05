@@ -1,9 +1,10 @@
 import Group from '../../model/group';
+import connectmongo from '../../utils/mongoconnect';
 
 const handler = async(req, res)=> {
 
     // GROUP FETCHED BY USER ID
-
+    await connectmongo();
     if(req.method==='GET'){
         try{
             const {id}= req.query;

@@ -1,11 +1,12 @@
 import Category from "../../model/category";
 import User from "../../model/user";
+import connectmongo from "../../utils/mongoconnect";
 
 export default async function handler(req,res){
     if(req.method === 'GET'){
 
         // CATEGORY FETCHED BY NAME FOR POSTS
-
+        await connectmongo();
         const {catname} = req.query;
         try {
             const result=await Category.find({name:catname}).select("postIds").sort({'postIds':-1});
