@@ -8,6 +8,7 @@ import { doc,getDoc } from "firebase/firestore";
 import { orderBy,limit } from 'firebase/firestore';
 import { db } from "../../utils/fireconnect";
 import useSWR from 'swr';
+
 import {allCategory} from '../category/category_data'
 import { motion } from 'framer-motion';
 import { AnimatePresence } from 'framer-motion';
