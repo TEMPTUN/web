@@ -1,6 +1,7 @@
 
 
 const handler = async(req, res)=> {
+    await connectmongo();
     if(req.method === 'POST'){
 
         // POST DATA POSTED

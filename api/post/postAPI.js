@@ -1,6 +1,7 @@
-
+import connectmongo from "../../utils/mongoconnect";
 
 const handler = async(req,res)=>{
+    await connectmongo();
     if(req.method==='GET' && req.query.other==='allPostsId'){
 
         // POST DATA FETCHED BY POST ID

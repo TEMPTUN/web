@@ -1,6 +1,8 @@
 import Discussion from "../../model/discussion";
+import connectmongo from "../../utils/mongoconnect";
 
 export default async function handler(req,res){
+    await connectmongo();
     if(req.method === "POST"){
 
         // DISCUSSION CREATED

@@ -4,9 +4,9 @@ import connectmongo from "../../utils/mongoconnect";
 const handler = async(req, res)=> {
 
     // INTIAL USER DATA POSTED
-
+    await connectmongo();
     if(req.method === 'POST'){  //SignUP
-        await connectmongo();
+       
         try{
             const { name,email,password,profilePic } = req.body; 
             const Userdata = new User({

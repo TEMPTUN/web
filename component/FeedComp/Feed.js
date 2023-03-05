@@ -67,7 +67,7 @@ const Feed = () => {
         arr.add(pId);
       })
     }));
-    console.log(arr);
+    console.log("mongo-->  "+arr);
     let postIds = [];
     let categoryData = catData;
     await Promise.all(Array.from(arr).map(async(id)=>{
@@ -90,6 +90,7 @@ const Feed = () => {
         });
       }
     }))
+    console.log("firebase--- "+ categoryData);
     setCatData(categoryData);
     setLoad(false);
     return postIds;
