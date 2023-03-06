@@ -62,7 +62,7 @@ const SigninP = () => {
       },[Userid])
 
       const onClickFunc=()=>{
-        router.push("/signup");
+        router.push("/logus");
       }
 
 
