@@ -6,7 +6,6 @@ const handler = async(req, res)=> {
     // INTIAL USER DATA POSTED
     await connectmongo();
     if(req.method === 'POST'){  //SignUP
-       
         try{
             const { name,email,password,profilePic } = req.body; 
             const Userdata = new User({
@@ -27,7 +26,6 @@ const handler = async(req, res)=> {
      if(req.method === 'PUT'){
         try{
             const id = req.body.id;
-            
             const allData = req.body.allData===undefined?[]:req.body.allData;
             const selectedCats = req.body.selectedCats===undefined?[]:req.body.selectedCats;
             const postIds =  req.body.postIds===undefined?[]:[req.body.postIds];
