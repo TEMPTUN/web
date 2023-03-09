@@ -2,9 +2,9 @@ import User from "../../model/user"
 import connectmongo from "../../utils/mongoconnect";
 
 const authUser=async (req, res) => {
+    await connectmongo();
     if(req.method==="POST"){
         try{
-            await connectmongo();
             const payload=req.body;
             let user = await User.findOne({ email: payload?.email });
             if (!user) {
