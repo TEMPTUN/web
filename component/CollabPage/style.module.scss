@@ -1,0 +1,240 @@
+.groupFrame{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: #EEEEEE;
+}
+.softbox{
+    display: flex;
+    justify-content: space-between;
+     
+}
+.dock{
+    position:  absolute;
+    bottom: 10px;
+    right: 10px;
+    button{
+        background-color: #929aab;
+        width: 70px;   
+        border: none;
+        border-radius: 10px;
+        padding: 5px 10px;
+        color: white;
+        font-size: 13px;
+        cursor: pointer;
+    }
+   
+}
+
+.loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    position:absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    backdrop-filter: blur(1px);
+    background: rgb(0,0,0);
+    color: white;
+}
+.createPost{
+    z-index: 999;
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    bottom: 15%;
+    right: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #929aab;
+    cursor: pointer;
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+}
+
+.groupBox{
+    position: relative;
+    height: fit-content;
+    width: 100%;
+    background-color:#f7f7f7;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding-bottom: 60px;
+}
+.head{
+    position: relative;
+    display: flex;
+    align-items: center;
+    img{
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        margin: 0px 8px;
+    }
+    border-bottom: 1px solid grey;
+    padding-bottom: 5px;
+}
+.nameTitle{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-transform: capitalize;
+    span{
+        font-size: 13px;
+    }
+}
+.compensation{
+    position:  absolute;
+    right: 10px;
+    background-color: #929AAB;
+    border-radius: 15px;
+    padding: 3px 7px;
+}
+.body{
+    margin-top: 10px;
+    h2{
+        margin-bottom: 1px;
+    }
+    p{
+        margin-bottom: 10px;
+    }
+    span{
+        display: block;
+        background-color: #eeeeee;
+        width: fit-content;
+        padding: 5px 10px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 10px 30px -12px inset, rgba(0, 0, 0, 0.3) 0px 15px 25px -18px inset;
+        margin: 5px 3px;
+        border-radius: 15px;
+    }
+}
+
+
+
+
+//------------------------Group Create Css
+.frame{
+    width: 96%;
+    height:80vh;
+    overflow: scroll;
+    top:8vh;
+    margin-top: 0vh;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+    position: absolute;
+    background: #929aab;
+    padding-bottom: 10px;
+    z-index: 99999;
+}
+.basicIntro{
+    position: relative;
+    height: 100px;
+    width:90%;
+    display: flex;
+    align-items: center;
+    margin: 10px 0px;
+    img{
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+    }
+    span{
+        font-size: 24px;
+        margin-left:20px;
+    }
+    button{
+        position: absolute;
+        right:0px;
+        background-color: transparent;
+        border: none;
+        img{
+            height: 25px;
+            width: 25px;
+        }
+    }
+
+}
+
+.Gform{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // justify-content: center;
+}
+
+.box{
+    height: fit-content;
+    width: 90%;
+    margin-bottom: 15px;
+    label{
+        display: block;
+        font-size: 18px;
+    }
+    input{
+        margin-top: 10px;
+        display: block;
+        width: 100%;
+        height:30px;
+        border-radius: 5px;
+        padding: 10px;
+    }
+}
+
+.submit{
+    width: 60%;
+    height: 30px;
+}
+
+.filterCont{
+    padding-top: 10px;
+    width: 90%;
+    height: 80px;
+}
+.filterOne{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 22px;
+    img{
+        height: 20px;
+        cursor: pointer;
+    }
+}
+.filterTwo{
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    p{
+        background-color: #929AAB;
+        padding: 5px 10px;
+        border-radius:15px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+}
+
+.chatCont{
+    height: 30px;
+    width: 200px;
+    margin: 8px 0px;
+    font-size: 18px;
+    background-color: #929AAB;
+    display: flex;
+    border-radius: 18px;
+    align-items: center;
+    padding: 8px;
+}
