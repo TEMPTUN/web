@@ -70,41 +70,42 @@ const SignupP = ()=> {
     
   return (
     <div className={styles.box}>
-        <h1>Sign up</h1>
-       <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className={styles.innerbox}>
+
+        <div className={styles.comp}>
+          <p>CollabIn</p>
+        </div>
         
-            {/* {ppic===true?<label htmlFor='fileUpload' onClick={()=>isma()}>Selected</label>:<label htmlFor='fileUpload' onClick={()=>isma()}>Select Profile Pic</label>}
-            <input type="file" id="fileUpload" accept="image/*" hidden {...register("profilePic")}/> */}
-            {/* {errors.name && errors.name.type === "required" && (
-              <p className="errorMsg">Profile is required.</p>
-            )} */}
-       
-       <p>Already a user?<span style={{marginLeft:"7px",fontSize:"18px",color:"blue",cursor:"pointer"}} onClick={()=>onClickFunc()}>SignIn</span></p>
-            <input type="text" name="name" {...register("name",{required: true})} placeholder={"Name"}/>
-            {errors.name && errors.name.type === "required" && (
-              <p className="errorMsg">name is required.</p>
-            )}
-         
-            <input type="email" name="email" {...register("email",{required: true,pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/})} placeholder={"Email"}/>
-            {errors.email && errors.email.type === "required" && (
-              <p className="errorMsg">Email is required.</p>
-            )}
-            {errors.email && errors.email.type === "pattern" && (
-              <p className="errorMsg">Email is not valid.</p>
-            )}
+        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" className={styles.innerbox}>
+              <div className={styles.para}>
+                <p style={{marginBottom:"10px",color:"#606060",fontSize:"20px"}}>Create your account</p>
+              </div>
+              <input type="text" name="name" {...register("name",{required: true})} placeholder={"Name"}/>
+              {errors.name && errors.name.type === "required" && (
+                <p className="errorMsg">name is required.</p>
+              )}
           
-      
-            <input type="password" name="password" {...register("password",{required: true,minLength: 6})} placeholder={"Password"}/>
-            {errors.password && errors.password.type === "required" && (
-              <p className="errorMsg">password is required.</p>
-            )}
-            {errors.password && errors.password.type === "minLength" && (
-              <p className="errorMsg">Enter some lengthy password.</p>
-            )}
-          
-       
-          <button type='submit'>Sign up</button>
-      </form>
+              <input type="email" name="email" {...register("email",{required: true,pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/})} placeholder={"Email"}/>
+              {errors.email && errors.email.type === "required" && (
+                <p className="errorMsg">Email is required.</p>
+              )}
+              {errors.email && errors.email.type === "pattern" && (
+                <p className="errorMsg">Email is not valid.</p>
+              )}
+            
+        
+              <input type="password" name="password" {...register("password",{required: true,minLength: 6})} placeholder={"Password"}/>
+              {errors.password && errors.password.type === "required" && (
+                <p className="errorMsg">password is required.</p>
+              )}
+              {errors.password && errors.password.type === "minLength" && (
+                <p className="errorMsg">Enter some lengthy password.</p>
+              )}
+            
+        
+            <button type='submit'>Sign up</button>
+        </form>
+
+        <p className={styles.onsite}>Already a user?<span style={{marginLeft:"7px",fontSize:"15px",color:"blue",cursor:"pointer"}} onClick={()=>onClickFunc()}>SignIn</span></p>
       <div>
         {<GoogleLogin
           onSuccess={(res)=>CreateorGetUser(res)}
